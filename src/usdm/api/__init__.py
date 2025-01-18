@@ -110,5 +110,6 @@ __all__ = [
   'SyntaxTemplateDictionary',
   'Timing',
   'TransitionRule',
+  'Wrapper',
 ]
 

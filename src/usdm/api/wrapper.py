@@ -1,4 +1,4 @@
-from typing import Union, Self
+from typing import Union
 from usdm.api.api_base_model import ApiBaseModel
 from usdm.api.study import Study
 from usdm.api.study_title import StudyTitle
@@ -12,7 +12,7 @@ from usdm.api.study import Study
 from usdm.base.globals import Globals
 from usdm.base.api_instance import APIInstance
 from usdm import __model_version__, __package_name__, __package_version__
-
+from uuid import uuid4
 
 class Wrapper(ApiBaseModel):
     study: Study
@@ -21,7 +21,7 @@ class Wrapper(ApiBaseModel):
     systemVersion: Union[str, None] = None
 
     @classmethod
-    def minimum(cls, title: str,identifier: str, version: str) -> Self:
+    def minimum(cls, title: str,identifier: str, version: str) -> 'Wrapper':
         """
         Create a minimum study with the given title, identifier, and version.
         """
@@ -92,7 +92,7 @@ class Wrapper(ApiBaseModel):
             "studyIdentifiers": [study_identifier]
         })
         study = api_instance.create(Study, {
-            "id": None,
+            "id": str(uuid4()),
             "name": "Study",
             "label": "",
             "description": "",
@@ -101,9 +101,9 @@ class Wrapper(ApiBaseModel):
         })
         
         # Return the wrapper for the study
-        return Wrapper(
-            study=study,
-            usdmVersion=__model_version__,
-            systemName=f"Python {__package_name__} Package",
-            systemVersion=__package_version__,
-        )
+        return api_instance.create(Wrapper, {
+            "study": study,
+            "usdmVersion": __model_version__,
+            "systemName": f"Python {__package_name__} Package",
+            "systemVersion": __package_version__,
+        })

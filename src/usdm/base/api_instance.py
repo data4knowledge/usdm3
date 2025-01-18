@@ -6,9 +6,9 @@ class APIInstance():
     def create(self, klass, params):
         try:
           klass_name = klass if isinstance(klass, str) else klass.__name__
-          params['id'] = self.globals.id_manager.build_id(klass_name)
+          params['id'] = self._globals.id_manager.build_id(klass_name) if 'id' not in params else params['id']
           params['instanceType'] = klass_name
           return klass(**params)
         except Exception as e:
-          self._general_exception(f"Failed to create {klass_name} object", e)
+          self._globals.errors.exception(e)
           return None
