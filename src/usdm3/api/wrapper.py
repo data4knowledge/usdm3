@@ -1,17 +1,17 @@
 from typing import Union
-from usdm.api.api_base_model import ApiBaseModel
-from usdm.api.study import Study
-from usdm.api.study_title import StudyTitle
-from usdm.api.code import Code
-from usdm.api.study_protocol_document_version import StudyProtocolDocumentVersion
-from usdm.api.study_protocol_document import StudyProtocolDocument
-from usdm.api.study_version import StudyVersion
-from usdm.api.study_identifier import StudyIdentifier
-from usdm.api.organization import Organization
-from usdm.api.study import Study
-from usdm.base.globals import Globals
-from usdm.base.api_instance import APIInstance
-from usdm import __model_version__, __package_name__, __package_version__
+from usdm3.api.api_base_model import ApiBaseModel
+from usdm3.api.study import Study
+from usdm3.api.study_title import StudyTitle
+from usdm3.api.code import Code
+from usdm3.api.study_protocol_document_version import StudyProtocolDocumentVersion
+from usdm3.api.study_protocol_document import StudyProtocolDocument
+from usdm3.api.study_version import StudyVersion
+from usdm3.api.study_identifier import StudyIdentifier
+from usdm3.api.organization import Organization
+from usdm3.api.study import Study
+from usdm3.base.globals import Globals
+from usdm3.base.api_instance import APIInstance
+from usdm3 import __model_version__, __package_name__, __package_version__
 from uuid import uuid4
 
 class Wrapper(ApiBaseModel):

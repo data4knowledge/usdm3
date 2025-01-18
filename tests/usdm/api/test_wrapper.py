@@ -1,4 +1,4 @@
-from usdm.api.wrapper import Wrapper
+from usdm3.api.wrapper import Wrapper
 
 def test_init():
     instance = Wrapper.minimum("Test Study", "SPONSOR-1234", "1.0.0")

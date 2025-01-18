@@ -1,4 +1,4 @@
-from usdm.base.globals import Globals
+from usdm3.base.globals import Globals
 
 
 def test_globals():

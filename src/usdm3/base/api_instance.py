@@ -1,5 +1,5 @@
 from d4k_sel.error_location import KlassMethodLocation
-from usdm.base.globals import Globals
+from usdm3.base.globals import Globals
 
 
 class APIInstance:

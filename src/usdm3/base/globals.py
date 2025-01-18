@@ -1,6 +1,6 @@
-from usdm.api import __all__ as api_classes
-from usdm.base.errors import Errors
-from usdm.base.id_manager import IdManager
+from usdm3.api import __all__ as api_classes
+from usdm3.base.errors import Errors
+from usdm3.base.id_manager import IdManager
 
 class Globals():
 

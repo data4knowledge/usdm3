@@ -1,5 +1,5 @@
-from usdm.base.id_manager import IdManager
-from usdm.api.address import Address
+from usdm3.base.id_manager import IdManager
+from usdm3.api.address import Address
 
 def test_init():
     instance_1 = IdManager(['Address', 'xxx'])

@@ -1,6 +1,6 @@
-from usdm.base.api_instance import APIInstance
-from usdm.base.globals import Globals
-from usdm.api.code import Code
+from usdm3.base.api_instance import APIInstance
+from usdm3.base.globals import Globals
+from usdm3.api.code import Code
 
 class Something():
     pass
