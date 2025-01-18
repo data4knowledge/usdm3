@@ -1,5 +1,4 @@
-class IdManager():
-
+class IdManager:
     def __init__(self, classes: list[str]):
         self._classes = classes
         self._id_index = {}

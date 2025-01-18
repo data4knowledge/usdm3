@@ -19,6 +19,8 @@ class APIInstance:
         except Exception as e:
             loc = KlassMethodLocation("APIInstance", "create")
             self._globals.errors.exception(
-                f"Error creating class '{klass if isinstance(klass, str) else klass.__name__}' API instance", e, loc
+                f"Error creating class '{klass if isinstance(klass, str) else klass.__name__}' API instance",
+                e,
+                loc,
             )
             return None
