@@ -5,8 +5,8 @@ from d4k_sel.error_location import ErrorLocation as SelErrorLocation
 
 class Errors():
 
-  WARNING = SelErrors.WARNING
   ERROR = SelErrors.ERROR
+  WARNING = SelErrors.WARNING
   DEBUG = SelErrors.DEBUG
   INFO = SelErrors.INFO
 
@@ -18,9 +18,13 @@ class Errors():
     self.errors.add(message, location, self.errors.ERROR)
     message = f"Tracsback for the previous error:\n\n{traceback.format_exc()}"
     self.errors.add(message, location, self.errors.ERROR)
+    print(self.dump())
 
   def error(self, message: str, location: SelErrorLocation):
     self.errors.add(message, location, self.errors.ERROR)
 
   def warning(self, message: str, location: SelErrorLocation):
     self.errors.add(message, location, self.errors.WARNING)
+
+  def dump(self):
+    return self.errors.dump(self.ERROR)

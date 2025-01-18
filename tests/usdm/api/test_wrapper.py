@@ -4,7 +4,7 @@ def test_init():
     instance = Wrapper.minimum("Test Study", "SPONSOR-1234", "1.0.0")
     assert instance.study.versions[0].titles[0].text == "Test Study"
     assert instance.study.versions[0].studyIdentifiers[0].studyIdentifier == "SPONSOR-1234"
-    instance.study.id = "FAKE-UUID" # UUID is dynamic
+    instance.study.id = "88888888-4444-4444-4444-121212121212" # UUID is dynamic
     assert instance.model_dump() == {
         'id': 'Wrapper_1',
         'study': {
@@ -34,7 +34,7 @@ def test_init():
                     },
                 ],
             },
-            'id': "FAKE-UUID",
+            'id': "88888888-4444-4444-4444-121212121212",
             'instanceType': 'Study',
             'label': '',
             'name': 'Study',
