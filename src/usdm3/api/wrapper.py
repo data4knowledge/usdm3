@@ -8,7 +8,6 @@ from usdm3.api.study_protocol_document import StudyProtocolDocument
 from usdm3.api.study_version import StudyVersion
 from usdm3.api.study_identifier import StudyIdentifier
 from usdm3.api.organization import Organization
-from usdm3.api.study import Study
 from usdm3.base.globals import Globals
 from usdm3.base.api_instance import APIInstance
 from usdm3 import __model_version__, __package_name__, __package_version__

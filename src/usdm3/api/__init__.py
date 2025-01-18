@@ -4,7 +4,6 @@ from .administration_duration import AdministrationDuration
 from .agent_administration import AgentAdministration
 from .alias_code import AliasCode
 from .analysis_population import AnalysisPopulation
-from .api_base_model import ApiBaseModel
 from .biomedical_concept_category import BiomedicalConceptCategory
 from .biomedical_concept_property import BiomedicalConceptProperty
 from .biomedical_concept_surrogate import BiomedicalConceptSurrogate
@@ -111,5 +110,7 @@ __all__ = [
     "SyntaxTemplateDictionary",
     "Timing",
     "TransitionRule",
+    "StudyIntervention",
+    "Quantity",
     "Wrapper",
 ]
