@@ -170,3 +170,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 .DS_Store
+
+# Envionment files
+.development_env
+.test_env
