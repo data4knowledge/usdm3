@@ -157,18 +157,30 @@ def test_refresh(mock_missing_cls, mock_config_cls, mock_file_cls, mock_api_cls,
     # Verify refresh was called
     assert mock_api.refresh.called
 
-def test_klass_and_attribute(library):
+@patch('usdm3.ct.cdisc.library.LibraryAPI')
+@patch('usdm3.ct.cdisc.library.LibraryFile')
+@patch('usdm3.ct.cdisc.library.Config')
+@patch('usdm3.ct.cdisc.library.Missing')
+def test_klass_and_attribute(mock_missing_cls, mock_config_cls, mock_file_cls, mock_api_cls, tmp_path):
     """Test klass_and_attribute method"""
+    # Create library instance with all dependencies mocked
+    library = Library(str(tmp_path), "test.yaml")
+    
+    # Setup mock config
+    mock_config = mock_config_cls.return_value
+    
     # Setup test data
-    library._by_code_list["C123"] = {"test": "data"}
-    library._config.klass_and_attribute.return_value = "C123"
+    test_data = {"test": "data"}
+    library._by_code_list["C123"] = test_data
+    mock_config.klass_and_attribute.return_value = "C123"
     
     # Test valid lookup
     result = library.klass_and_attribute("TestClass", "testAttr")
-    assert result == {"test": "data"}
+    assert result == test_data
+    mock_config.klass_and_attribute.assert_called_once_with("TestClass", "testAttr")
     
     # Test invalid lookup
-    library._config.klass_and_attribute.side_effect = Exception("Not found")
+    mock_config.klass_and_attribute.side_effect = Exception("Not found")
     result = library.klass_and_attribute("InvalidClass", "invalidAttr")
     assert result is None
 
