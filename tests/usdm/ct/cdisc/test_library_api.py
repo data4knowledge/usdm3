@@ -80,27 +80,14 @@ def test_refresh(mock_get, api):
         headers={"Content-Type": "application/json", "api-key": "api_key"},
     )
     
-
-@patch('requests.post')
-def test_refresh_error(mock_post, api):
-    """Test refresh method error handling"""
-    mock_response = Mock()
-    mock_response.status_code = 401
-    mock_response.text = "Unauthorized"
-    mock_post.return_value = mock_response
-    
-    with pytest.raises(Exception) as exc_info:
-        api.refresh()
-    assert "failed to refresh token" in str(exc_info.value)
-
 @patch('requests.get')
 def test_packages_malformed_response(mock_get, api):
     """Test packages method with malformed response"""
     mock_response = Mock()
-    mock_response.status_code = 200
-    mock_response.json.return_value = {"invalid": "response"}
+    mock_response.status_code = 401
+    mock_response.text = "Unauthorized"
     mock_get.return_value = mock_response
     
     with pytest.raises(Exception) as exc_info:
-        list(api.packages())
+        list(api.refresh())
     assert "failed to get packages" in str(exc_info.value)

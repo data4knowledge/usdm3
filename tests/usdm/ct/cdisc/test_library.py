@@ -138,11 +138,24 @@ def test_load_from_cache(mock_missing_cls, mock_config_cls, mock_file_cls, mock_
     assert "VAL1" in library._by_submission
     assert "Term 1" in library._by_pt
 
-def test_refresh(library):
+@patch('usdm3.ct.cdisc.library.LibraryAPI')
+@patch('usdm3.ct.cdisc.library.LibraryFile')
+@patch('usdm3.ct.cdisc.library.Config')
+@patch('usdm3.ct.cdisc.library.Missing')
+def test_refresh(mock_missing_cls, mock_config_cls, mock_file_cls, mock_api_cls, tmp_path):
     """Test refresh method"""
+    # Create library instance with all dependencies mocked
+    library = Library(str(tmp_path), "test.yaml")
+    
+    # Setup mock API instance
+    mock_api = mock_api_cls.return_value
+    mock_api.refresh.return_value = None
+    
+    # Call refresh
     library.refresh()
-    # Verify API refresh was called
-    assert library._api.refresh.called
+    
+    # Verify refresh was called
+    assert mock_api.refresh.called
 
 def test_klass_and_attribute(library):
     """Test klass_and_attribute method"""

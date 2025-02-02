@@ -118,7 +118,7 @@ class LibraryAPI:
             return packages
         else:
             raise self.APIError(
-                f"Failed to get packages, response: {raw.status_code} {raw.text}"
+                f"failed to get packages, response: {raw.status_code} {raw.text}"
             )
 
     def _extract_ct_name(self, url: str) -> str:
