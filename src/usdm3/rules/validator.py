@@ -61,6 +61,7 @@ class Validator:
                         "rule": rule_class.__name__,
                         "valid": is_valid,
                         "errors": rule.errors(),
+                        "exception": None,
                     }
                 )
             except NotImplementedError as e:
@@ -69,7 +70,7 @@ class Validator:
                         "rule": rule_class.__name__,
                         "valid": False,
                         "errors": None,
-                        "exception": "Not implemented",
+                        "exception": "not implemented",
                     }
                 )
             except Exception as e:
@@ -78,8 +79,7 @@ class Validator:
                         "rule": rule_class.__name__,
                         "valid": False,
                         "errors": None,
-                        "exception": traceback.format_exc(),
+                        "exception": str(e),
                     }
                 )
-
         return results
