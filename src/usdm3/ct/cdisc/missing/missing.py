@@ -1,6 +1,7 @@
 import os
 import yaml
 
+
 class Missing:
     def __init__(self):
         f = open(os.path.join(os.path.dirname(__file__), "missing_ct.yaml"))
@@ -9,4 +10,3 @@ class Missing:
     def code_lists(self):
         for response in self._missing_ct:
             yield response
-

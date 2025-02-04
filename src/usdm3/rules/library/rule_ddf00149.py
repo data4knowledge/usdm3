@@ -27,4 +27,3 @@ class RuleDDF00149(RuleTemplate):
             bool: True if validation passes
         """
         return self._ct_check(config, "StudyArm", "dataOriginType")
-        

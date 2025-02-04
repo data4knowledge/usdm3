@@ -1,11 +1,10 @@
 import os
 import yaml
 
+
 class Config:
     def __init__(self):
-        f = open(
-            os.path.join(os.path.dirname(__file__), "ct_config.yaml")
-        )
+        f = open(os.path.join(os.path.dirname(__file__), "ct_config.yaml"))
         self._cdisc_ct_config = yaml.load(f, Loader=yaml.FullLoader)
         self._by_klass_attribute = {}
         self._process()
@@ -31,4 +30,3 @@ class Config:
             for attribute, cl in info.items():
                 if not attribute in self._by_klass_attribute[klass]:
                     self._by_klass_attribute[klass][attribute] = cl
-

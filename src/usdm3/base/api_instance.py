@@ -1,9 +1,10 @@
 from usdm3.base.id_manager import IdManager
 
-class APIInstance:
 
+class APIInstance:
     class APIInstanceError(Exception):
         """Custom exception for create errors"""
+
         pass
 
     def __init__(self, id_manager: IdManager):
@@ -20,4 +21,6 @@ class APIInstance:
             params["instanceType"] = klass_name
             return klass(**params)
         except Exception as e:
-            raise self.APIInstanceError(f"failed to create {klass_name} instance, exception: {str(e)}")
+            raise self.APIInstanceError(
+                f"failed to create {klass_name} instance, exception: {str(e)}"
+            )

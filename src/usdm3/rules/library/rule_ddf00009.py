@@ -31,7 +31,7 @@ class RuleDDF00009(RuleTemplate):
         for item in items:
             valid = False
             for timing in item["timings"]:
-                if timing["type"]['decode'] == "Fixed Reference":
+                if timing["type"]["decode"] == "Fixed Reference":
                     valid = True
             if not valid:
                 self._add_failure(

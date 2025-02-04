@@ -1,6 +1,7 @@
 import os
 import yaml
 
+
 class LibraryFile:
     def __init__(self, path: str, filename: str):
         self._path = path

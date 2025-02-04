@@ -26,4 +26,4 @@ class RuleDDF00131(RuleTemplate):
         Returns:
             bool: True if validation passes
         """
-        raise NotImplementedError("Rule is not implemented")
+        raise NotImplementedError("rule is not implemented")

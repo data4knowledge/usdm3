@@ -58,9 +58,7 @@ class RuleTemplate:
                     item[attribute]["code"] not in codes
                     or item[attribute]["decode"] not in decodes
                 ):
-                    self._add_failure(
-                        JSONLocation(klass, attribute, item["id"])
-                    )
+                    self._add_failure(JSONLocation(klass, attribute, item["id"]))
             else:
                 self._add_failure(JSONLocation(klass, attribute, item["id"]))
         return self._result()

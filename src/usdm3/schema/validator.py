@@ -4,9 +4,9 @@ from jsonschema import validate, ValidationError, RefResolver
 
 
 class SchemaValidator:
-
     class SchemaValidatorError(Exception):
         """Custom exception for schema validator errors"""
+
         pass
 
     def __init__(self, schema_file_path: str):
@@ -68,7 +68,9 @@ class SchemaValidator:
         except ValidationError as e:
             raise self.SchemaValidatorError(f"validation error, exception: {str(e)}")
         except Exception as e:
-            raise self.SchemaValidatorError(f"unexpected error during validation, exception: {str(e)}")
+            raise self.SchemaValidatorError(
+                f"unexpected error during validation, exception: {str(e)}"
+            )
 
     def validate_file(self, json_file_path, component_name):
         """
@@ -90,7 +92,10 @@ class SchemaValidator:
                 data = json.load(f)
             return self.validate_against_component(data, component_name)
         except json.JSONDecodeError as e:
-            raise self.SchemaValidatorError(f"error reading JSON file, exception: {str(e)}")
+            raise self.SchemaValidatorError(
+                f"error reading JSON file, exception: {str(e)}"
+            )
         except Exception as e:
-            raise self.SchemaValidatorError(f"unexpected error during file validation, exception: {str(e)}")
-        
+            raise self.SchemaValidatorError(
+                f"unexpected error during file validation, exception: {str(e)}"
+            )
