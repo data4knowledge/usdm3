@@ -30,11 +30,11 @@ class RuleTemplate:
         self._level = level
         self._rule_text = rule_text
 
-    def validate(self, data: DataStore) -> bool:
+    def validate(self, config: dict) -> bool:
         """
         Run the rule on the data
         """
-        raise NotImplementedError("Rule not implemented")
+        raise NotImplementedError("rule not implemented")
 
     def errors(self) -> Errors:
         return self._errors

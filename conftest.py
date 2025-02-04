@@ -13,6 +13,5 @@ def clear_test():
 @pytest.fixture(scope="session", autouse=True)
 def tests_setup_and_teardown():
     set_test()
-    print("test environment set")
     yield
     clear_test()

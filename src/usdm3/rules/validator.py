@@ -31,6 +31,7 @@ class Validator:
             # Import the module
             module = importlib.import_module(f"{self.rules_package}.{module_name}")
 
+            print(f"module: {module}")
             # Find all classes in the module that inherit from RuleTemplate
             for name, obj in inspect.getmembers(module):
                 if (

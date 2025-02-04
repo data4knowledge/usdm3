@@ -27,15 +27,15 @@ class Wrapper(ApiBaseModel):
 
         """
         api_classes = [
-            Study, 
-            StudyTitle, 
-            StudyProtocolDocumentVersion, 
-            StudyProtocolDocument, 
-            StudyVersion, 
-            StudyIdentifier, 
-            Organization, 
+            Study,
+            StudyTitle,
+            StudyProtocolDocumentVersion,
+            StudyProtocolDocument,
+            StudyVersion,
+            StudyIdentifier,
+            Organization,
             Code,
-            'Wrapper'
+            "Wrapper",
         ]
 
         id_manager = IdManager(api_classes)
