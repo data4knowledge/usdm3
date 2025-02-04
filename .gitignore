@@ -174,3 +174,6 @@ cython_debug/
 # Envionment files
 .development_env
 .test_env
+
+# Ruff
+.ruff_cache/
