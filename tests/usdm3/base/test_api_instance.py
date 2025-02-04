@@ -1,5 +1,6 @@
+import pytest
 from usdm3.base.api_instance import APIInstance
-from usdm3.base.globals import Globals
+from usdm3.base.id_manager import IdManager
 from usdm3.api.code import Code
 
 
@@ -8,15 +9,14 @@ class Something:
 
 
 def test_api_instance():
-    globals = Globals()
-    api_instance = APIInstance(globals)
+    id_manager = IdManager()
+    api_instance = APIInstance(id_manager)
     assert api_instance is not None
 
 
 def test_create():
-    globals = Globals()
-    globals.clear()
-    api_instance = APIInstance(globals)
+    id_manager = IdManager()
+    api_instance = APIInstance(id_manager)
     code = api_instance.create(
         Code,
         {
@@ -38,9 +38,8 @@ def test_create():
 
 
 def test_create_no_id():
-    globals = Globals()
-    globals.clear()
-    api_instance = APIInstance(globals)
+    id_manager = IdManager()
+    api_instance = APIInstance(id_manager)
     code = api_instance.create(
         Code,
         {
@@ -61,16 +60,7 @@ def test_create_no_id():
 
 
 def test_create_exception():
-    globals = Globals()
-    globals.clear()
-    api_instance = APIInstance(globals)
-    code = api_instance.create(Something, {"code": "CODE-1"})
-    assert code is None
-    assert globals.errors.dump()[0] == {
-        "level": "Error",
-        "location": {
-            "class_name": "APIInstance",
-            "method_name": "create",
-        },
-        "message": "Exception ''Something'' raised. Error creating class 'Something' API instance",
-    }
+    id_manager = IdManager()
+    api_instance = APIInstance(id_manager)
+    with pytest.raises(APIInstance.APIInstanceError):
+        api_instance.create(Something, {"code": "CODE-1"})

@@ -1,0 +1,29 @@
+from .rule_template import RuleTemplate, JSONLocation
+
+
+class RuleDDF00094(RuleTemplate):
+    """
+    DDF00094: Within a study version, if a date of a specific type exists with a global geographic scope then no other dates are expected with the same type.
+
+    Applies to: StudyVersion
+    Attributes: dateValues
+    """
+
+    def __init__(self):
+        super().__init__(
+            "DDF00094",
+            RuleTemplate.WARNING,
+            "Within a study version, if a date of a specific type exists with a global geographic scope then no other dates are expected with the same type.",
+        )
+
+    def validate(self, config: dict) -> bool:
+        """
+        Validate the rule against the provided data
+
+        Args:
+            config (dict): Standard configuration structure contain the data, CT etc
+
+        Returns:
+            bool: True if validation passes
+        """
+        raise NotImplementedError("Rule is not implemented")

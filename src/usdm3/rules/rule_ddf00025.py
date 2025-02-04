@@ -1,0 +1,37 @@
+from .rule_template import RuleTemplate, JSONLocation
+
+
+class RuleDDF00025(RuleTemplate):
+    """
+    DDF00025: A window must not be defined for an anchor timing (i.e., type is \"Fixed Reference\").
+
+    Applies to: Timing
+    Attributes: windowLabel, windowLower, windowUpper
+    """
+
+    def __init__(self):
+        super().__init__(
+            "DDF00025",
+            RuleTemplate.ERROR,
+            'A window must not be defined for an anchor timing (i.e., type is "Fixed Reference").',
+        )
+
+    def validate(self, config: dict) -> bool:
+        """
+        Validate the rule against the provided data
+
+        Args:
+            config (dict): Standard configuration structure contain the data, CT etc
+
+        Returns:
+            bool: True if validation passes
+        """
+        data = config["data"]
+        items = data.instances_by_klass("Timing")
+        for item in items:
+            if item["type"]["decode"] == "Fixed Reference":
+                if "windowLower" in item or "windowUpper" in item:
+                    self._add_failure(
+                        JSONLocation("Timing", "windowLower or windowUpper", item["id"])
+                    )
+        return self._result()

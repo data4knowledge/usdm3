@@ -1,0 +1,29 @@
+from .rule_template import RuleTemplate, JSONLocation
+
+
+class RuleDDF00074(RuleTemplate):
+    """
+    DDF00074: If the intervention model indicates a single group design then only one intervention is expected. In all other cases more interventions are expected.
+
+    Applies to: StudyDesign
+    Attributes: studyInterventions
+    """
+
+    def __init__(self):
+        super().__init__(
+            "DDF00074",
+            RuleTemplate.WARNING,
+            "If the intervention model indicates a single group design then only one intervention is expected. In all other cases more interventions are expected.",
+        )
+
+    def validate(self, config: dict) -> bool:
+        """
+        Validate the rule against the provided data
+
+        Args:
+            config (dict): Standard configuration structure contain the data, CT etc
+
+        Returns:
+            bool: True if validation passes
+        """
+        raise NotImplementedError("Rule is not implemented")

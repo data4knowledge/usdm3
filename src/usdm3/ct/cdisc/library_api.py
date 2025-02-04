@@ -64,7 +64,6 @@ class LibraryAPI:
             
         Raises:
             APIError: If the API request fails
-            ValueError: If the code list cannot be found in any package
         """
         use_list = ["ddfct", "sdtmct", "protocolct"]
         for package in use_list:
@@ -87,7 +86,7 @@ class LibraryAPI:
                         f"failed to obtain code list from library for {c_code}, "
                         f"response: {raw.status_code} {raw.text}"
                     )
-        raise ValueError(f"failed to obtain code list for {c_code}")
+        return None
 
     def _get_packages(self) -> dict:
         """

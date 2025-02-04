@@ -1,0 +1,29 @@
+from .rule_template import RuleTemplate, JSONLocation
+
+
+class RuleDDF00077(RuleTemplate):
+    """
+    DDF00077: If geographic scope type is global then no codes are expected to specify the specific area within scope while if it is not global then at least one code is expected to specify the specific area within scope.
+
+    Applies to: GeographicScope
+    Attributes: code
+    """
+
+    def __init__(self):
+        super().__init__(
+            "DDF00077",
+            RuleTemplate.WARNING,
+            "If geographic scope type is global then no codes are expected to specify the specific area within scope while if it is not global then at least one code is expected to specify the specific area within scope.",
+        )
+
+    def validate(self, config: dict) -> bool:
+        """
+        Validate the rule against the provided data
+
+        Args:
+            config (dict): Standard configuration structure contain the data, CT etc
+
+        Returns:
+            bool: True if validation passes
+        """
+        raise NotImplementedError("Rule is not implemented")

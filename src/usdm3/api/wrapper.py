@@ -8,8 +8,8 @@ from usdm3.api.study_protocol_document import StudyProtocolDocument
 from usdm3.api.study_version import StudyVersion
 from usdm3.api.study_identifier import StudyIdentifier
 from usdm3.api.organization import Organization
-from usdm3.base.globals import Globals
 from usdm3.base.api_instance import APIInstance
+from usdm3.base.id_manager import IdManager
 from usdm3 import __model_version__, __package_name__, __package_version__
 from uuid import uuid4
 
@@ -25,9 +25,8 @@ class Wrapper(ApiBaseModel):
         """
         Create a minimum study with the given title, identifier, and version.
         """
-        globals = Globals()
-        globals.clear()
-        api_instance = APIInstance(globals)
+        id_manager = IdManager()
+        api_instance = APIInstance(id_manager)
         cdisc_code_system = "cdisc.org"
         cdisc_code_system_version = "2023-12-15"
 

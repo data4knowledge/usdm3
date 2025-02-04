@@ -1,0 +1,29 @@
+from .rule_template import RuleTemplate, JSONLocation
+
+
+class RuleDDF00088(RuleTemplate):
+    """
+    DDF00088: Epoch ordering using previous and next attributes is expected to be consistent with the order of corresponding scheduled activity instances according to their specified default conditions.
+
+    Applies to: StudyEpoch
+    Attributes: previous, next
+    """
+
+    def __init__(self):
+        super().__init__(
+            "DDF00088",
+            RuleTemplate.WARNING,
+            "Epoch ordering using previous and next attributes is expected to be consistent with the order of corresponding scheduled activity instances according to their specified default conditions.",
+        )
+
+    def validate(self, config: dict) -> bool:
+        """
+        Validate the rule against the provided data
+
+        Args:
+            config (dict): Standard configuration structure contain the data, CT etc
+
+        Returns:
+            bool: True if validation passes
+        """
+        raise NotImplementedError("Rule is not implemented")
