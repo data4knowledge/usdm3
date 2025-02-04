@@ -24,8 +24,21 @@ class Wrapper(ApiBaseModel):
     def minimum(cls, title: str, identifier: str, version: str) -> "Wrapper":
         """
         Create a minimum study with the given title, identifier, and version.
+
         """
-        id_manager = IdManager()
+        api_classes = [
+            Study, 
+            StudyTitle, 
+            StudyProtocolDocumentVersion, 
+            StudyProtocolDocument, 
+            StudyVersion, 
+            StudyIdentifier, 
+            Organization, 
+            Code,
+            'Wrapper'
+        ]
+
+        id_manager = IdManager(api_classes)
         api_instance = APIInstance(id_manager)
         cdisc_code_system = "cdisc.org"
         cdisc_code_system_version = "2023-12-15"

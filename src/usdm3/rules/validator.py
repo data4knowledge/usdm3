@@ -3,11 +3,10 @@ import pkgutil
 import importlib
 from pathlib import Path
 from typing import List, Type
-from rules.rule_template import RuleTemplate
-import traceback
+from usdm3.rules.library.rule_template import RuleTemplate
 
 
-class RuleLoader:
+class Validator:
     def __init__(self, rules_package: str):
         """
         Initialize the rule loader

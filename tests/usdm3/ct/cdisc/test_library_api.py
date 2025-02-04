@@ -64,9 +64,10 @@ def test_code_list_error(mock_get, api):
     mock_response.text = "Not Found"
     mock_get.return_value = mock_response
 
-    with pytest.raises(Exception) as exc_info:
+    api._packages = {"sdtmct": [{"effective": "2024-01-01"}]}
+    with pytest.raises(LibraryAPI.APIError) as exc_info:
         api.code_list("invalid-id")
-    assert "failed to obtain code list for invalid-id" in str(exc_info.value)
+    assert "failed to obtain code list from library for invalid-id" in str(exc_info.value)
 
 
 @patch("requests.get")

@@ -9,13 +9,13 @@ class Something:
 
 
 def test_api_instance():
-    id_manager = IdManager()
+    id_manager = IdManager(['Something'])
     api_instance = APIInstance(id_manager)
     assert api_instance is not None
 
 
 def test_create():
-    id_manager = IdManager()
+    id_manager = IdManager(['Code'])
     api_instance = APIInstance(id_manager)
     code = api_instance.create(
         Code,
@@ -38,7 +38,7 @@ def test_create():
 
 
 def test_create_no_id():
-    id_manager = IdManager()
+    id_manager = IdManager(['Code'])
     api_instance = APIInstance(id_manager)
     code = api_instance.create(
         Code,
@@ -60,7 +60,7 @@ def test_create_no_id():
 
 
 def test_create_exception():
-    id_manager = IdManager()
+    id_manager = IdManager(['Something'])
     api_instance = APIInstance(id_manager)
     with pytest.raises(APIInstance.APIInstanceError):
         api_instance.create(Something, {"code": "CODE-1"})
