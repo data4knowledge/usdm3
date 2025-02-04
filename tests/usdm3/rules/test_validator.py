@@ -1,7 +1,7 @@
 from usdm3.rules.validator import Validator
 
 def test_load_rules():
-
+    """Test loading rules"""
     validator = Validator("library")
     validator.load_rules()
     assert len(validator.rules) == 3

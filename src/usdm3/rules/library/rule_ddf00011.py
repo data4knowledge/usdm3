@@ -1,5 +1,5 @@
 from .rule_template import RuleTemplate, JSONLocation
-from data_store.data_store import DataStore
+from usdm3.data_store.data_store import DataStore
 
 
 class RuleDDF00011(RuleTemplate):
@@ -20,12 +20,11 @@ class RuleDDF00011(RuleTemplate):
         Returns:
             bool: True if validation passes
         """
-        data = config["data"]
+        data: DataStore = config["data"]
         items = data.instances_by_klass("Timing")
         for item in items:
             if item["type"]["decode"] == "Fixed Reference":
                 if "relativeFromScheduledInstance" not in item:
-                    print(f"ERROR: {item}")
                     self._add_failure(
                         JSONLocation(
                             "Timing", "relativeFromScheduledInstance", item["id"]
