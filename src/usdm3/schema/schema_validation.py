@@ -3,7 +3,7 @@ import json
 from jsonschema import validate, ValidationError, RefResolver
 
 
-class SchemaValidator:
+class SchemaValidation:
     class SchemaValidatorError(Exception):
         """Custom exception for schema validator errors"""
 

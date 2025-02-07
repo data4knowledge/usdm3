@@ -1,5 +1,7 @@
-from .rule_template import RuleTemplate, JSONLocation
-
+from .rule_template import RuleTemplate
+from usdm3.schema.schema_location import SchemaErrorLocation
+from usdm3.schema.schema_validation import SchemaValidation, ValidationError
+from usdm3.data_store.data_store import DataStore
 
 class RuleDDF00082(RuleTemplate):
     """
@@ -26,4 +28,13 @@ class RuleDDF00082(RuleTemplate):
         Returns:
             bool: True if validation passes
         """
-        raise NotImplementedError("rule is not implemented")
+        try:
+          data: DataStore = config["data"]
+          schema_path = f"schema/usdm_v3.json"
+          validator = SchemaValidation(schema_path)
+          result = validator.validate_file(data.filename, "Wrapper-Input")
+          return True
+        except ValidationError as e:
+          location = SchemaErrorLocation(e.json_path, e.instance)
+          self._errors.add(e.message, location)
+          return False

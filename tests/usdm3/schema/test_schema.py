@@ -2,7 +2,7 @@ import pytest
 import json
 from pathlib import Path
 from unittest.mock import mock_open, patch
-from usdm3.schema.validator import SchemaValidator
+from usdm3.schema.schema_validation import SchemaValidator
 
 # Sample schema for testing
 MOCK_SCHEMA = {

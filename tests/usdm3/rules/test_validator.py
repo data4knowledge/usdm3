@@ -1,4 +1,4 @@
-from usdm3.rules.validator import Validator
+from usdm3.rules.rules_validation import Validator
 
 def test_load_rules():
     """Test loading rules"""

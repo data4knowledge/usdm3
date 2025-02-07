@@ -7,10 +7,11 @@ class DataStore:
         self._ids = {}
         self._parent = {}
         self._path = {}
-        self._filename = filename
-        self.data = self._load_data()
+        self.filename = filename
+        self.data = None
 
     def decompose(self):
+        self.data = self._load_data()
         self._decompose(self.data, None, "")
 
     def instance_by_id(self, id: str) -> dict:
@@ -58,7 +59,7 @@ class DataStore:
         return path
 
     def _load_data(self) -> dict:
-        with open(self._filename, "r") as file:
+        with open(self.filename, "r") as file:
             return json.load(file)
 
     def _update_path(self, path: str, data: dict, instance_index: int) -> str:
