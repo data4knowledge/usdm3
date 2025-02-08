@@ -5,8 +5,7 @@ from pathlib import Path
 from typing import List, Type
 from usdm3.rules.library.rule_template import RuleTemplate
 from usdm3.data_store.data_store import DataStore
-from usdm3.ct.cdisc_ct import ct
-
+from usdm3.ct.cdisc.library import Library
 
 class RulesValidation:
     def __init__(self, rules_dir: str):
@@ -29,6 +28,7 @@ class RulesValidation:
         self._load_rules()
         data_store = DataStore(filename)
         data_store.decompose()
+        ct = Library("cdisc/ct", "cdisc_ct.json")
         config = {"data": data_store, "ct": ct}
         results = self._execute_rules(config)
         return results
