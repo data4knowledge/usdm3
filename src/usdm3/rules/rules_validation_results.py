@@ -48,11 +48,12 @@ class RulesValidationResults:
             return []
         else:
             rows = []
+            location = ValidationLocation(rule="", rule_text="", klass="", attribute="", path="")
             for rule, item in self._items.items():
                 if item["errors"]:
                     for error in item["errors"]:
                         row = {
-                            "rule": rule,
+                            "rule_id": rule,
                             "status": item["status"],
                             "exception": item["exception"],
                         }
@@ -60,11 +61,12 @@ class RulesValidationResults:
                         rows.append(row)
                 else:
                     row = {
-                        "rule": rule,
+                        "rule_id": rule,
                         "status": item["status"],
                         "exception": item["exception"],
+                        "level": "",
+                        "message": "",
+                        "location": location.to_dict()
                     }
-                    for c in ValidationLocation.headers():
-                        row[c] = ""
                     rows.append(row)
             return rows
