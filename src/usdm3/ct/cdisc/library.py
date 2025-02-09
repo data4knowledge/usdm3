@@ -27,6 +27,7 @@ class Library:
 
     def load(self) -> None:
         if self._cache.exists():
+            print("Loading from cache")
             self._load_ct()  # Load from cache file
         else:
             self._api.refresh()  # Ensure API connection is fresh

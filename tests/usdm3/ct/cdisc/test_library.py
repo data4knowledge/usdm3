@@ -49,7 +49,7 @@ def mock_api():
 def mock_file():
     """Mock LibraryFile class"""
     mock = Mock()
-    mock.file_exist.return_value = False
+    mock.exists.return_value = False
     return mock
 
 
@@ -85,7 +85,7 @@ def test_load_from_api(
     """Test loading data from API when cache doesn't exist"""
     # Setup mocks
     mock_file = mock_file_cls.return_value
-    mock_file.file_exist.return_value = False
+    mock_file.exists.return_value = False
 
     mock_api = mock_api_cls.return_value
     mock_api.code_list.return_value = sample_codelist
@@ -127,7 +127,7 @@ def test_load_from_cache(
     """Test loading data from cache when it exists"""
     # Setup mocks
     mock_file = mock_file_cls.return_value
-    mock_file.file_exist.return_value = True
+    mock_file.exists.return_value = True
     mock_file.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
