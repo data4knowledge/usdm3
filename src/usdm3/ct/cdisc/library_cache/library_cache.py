@@ -1,15 +1,17 @@
 import os
 import yaml
+import pathlib
 
+class LibraryCache:
+    def __init__(self, file_path: str = "library_cache.yaml"):
+        self._file_path = file_path
 
-class LibraryFile:
-    def __init__(self, path: str, filename: str):
-        self._path = path
-        self._filename = filename
+    def exists(self) -> bool:
+        return self._file_exists()
 
     def save(self, data: dict) -> None:
         try:
-            if not self._file_exist():
+            if not self._file_exists():
                 with open(self._filepath(), "w") as f:
                     yaml.dump(data, f, indent=2, sort_keys=True)
         except Exception as e:
@@ -17,7 +19,7 @@ class LibraryFile:
 
     def read(self) -> dict:
         try:
-            if self._file_exist():
+            if self._file_exists():
                 with open(self._filepath()) as f:
                     return yaml.safe_load(f)
             else:
@@ -31,8 +33,9 @@ class LibraryFile:
         except Exception as e:
             raise Exception(f"failed to delete CDSIC CT file, {str(e)}")
 
-    def _file_exist(self) -> bool:
+    def _file_exists(self) -> bool:
         return os.path.isfile(self._filepath())
 
     def _filepath(self) -> str:
-        return os.path.join(self._path, self._filename)
+        root = pathlib.Path(__file__).parent.resolve()
+        return os.path.join(root, self._file_path)

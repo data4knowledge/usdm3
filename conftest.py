@@ -1,13 +1,14 @@
 import os
 import pytest
+from dotenv import load_dotenv
 
 
 def set_test():
-    os.environ["PYTHON_ENVIRONMENT"] = "test"
+    load_dotenv('.test_env')
 
 
 def clear_test():
-    os.environ["PYTHON_ENVIRONMENT"] = "development"
+    load_dotenv('.development_env')
 
 
 @pytest.fixture(scope="session", autouse=True)

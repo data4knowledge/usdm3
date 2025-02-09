@@ -47,19 +47,17 @@ class RulesValidationResults:
     def to_dict(self):
         return self._items
 
-    def save_as_csv(self, filename: str):
+    def as_csv(self, filename: str) -> list[list[dict]]:
         if len(self._items) == 0:
-            with open(filename, "w") as f:
-                f.write("")
+            return []
         else:
             headers = ["rule", "status", "exception"] + ValidationLocation.headers()
-            with open(filename, "w") as f:
-                writer = csv.writer(f)
-                writer.writerow(headers)
-                for rule, item in self._items.items():
-                    row = [rule, item["status"], str(item["exception"])]
-                    for error in item["errors"]:
-                        row.extend(
-                            [error[header] for header in ValidationLocation.headers()]
-                        )
-                        writer.writerow(row)
+            rows = [headers]
+            for rule, item in self._items.items():
+                row = [rule, item["status"], str(item["exception"])]
+                for error in item["errors"]:
+                    row.extend(
+                        [error[header] for header in ValidationLocation.headers()]
+                    )
+                rows.append(row)
+            return rows

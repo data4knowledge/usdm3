@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 package_info = {}
-with open("src/usdm3/__init__.py") as fp:
+with open("src/usdm3/__version__.py") as fp:
     exec(fp.read(), package_info)
 
 setuptools.setup(
@@ -19,7 +19,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     package_dir={"": "src"},
     package_data={},
-    tests_require=["pytest", "pytest-cov", "pytest-mock"],
+    tests_require=["pytest", "pytest-cov", "pytest-mock", "python-dotenv"],
     classifiers=[
         "Intended Audience :: Developers",
         "Programming Language :: Python",

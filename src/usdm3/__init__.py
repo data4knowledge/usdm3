@@ -1,3 +1,8 @@
-__package_name__ = "USDM3"
-__package_version__ = "0.1.0"
-__model_version__ = "3.0.0"
+from usdm3.rules.rules_validation import RulesValidation
+from usdm3.rules.rules_validation_results import RulesValidationResults
+
+class USDM3:
+
+    def validate(self, file_path: str) -> RulesValidationResults:
+        validator = RulesValidation("usdm3/rules/library")
+        return validator.validate_rules(file_path)
