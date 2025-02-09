@@ -13,11 +13,11 @@ class Library:
     cache file or fetch it from the CDISC API when needed.
     """
 
-    def __init__(self):
+    def __init__(self, file_path: str = "library_cache.yaml"):
         self._config = Config()  # Configuration for required code lists and mappings
         self._missing = Missing()  # Handler for missing/additional code lists
         self._api = LibraryAPI()  # Interface to CDISC Library API
-        self._cache = LibraryCache()  # Cache file handler
+        self._cache = LibraryCache(file_path)  # Cache file handler
 
         # Data structures to store and index controlled terminology
         self._by_code_list = {}  # Maps concept IDs to complete code list data

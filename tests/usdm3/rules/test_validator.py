@@ -23,23 +23,20 @@ def test_execute_rules_invalid():
     validator._load_rules()
     results = validator._execute_rules({"data": {}, "ct": {}})
     assert results.count() == 1
-    assert results.to_dict()["TEST_RULE_2"] == {
-        "status": "Failure",
-        "errors": [
-            {
-                "level": "Error",
-                "message": "Unique message",
-                "location": {
-                    "rule": "TEST_RULE_2",
-                    "rule_text": "The test rule is blah blah blah",
-                    "klass": "klass",
-                    "attribute": "attribute",
-                    "path": "id",
-                },
-            }
-        ],
-        "exception": None,
-    }
+    assert results.to_dict() == [
+        {
+            "rule_id": "TEST_RULE_2",
+            "status": "Failure",
+            "level": "Error",
+            "message": "Unique message",
+            "rule": "TEST_RULE_2",
+            "rule_text": "The test rule is blah blah blah",
+            "klass": "klass",
+            "attribute": "attribute",
+            "path": "id",
+            "exception": None,
+        }
+    ]
 
 
 def test_execute_rules_not_implemented():
@@ -48,11 +45,20 @@ def test_execute_rules_not_implemented():
     validator._load_rules()
     results = validator._execute_rules({"data": {}, "ct": {}})
     assert results.count() == 1
-    assert results.to_dict()["TEST_RULE_3"] == {
-        "status": "Not Implemented",
-        "errors": None,
-        "exception": None,
-    }
+    assert results.to_dict() == [
+        {
+            "attribute": "",
+            "exception": None,
+            "klass": "",
+            "level": "",
+            "message": "",
+            "path": "",
+            "rule": "",
+            "rule_id": "TEST_RULE_3",
+            "rule_text": "",
+            "status": "Not Implemented",
+        }
+    ]
 
 
 def test_execute_rules_exception():
@@ -61,8 +67,17 @@ def test_execute_rules_exception():
     validator._load_rules()
     results = validator._execute_rules({"data": {}, "ct": {}})
     assert results.count() == 1
-    assert results.to_dict()["TEST_RULE_4"] == {
-        "status": "Exception",
-        "errors": None,
-        "exception": "This is a test exception",
-    }
+    assert results.to_dict() == [
+        {
+            "attribute": "",
+            "exception": 'This is a test exception',
+            "klass": "",
+            "level": "",
+            "message": "",
+            "path": "",
+            "rule": "",
+            "rule_id": "TEST_RULE_4",
+            "rule_text": "",
+            "status": "Exception",
+        }
+    ]

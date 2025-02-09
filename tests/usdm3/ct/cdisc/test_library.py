@@ -54,9 +54,9 @@ def mock_file():
 
 
 @pytest.fixture
-def library(tmp_path):
+def library():
     """Create a Library instance with default path"""
-    return Library(str(tmp_path), "test.yaml")
+    return Library()
 
 
 def test_library_initialization(library):
@@ -64,7 +64,7 @@ def test_library_initialization(library):
     assert hasattr(library, "_config")
     assert hasattr(library, "_missing")
     assert hasattr(library, "_api")
-    assert hasattr(library, "_file")
+    assert hasattr(library, "_cache")
     assert isinstance(library._by_code_list, dict)
     assert isinstance(library._by_term, dict)
     assert isinstance(library._by_submission, dict)
@@ -72,7 +72,7 @@ def test_library_initialization(library):
 
 
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library.LibraryFile")
+@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
 def test_load_from_api(
@@ -81,7 +81,6 @@ def test_load_from_api(
     mock_file_cls,
     mock_api_cls,
     sample_codelist,
-    tmp_path,
 ):
     """Test loading data from API when cache doesn't exist"""
     # Setup mocks
@@ -95,7 +94,7 @@ def test_load_from_api(
     mock_config.required_code_lists.return_value = ["C123"]
 
     # Create library and load data
-    library = Library(str(tmp_path), "test.yaml")
+    library = Library("xxx.yaml")
     library.load()
 
     # Verify API was called
@@ -112,8 +111,10 @@ def test_load_from_api(
     assert "Term 1" in library._by_pt
 
 
+    library._cache.delete()
+
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library.LibraryFile")
+@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
 def test_load_from_cache(
@@ -122,7 +123,6 @@ def test_load_from_cache(
     mock_file_cls,
     mock_api_cls,
     sample_codelist,
-    tmp_path,
 ):
     """Test loading data from cache when it exists"""
     # Setup mocks
@@ -131,7 +131,7 @@ def test_load_from_cache(
     mock_file.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
-    library = Library(str(tmp_path), "test.yaml")
+    library = Library()
     library.load()
 
     # Verify API was not called
@@ -149,29 +149,7 @@ def test_load_from_cache(
 
 
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library.LibraryFile")
-@patch("usdm3.ct.cdisc.library.Config")
-@patch("usdm3.ct.cdisc.library.Missing")
-def test_refresh(
-    mock_missing_cls, mock_config_cls, mock_file_cls, mock_api_cls, tmp_path
-):
-    """Test refresh method"""
-    # Create library instance with all dependencies mocked
-    library = Library(str(tmp_path), "test.yaml")
-
-    # Setup mock API instance
-    mock_api = mock_api_cls.return_value
-    mock_api.refresh.return_value = None
-
-    # Call refresh
-    library.refresh()
-
-    # Verify refresh was called
-    assert mock_api.refresh.called
-
-
-@patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library.LibraryFile")
+@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
 def test_klass_and_attribute(
@@ -179,7 +157,7 @@ def test_klass_and_attribute(
 ):
     """Test klass_and_attribute method"""
     # Create library instance with all dependencies mocked
-    library = Library(str(tmp_path), "test.yaml")
+    library = Library()
 
     # Setup mock config
     mock_config = mock_config_cls.return_value
@@ -214,7 +192,7 @@ def test_check_in_and_add(library):
 
 
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library.LibraryFile")
+@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
 def test_add_missing_ct(
@@ -223,7 +201,6 @@ def test_add_missing_ct(
     mock_file_cls,
     mock_api_cls,
     sample_codelist,
-    tmp_path,
 ):
     """Test adding missing controlled terminology"""
     # Setup mock
@@ -231,7 +208,7 @@ def test_add_missing_ct(
     mock_missing.code_lists.return_value = [sample_codelist]
 
     # Create library and add missing CT
-    library = Library(str(tmp_path), "test.yaml")
+    library = Library()
     library._add_missing_ct()
 
     # Verify indexes were built for missing CT
