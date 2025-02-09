@@ -32,8 +32,16 @@ class RuleDDF00108(RuleTemplate):
             if exits := item.get("exits"):
                 if len(exits) == 0:
                     self._add_failure(
-                        JSONLocation("StudyTimeline", "exits", item["id"])
+                        "No exits defined for timeline",
+                        "StudyTimeline",
+                        "exits",
+                        item["id"],
                     )
             else:
-                self._add_failure(JSONLocation("StudyTimeline", "exits", item["id"]))
+                self._add_failure(
+                    "Missing exits",
+                    "StudyTimeline",
+                    "exits",
+                    item["id"],
+                )
         return self._errors.count() == 0

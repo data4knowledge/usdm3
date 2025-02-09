@@ -35,6 +35,9 @@ class RuleDDF00009(RuleTemplate):
                     valid = True
             if not valid:
                 self._add_failure(
-                    JSONLocation(item["instanceType"], "timings", item["id"])
+                    "No fixed reference timing",
+                    item["instanceType"],
+                    "timings",
+                    item["id"],
                 )
         return self._result()

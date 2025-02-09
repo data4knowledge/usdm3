@@ -10,5 +10,10 @@ class TestRule2(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-        self._add_failure(JSONLocation('klass', 'attribute', 'id'))
+        self._add_failure(
+            "blah blah blah",
+            "klass",
+            "attribute",
+            "id",
+        )
         return False

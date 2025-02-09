@@ -38,8 +38,10 @@ class RuleDDF00106(RuleTemplate):
                     )
                     if item_parent["id"] != encounter_parent["id"]:
                         self._add_failure(
-                            JSONLocation(
-                                item["instanceType"], "encounterId", item["id"]
-                            )
+                            "Encounter defined in a different study design",
+                            item["instanceType"],
+                            "encounterId",
+                            item["id"],
                         )
+        return self._result()
         return self._result()

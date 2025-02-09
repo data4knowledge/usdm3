@@ -32,6 +32,9 @@ class RuleDDF00025(RuleTemplate):
             if item["type"]["decode"] == "Fixed Reference":
                 if "windowLower" in item or "windowUpper" in item:
                     self._add_failure(
-                        JSONLocation("Timing", "windowLower or windowUpper", item["id"])
+                        "Window defined for anchor timing",
+                        "Timing",
+                        "windowLower or windowUpper",
+                        item["id"],
                     )
         return self._result()

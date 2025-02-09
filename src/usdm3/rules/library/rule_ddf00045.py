@@ -36,5 +36,10 @@ class RuleDDF00045(RuleTemplate):
                 if attribute in address and address[attribute]:
                     address_valid = True
             if not address_valid:
-                self._add_failure(JSONLocation("Address", "", address["id"]))
+                self._add_failure(
+                    "No attributes specified for address",
+                    "Address",
+                    "",
+                    address["id"],
+                )
         return self._result()

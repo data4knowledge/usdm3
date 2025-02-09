@@ -31,13 +31,18 @@ class RuleDDF00155(RuleTemplate):
         for item in items:
             if "codeSystem" in item and item["codeSystem"] == "http://www.cdisc.org":
                 if "codeSystemVersion" not in item:
-                    print(f"ERROR: {item}")
                     self._add_failure(
-                        JSONLocation("Code", "codeSystemVersion", item["id"])
+                        "Missing codeSystemVersion",
+                        "Code",
+                        "codeSystemVersion",
+                        item["id"],
                     )
                 else:
                     if item["codeSystemVersion"] not in ["2023-06-01", "2023-06-01"]:
                         self._add_failure(
-                            JSONLocation("Code", "codeSystemVersion", item["id"])
+                            "Invalid codeSystemVersion",
+                            "Code",
+                            "codeSystemVersion",
+                            item["id"],
                         )
         return self._result()

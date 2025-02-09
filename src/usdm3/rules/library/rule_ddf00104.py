@@ -39,8 +39,16 @@ class RuleDDF00104(RuleTemplate):
                     or item["relativeToFrom"]["decode"] not in decodes
                 ):
                     self._add_failure(
-                        JSONLocation("Timing", "relativeToFrom", item["id"])
+                        "Invalid relativeToFrom",
+                        "Timing",
+                        "relativeToFrom",
+                        item["id"],
                     )
             else:
-                self._add_failure(JSONLocation("Timing", "relativeToFrom", item["id"]))
+                self._add_failure(
+                    "Missing relativeToFrom",
+                    "Timing",
+                    "relativeToFrom",
+                    item["id"],
+                )
         return self._result()

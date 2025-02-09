@@ -32,6 +32,9 @@ class RuleDDF00036(RuleTemplate):
             if item["type"]["decode"] == "Fixed Reference":
                 if "relativeToFrom" != "Start to Start":
                     self._add_failure(
-                        JSONLocation("Timing", "relativeToFrom", item["id"])
+                        "Invalid relativeToFrom",
+                        "Timing",
+                        "relativeToFrom",
+                        item["id"],
                     )
         return self._result()

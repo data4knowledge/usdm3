@@ -34,10 +34,9 @@ class RuleDDF00008(RuleTemplate):
                 default_condition = data.instance_by_id(item["defaultConditionId"])
                 if timeline_exit and default_condition:
                     self._add_failure(
-                        JSONLocation(
-                            item["instanceType"],
-                            "timelineExitId and defaultConditionId",
-                            item["id"],
-                        )
+                        "Timeline exit and default condition both exist",
+                        item["instanceType"],
+                        "timelineExitId and defaultConditionId",
+                        item["id"],
                     )
         return self._result()

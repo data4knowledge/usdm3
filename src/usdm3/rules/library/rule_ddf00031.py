@@ -33,16 +33,18 @@ class RuleDDF00031(RuleTemplate):
             if item["type"]["decode"] != "Fixed Reference":
                 if "relativeToScheduledInstance" not in item:
                     self._add_failure(
-                        JSONLocation(
-                            "Timing", "relativeToScheduledInstance", item["id"]
-                        )
+                        "Missing relativeToScheduledInstance",
+                        "Timing",
+                        "relativeToScheduledInstance",
+                        item["id"],
                     )
                     check = False
                 if "relativeFromScheduledInstance" not in item:
                     self._add_failure(
-                        JSONLocation(
-                            "Timing", "relativeFromScheduledInstance", item["id"]
-                        )
+                        "Missing relativeFromScheduledInstance",
+                        "Timing",
+                        "relativeFromScheduledInstance",
+                        item["id"],
                     )
                     check = False
                 if (
@@ -51,10 +53,10 @@ class RuleDDF00031(RuleTemplate):
                     == item["relativeFromScheduledInstance"]
                 ):
                     self._add_failure(
-                        JSONLocation(
-                            "Timing",
-                            "relativeToScheduledInstance and relativeFromScheduledInstance",
-                            item["id"],
-                        )
+                        "relativeToScheduledInstance and relativeFromScheduledInstance are equal",
+                        "Timing",
+                        "relativeToScheduledInstance and relativeFromScheduledInstance",
+                        item["id"],
                     )
+        return self._result()
         return self._result()

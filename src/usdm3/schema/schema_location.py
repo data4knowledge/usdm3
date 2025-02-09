@@ -1,5 +1,6 @@
 from d4k_sel import ErrorLocation
 
+
 class SchemaErrorLocation(ErrorLocation):
     def __init__(self, path: str, instance):
         self.path = path

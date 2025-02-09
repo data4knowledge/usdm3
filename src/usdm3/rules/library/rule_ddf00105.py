@@ -37,6 +37,9 @@ class RuleDDF00105(RuleTemplate):
                     epoch_parent = data.parent_by_klass(epoch["id"], "StudyDesign")
                     if item_parent["id"] != epoch_parent["id"]:
                         self._add_failure(
-                            JSONLocation(item["instanceType"], "epochId", item["id"])
+                            "Epoch defined in a different study design",
+                            item["instanceType"],
+                            "epochId",
+                            item["id"],
                         )
         return self._result()

@@ -3,17 +3,27 @@ from d4k_sel.errors import Errors
 from usdm3.data_store.data_store import DataStore
 
 
-class JSONLocation(ErrorLocation):
-    def __init__(self, klass: str, attribute: str, path: str):
+class ValidationLocation(ErrorLocation):
+    def __init__(
+        self, rule: str, rule_text: str, klass: str, attribute: str, path: str
+    ):
+        self.rule = rule
+        self.rule_text = rule_text
         self.klass = klass
         self.attribute = attribute
         self.path = path
 
     def to_dict(self):
-        return {"klass": self.klass, "attribute": self.attribute, "path": self.path}
+        return {
+            "rule": self.rule,
+            "rule_text": self.rule_text,
+            "klass": self.klass,
+            "attribute": self.attribute,
+            "path": self.path,
+        }
 
     def __str__(self):
-        return f"{self.klass}.{self.attribute} at {self.path}"
+        return f"{self.rule} [{self.rule_text}]: {self.klass}.{self.attribute} at {self.path}"
 
 
 class RuleTemplate:
@@ -39,8 +49,11 @@ class RuleTemplate:
     def errors(self) -> Errors:
         return self._errors
 
-    def _add_failure(self, location: JSONLocation):
-        self._errors.add(location, f"{self._rule}: {self._rule_text}", self._level)
+    def _add_failure(self, message: str, klass: str, attribute: str, path: str):
+        location = ValidationLocation(
+            self._rule, self._rule_text, klass, attribute, path
+        )
+        self._errors.add(message, location, self._level)
 
     def _result(self) -> bool:
         return self._errors.count() == 0
@@ -58,7 +71,9 @@ class RuleTemplate:
                     item[attribute]["code"] not in codes
                     or item[attribute]["decode"] not in decodes
                 ):
-                    self._add_failure(JSONLocation(klass, attribute, item["id"]))
+                    self._add_failure(
+                        "Invalid code/decode", klass, attribute, item["id"]
+                    )
             else:
-                self._add_failure(JSONLocation(klass, attribute, item["id"]))
+                self._add_failure("Missing attribute", klass, attribute, item["id"])
         return self._result()
