@@ -57,16 +57,20 @@ class RulesValidationResults:
                             "status": item["status"],
                             "exception": item["exception"],
                         }
-                        row.update(error)
+                        row.update(self._flatten_error(error))
                         rows.append(row)
                 else:
                     row = {
                         "rule_id": rule,
                         "status": item["status"],
                         "exception": item["exception"],
-                        "level": "",
-                        "message": "",
-                        "location": location.to_dict()
                     }
+                    row.update(self._flatten_error({'message': '', 'level': '', 'location': location.to_dict()}))
                     rows.append(row)
             return rows
+
+    def _flatten_error(self, error: dict) -> dict:
+        for key, value in error['location'].items():
+            error[key] = value
+        error.pop('location')
+        return error
