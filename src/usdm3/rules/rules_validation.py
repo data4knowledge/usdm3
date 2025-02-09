@@ -18,7 +18,7 @@ class RulesValidation:
         self._load_rules()
         data_store = DataStore(filename)
         data_store.decompose()
-        ct = Library("cdisc/ct", "cdisc_ct.json")
+        ct = Library()
         config = {"data": data_store, "ct": ct}
         results = self._execute_rules(config)
         return results

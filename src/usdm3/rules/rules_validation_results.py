@@ -44,20 +44,20 @@ class RulesValidationResults:
     def passed(self):
         return all(item["status"] == "Success" for item in self._items.values())
 
-    def to_dict(self):
-        return self._items
-
-    def as_csv(self, filename: str) -> list[list[dict]]:
+    def to_dict(self) -> list[dict]:
         if len(self._items) == 0:
             return []
         else:
-            headers = ["rule", "status", "exception"] + ValidationLocation.headers()
-            rows = [headers]
+            rows = []
             for rule, item in self._items.items():
-                row = [rule, item["status"], str(item["exception"])]
-                for error in item["errors"]:
-                    row.extend(
-                        [error[header] for header in ValidationLocation.headers()]
-                    )
-                rows.append(row)
+                if item["errors"]:
+                    for error in item["errors"]:
+                        row = {'rule': rule, 'status': item["status"], 'exception': item["exception"]}
+                        row.update(error)
+                        rows.append(row)
+                else:
+                    row = {'rule': rule, 'status': item["status"], 'exception': item["exception"]}
+                    for c in ValidationLocation.headers():
+                        row[c] = ''
+                    rows.append(row)
             return rows
