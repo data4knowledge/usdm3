@@ -65,7 +65,7 @@ class Library:
         try:
             concept_id = self._config.klass_and_attribute(klass, attribute)
             return self._by_code_list[concept_id]
-        except Exception as e:
+        except Exception:
             return None
 
     def _get_ct(self) -> None:
@@ -134,6 +134,6 @@ class Library:
             id: Key to check/add
             item: Value to append to the list at the key
         """
-        if not id in collection:
+        if id not in collection:
             collection[id] = []
         collection[id].append(item)

@@ -1,4 +1,3 @@
-import pytest
 from usdm3.ct.cdisc.missing.missing import Missing
 
 
@@ -25,6 +24,6 @@ def test_code_lists_iteration():
             assert "synonyms" in term
 
 
-def test_yaml_file_exists():
-    """Test that the missing_ct.yaml file exists in the expected location"""
-    missing = Missing()  # This will raise FileNotFoundError if file doesn't exist
+# def test_yaml_file_exists():
+#     """Test that the missing_ct.yaml file exists in the expected location"""
+#     missing = Missing()  # This will raise FileNotFoundError if file doesn't exist

@@ -31,9 +31,9 @@ class RuleDDF00082(RuleTemplate):
         """
         try:
             data: DataStore = config["data"]
-            schema_path = f"schema/usdm_v3.json"
+            schema_path = "schema/usdm_v3.json"
             validator = SchemaValidation(schema_path)
-            result = validator.validate_file(data.filename, "Wrapper-Input")
+            validator.validate_file(data.filename, "Wrapper-Input")
             return True
         except ValidationError as e:
             location = SchemaErrorLocation(e.json_path, e.instance)

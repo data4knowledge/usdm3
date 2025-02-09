@@ -6,11 +6,16 @@ class RulesValidationErrors:
     def __init__(self):
         self._items = []
 
-    def add(self, rule: str, errors: Errors):
+    def add(self, errors: Errors):
         for error in errors._items:
             item = error.to_dict()
-            item["rule"] = rule
             self._items.append(item)
+
+    def count(self):
+        return len(self._items)
+
+    def passed(self):
+        return len(self._items) == 0
 
     def to_dict(self):
         return self._items

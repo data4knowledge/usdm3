@@ -1,6 +1,5 @@
 from d4k_sel.error_location import ErrorLocation
 from d4k_sel.errors import Errors
-from usdm3.data_store.data_store import DataStore
 
 
 class ValidationLocation(ErrorLocation):

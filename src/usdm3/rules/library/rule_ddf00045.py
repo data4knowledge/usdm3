@@ -1,5 +1,4 @@
-from .rule_template import RuleTemplate, JSONLocation
-from data_store.data_store import DataStore
+from .rule_template import RuleTemplate
 
 
 class RuleDDF00045(RuleTemplate):

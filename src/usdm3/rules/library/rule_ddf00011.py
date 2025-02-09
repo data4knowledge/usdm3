@@ -1,4 +1,4 @@
-from .rule_template import RuleTemplate, JSONLocation
+from .rule_template import RuleTemplate
 from usdm3.data_store.data_store import DataStore
 
 

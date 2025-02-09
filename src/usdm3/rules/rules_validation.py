@@ -3,18 +3,18 @@ import pkgutil
 import importlib
 from pathlib import Path
 from typing import List, Type
-from usdm3.rules.library.rule_template import RuleTemplate, JSONLocation
+from usdm3.rules.library.rule_template import RuleTemplate, ValidationLocation
 from usdm3.data_store.data_store import DataStore
 from usdm3.ct.cdisc.library import Library
 from usdm3.rules.rules_validation_errors import RulesValidationErrors
-from usd
+
 
 class RulesValidation:
     def __init__(self, rules_dir: str):
         self.rules_dir = rules_dir
         self.rules: List[Type[RuleTemplate]] = []
 
-    def validate_rules(self, filename: str) -> List[dict]:
+    def validate_rules(self, filename: str) -> RulesValidationErrors:
         self._load_rules()
         data_store = DataStore(filename)
         data_store.decompose()
@@ -40,16 +40,24 @@ class RulesValidation:
                 ):
                     self.rules.append(obj)
 
-    def _execute_rules(self, config: dict) -> List[dict]:
+    def _execute_rules(self, config: dict) -> RulesValidationErrors:
         errors = RulesValidationErrors()
         for rule_class in self.rules:
             try:
-                rule = rule_class()
+                # Execute the rule
+                rule: RuleTemplate = rule_class()
                 passed = rule.validate(config)
                 if not passed:
-                    errors.add(rule_class.__name__, rule.errors())
-            except NotImplementedError as e:
-                errors.add(rule_class.__name__, JSONLocation("", "", ""))
+                    errors.add(rule.errors())
+            except NotImplementedError:
+                # Rule not implemented yet
+                errors.add(rule.errors())
             except Exception as e:
-                errors.add(rule_class.__name__, Errors([Error(str(e))]))
+                # Exception raised during rule execution
+                rule: RuleTemplate = rule_class()
+                location = ValidationLocation(rule._rule, rule._rule_text, "", "", "")
+                rule._errors.add(
+                    f"Exception raised during rule execution: {e}", location
+                )
+                errors.add(rule.errors())
         return errors

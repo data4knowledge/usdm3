@@ -21,7 +21,7 @@ class LibraryFile:
                 with open(self._filepath()) as f:
                     return yaml.safe_load(f)
             else:
-                raise Exception(f"Failed to read CDSIC CT file, does not exist")
+                raise Exception("Failed to read CDSIC CT file, does not exist")
         except Exception as e:
             raise Exception(f"failed to read CDSIC CT file, {str(e)}")
 

@@ -1,4 +1,4 @@
-from .rule_template import RuleTemplate, JSONLocation
+from .rule_template import RuleTemplate
 
 
 class RuleDDF00110(RuleTemplate):

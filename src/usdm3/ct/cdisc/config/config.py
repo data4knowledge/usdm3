@@ -25,8 +25,8 @@ class Config:
 
     def _process(self):
         for klass, info in self._cdisc_ct_config["klass_attribute_mapping"].items():
-            if not klass in self._by_klass_attribute:
+            if klass not in self._by_klass_attribute:
                 self._by_klass_attribute[klass] = {}
             for attribute, cl in info.items():
-                if not attribute in self._by_klass_attribute[klass]:
+                if attribute not in self._by_klass_attribute[klass]:
                     self._by_klass_attribute[klass][attribute] = cl
