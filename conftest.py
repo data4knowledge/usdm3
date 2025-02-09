@@ -1,14 +1,13 @@
-import os
 import pytest
 from dotenv import load_dotenv
 
 
 def set_test():
-    load_dotenv('.test_env')
+    load_dotenv(".test_env")
 
 
 def clear_test():
-    load_dotenv('.development_env')
+    load_dotenv(".development_env")
 
 
 @pytest.fixture(scope="session", autouse=True)

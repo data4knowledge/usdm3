@@ -2,8 +2,8 @@ import os
 import re
 import requests
 
-class LibraryAPI:
 
+class LibraryAPI:
     API_ROOT = "https://api.library.cdisc.org/api"
 
     class APIError(Exception):

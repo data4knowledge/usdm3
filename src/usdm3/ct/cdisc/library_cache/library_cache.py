@@ -2,6 +2,7 @@ import os
 import yaml
 import pathlib
 
+
 class LibraryCache:
     def __init__(self, file_path: str = "library_cache.yaml"):
         self._file_path = file_path

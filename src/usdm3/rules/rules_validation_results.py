@@ -1,4 +1,3 @@
-import csv
 from d4k_sel.errors import Errors
 from usdm3.rules.library.rule_template import ValidationLocation
 
@@ -52,12 +51,20 @@ class RulesValidationResults:
             for rule, item in self._items.items():
                 if item["errors"]:
                     for error in item["errors"]:
-                        row = {'rule': rule, 'status': item["status"], 'exception': item["exception"]}
+                        row = {
+                            "rule": rule,
+                            "status": item["status"],
+                            "exception": item["exception"],
+                        }
                         row.update(error)
                         rows.append(row)
                 else:
-                    row = {'rule': rule, 'status': item["status"], 'exception': item["exception"]}
+                    row = {
+                        "rule": rule,
+                        "status": item["status"],
+                        "exception": item["exception"],
+                    }
                     for c in ValidationLocation.headers():
-                        row[c] = ''
+                        row[c] = ""
                     rows.append(row)
             return rows

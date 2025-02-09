@@ -45,7 +45,7 @@ class DataStore:
                         self._decompose(item, data, path, index)
 
     def _add_klass_instance(self, data, parent, path, instance_index) -> None:
-        id = data["id"] if "id" in data else '-'
+        id = data["id"] if "id" in data else "-"
         klass = data["instanceType"] if "instanceType" in data else "Wrapper"
         print(f"ADD KLASS INSTANCE: {id}, {klass}")
         path = self._update_path(path, data, instance_index)
