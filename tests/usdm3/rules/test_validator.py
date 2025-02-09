@@ -1,44 +1,68 @@
-from usdm3.rules.rules_validation import Validator
+from usdm3.rules.rules_validation import RulesValidation
 
 
 def test_load_rules():
     """Test loading rules"""
-    validator = Validator("library")
-    validator.load_rules()
+    validator = RulesValidation("mixed_library")
+    validator._load_rules()
     assert len(validator.rules) == 3
 
 
 def test_execute_rules_valid():
     """Test executing rules with passing rule"""
-    validator = Validator("library")
-    validator.load_rules()
-    results = validator.execute_rules({"data": {}, "ct": {}})
-    assert len(results) == 3
-    assert results[0]["rule"] == "TestRule1"
-    assert results[0]["valid"] is True
-    assert results[0]["errors"].count() == 0
-    assert results[0]["exception"] is None
+    validator = RulesValidation("valid_library")
+    validator._load_rules()
+    results = validator._execute_rules({"data": {}, "ct": {}})
+    assert results.count() == 1
+    assert results.passed()
 
 
 def test_execute_rules_invalid():
     """Test executing rules with failing rule"""
-    validator = Validator("library")
-    validator.load_rules()
-    results = validator.execute_rules({"data": {}, "ct": {}})
-    assert len(results) == 3
-    assert results[1]["rule"] == "TestRule2"
-    assert results[1]["valid"] is False
-    assert results[1]["errors"].count() == 1
-    assert results[1]["exception"] is None
+    validator = RulesValidation("invalid_library")
+    validator._load_rules()
+    results = validator._execute_rules({"data": {}, "ct": {}})
+    assert results.count() == 1
+    assert results.to_dict()["TEST_RULE_2"] == {
+        "status": "Failure",
+        "errors": [
+            {
+                "level": "Error",
+                "message": "Unique message",
+                "location": {
+                    "rule": "TEST_RULE_2",
+                    "rule_text": "The test rule is blah blah blah",
+                    "klass": "klass",
+                    "attribute": "attribute",
+                    "path": "id",
+                },
+            }
+        ],
+        "exception": None,
+    }
 
 
 def test_execute_rules_not_implemented():
     """Test executing rules with rule that has not implemented validate"""
-    validator = Validator("library")
-    validator.load_rules()
-    results = validator.execute_rules({"data": {}, "ct": {}})
-    assert len(results) == 3
-    assert results[2]["rule"] == "TestRule3"
-    assert results[2]["valid"] is False
-    assert results[2]["errors"] is None
-    assert results[2]["exception"] == "not implemented"
+    validator = RulesValidation("not_implemented_library")
+    validator._load_rules()
+    results = validator._execute_rules({"data": {}, "ct": {}})
+    assert results.count() == 1
+    assert results.to_dict()["TEST_RULE_3"] == {
+        "status": "Not Implemented",
+        "errors": None,
+        "exception": None,
+    }
+
+
+def test_execute_rules_exception():
+    """Test executing rules with rule that raises an exception"""
+    validator = RulesValidation("exception_library")
+    validator._load_rules()
+    results = validator._execute_rules({"data": {}, "ct": {}})
+    assert results.count() == 1
+    assert results.to_dict()["TEST_RULE_4"] == {
+        "status": "Exception",
+        "errors": None,
+        "exception": "This is a test exception",
+    }

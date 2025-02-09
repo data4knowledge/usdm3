@@ -21,6 +21,10 @@ class ValidationLocation(ErrorLocation):
             "path": self.path,
         }
 
+    @classmethod
+    def headers(self):
+        return ["rule", "rule_text", "klass", "attribute", "path"]
+
     def __str__(self):
         return f"{self.rule} [{self.rule_text}]: {self.klass}.{self.attribute} at {self.path}"
 
