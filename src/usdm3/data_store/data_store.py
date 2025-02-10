@@ -31,6 +31,8 @@ class DataStore:
 
     def parent_by_klass(self, id: str, klass: str) -> dict:
         found = False
+        if id not in self._ids:
+            return None
         instance = self._ids[id]
         while not found:
             if instance["instanceType"] == klass:

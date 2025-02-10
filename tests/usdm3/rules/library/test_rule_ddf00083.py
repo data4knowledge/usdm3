@@ -19,6 +19,4 @@ def test_initialization(rule):
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""
     config = {"data": {}, "ct": {}}
-    with pytest.raises(NotImplementedError) as exc_info:
-        rule.validate(config)
-    assert str(exc_info.value) == "rule is not implemented"
+    assert rule.validate(config)
