@@ -26,6 +26,6 @@ class RuleDDF00025(RuleTemplate):
                         "Window defined for anchor timing",
                         "Timing",
                         "windowLower or windowUpper",
-                        item["id"],
+                        data.path_by_id(item["id"]),
                     )
         return self._result()
