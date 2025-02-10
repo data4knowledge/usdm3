@@ -16,14 +16,4 @@ class RuleDDF00125(RuleTemplate):
             "Attributes must be included as defined in the USDM schema based on the API specification (i.e., all required properties are present and no additional attributes are present).",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

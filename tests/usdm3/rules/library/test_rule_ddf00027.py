@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00027 import RuleDDF00027
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00027 instance"""
-    return RuleDDF00027()
+    rule = "DDF00027"
+    level = RuleTemplate.WARNING
+    description = "To ensure consistent ordering, the same instance must not be referenced more than once as previous or next."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00027"
-    assert rule.level == rule.WARNING
-    assert rule.description == "To ensure consistent ordering, the same instance must not be referenced more than once as previous or next."
+    assert rule._rule == "DDF00027"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "To ensure consistent ordering, the same instance must not be referenced more than once as previous or next."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

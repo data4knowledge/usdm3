@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00074 import RuleDDF00074
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00074 instance"""
-    return RuleDDF00074()
+    rule = "DDF00074"
+    level = RuleTemplate.WARNING
+    description = "If the intervention model indicates a single group design then only one intervention is expected. In all other cases more interventions are expected."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00074"
-    assert rule.level == rule.WARNING
-    assert rule.description == "If the intervention model indicates a single group design then only one intervention is expected. In all other cases more interventions are expected."
+    assert rule._rule == "DDF00074"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "If the intervention model indicates a single group design then only one intervention is expected. In all other cases more interventions are expected."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

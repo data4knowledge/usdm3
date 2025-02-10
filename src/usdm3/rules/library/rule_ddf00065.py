@@ -16,14 +16,4 @@ class RuleDDF00065(RuleTemplate):
             "A scheduled decision instance is not expected to have a sub-timeline.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

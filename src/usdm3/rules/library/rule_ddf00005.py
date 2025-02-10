@@ -16,14 +16,4 @@ class RuleDDF00005(RuleTemplate):
             "Every study version must have exactly one study identifier with an identifier scope that references a clinical study sponsor organization.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

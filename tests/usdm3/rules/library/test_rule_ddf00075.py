@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00075 import RuleDDF00075
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00075 instance"""
-    return RuleDDF00075()
+    rule = "DDF00075"
+    level = RuleTemplate.WARNING
+    description = "An activity is expected to refer to at least one procedure, biomedical concept, biomedical concept category or biomedical concept surrogate."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00075"
-    assert rule.level == rule.WARNING
-    assert rule.description == "An activity is expected to refer to at least one procedure, biomedical concept, biomedical concept category or biomedical concept surrogate."
+    assert rule._rule == "DDF00075"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "An activity is expected to refer to at least one procedure, biomedical concept, biomedical concept category or biomedical concept surrogate."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

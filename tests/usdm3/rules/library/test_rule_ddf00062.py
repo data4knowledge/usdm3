@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00062 import RuleDDF00062
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00062 instance"""
-    return RuleDDF00062()
+    rule = "DDF00062"
+    level = RuleTemplate.WARNING
+    description = "When specified, the upper limit of a timing window must be a non-negative duration in ISO 8601 format."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00062"
-    assert rule.level == rule.WARNING
-    assert rule.description == "When specified, the upper limit of a timing window must be a non-negative duration in ISO 8601 format."
+    assert rule._rule == "DDF00062"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "When specified, the upper limit of a timing window must be a non-negative duration in ISO 8601 format."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

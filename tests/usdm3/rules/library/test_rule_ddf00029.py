@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00029 import RuleDDF00029
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00029 instance"""
-    return RuleDDF00029()
+    rule = "DDF00029"
+    level = RuleTemplate.WARNING
+    description = "An encounter must only reference encounters that are specified within the same study design."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00029"
-    assert rule.level == rule.WARNING
-    assert rule.description == "An encounter must only reference encounters that are specified within the same study design."
+    assert rule._rule == "DDF00029"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "An encounter must only reference encounters that are specified within the same study design."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

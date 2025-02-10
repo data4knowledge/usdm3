@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00036 import RuleDDF00036
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00036 instance"""
-    return RuleDDF00036()
+    rule = "DDF00036"
+    level = RuleTemplate.WARNING
+    description = "If timing type is \"Fixed Reference\" then the corresponding attribute relativeToFrom must be filled with \"Start to Start\"."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00036"
-    assert rule.level == rule.WARNING
-    assert rule.description == "If timing type is "Fixed Reference" then the corresponding attribute relativeToFrom must be filled with "Start to Start"."
+    assert rule._rule == "DDF00036"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "If timing type is \"Fixed Reference\" then the corresponding attribute relativeToFrom must be filled with \"Start to Start\"."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

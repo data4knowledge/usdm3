@@ -15,15 +15,3 @@ class RuleDDF00152(RuleTemplate):
             RuleTemplate.ERROR,
             "An activity must only reference timelines that are specified within the same study design.",
         )
-
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
-
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

@@ -16,14 +16,4 @@ class RuleDDF00070(RuleTemplate):
             "The minimum value of a range must be less than or equal to the maximum value of the range.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

@@ -16,14 +16,4 @@ class RuleDDF00048(RuleTemplate):
             "A procedure must only reference a study intervention that is defined within the same study design as the activity within which the procedure is defined.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

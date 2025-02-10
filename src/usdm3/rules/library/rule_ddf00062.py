@@ -16,14 +16,4 @@ class RuleDDF00062(RuleTemplate):
             "When specified, the upper limit of a timing window must be a non-negative duration in ISO 8601 format.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

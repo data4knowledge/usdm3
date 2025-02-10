@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00010 import RuleDDF00010
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00010 instance"""
-    return RuleDDF00010()
+    rule = "DDF00010"
+    level = RuleTemplate.WARNING
+    description = "The names of all child instances of the same parent class must be unique."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00010"
-    assert rule.level == rule.WARNING
-    assert rule.description == "The names of all child instances of the same parent class must be unique."
+    assert rule._rule == "DDF00010"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "The names of all child instances of the same parent class must be unique."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

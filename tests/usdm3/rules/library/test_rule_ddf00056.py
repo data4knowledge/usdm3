@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00056 import RuleDDF00056
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00056 instance"""
-    return RuleDDF00056()
+    rule = "DDF00056"
+    level = RuleTemplate.WARNING
+    description = "Within a study design, if more therapeutic areas are defined, they must be distinct."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00056"
-    assert rule.level == rule.WARNING
-    assert rule.description == "Within a study design, if more therapeutic areas are defined, they must be distinct."
+    assert rule._rule == "DDF00056"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "Within a study design, if more therapeutic areas are defined, they must be distinct."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

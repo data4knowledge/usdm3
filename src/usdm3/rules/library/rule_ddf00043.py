@@ -16,14 +16,4 @@ class RuleDDF00043(RuleTemplate):
             "A unit must not be specified for a planned enrollment number or a planned completion number.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

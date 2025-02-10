@@ -16,14 +16,4 @@ class RuleDDF00114(RuleTemplate):
             "If specified, the context of a condition must point to a valid instance in the activity or scheduled activity instance class.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

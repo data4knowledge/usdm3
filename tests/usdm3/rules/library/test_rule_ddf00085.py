@@ -1,17 +1,22 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00085 import RuleDDF00085
+from usdm3.rules.library.rule_template import RuleTemplate
 
 @pytest.fixture
 def rule():
     """Fixture to create a RuleDDF00085 instance"""
-    return RuleDDF00085()
+    rule = "DDF00085"
+    level = RuleTemplate.WARNING
+    description = "Narrative content text is expected to be HTML formatted."
+    return RuleTemplate(rule, level, description)
 
 def test_initialization(rule):
     """Test rule initialization"""
-    assert rule.id == "DDF00085"
-    assert rule.level == rule.WARNING
-    assert rule.description == "Narrative content text is expected to be HTML formatted."
+    assert rule._rule == "DDF00085"
+    assert rule._level == RuleTemplate.WARNING
+    assert rule._rule_text == "Narrative content text is expected to be HTML formatted."
+    assert rule._errors.count() == 0
 
 def test_validate_not_implemented(rule):
     """Test that validate method raises NotImplementedError"""

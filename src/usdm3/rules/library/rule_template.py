@@ -47,7 +47,7 @@ class RuleTemplate:
         """
         Run the rule on the data
         """
-        raise NotImplementedError("rule not implemented")
+        raise NotImplementedError("rule is not implemented")
 
     def errors(self) -> Errors:
         return self._errors

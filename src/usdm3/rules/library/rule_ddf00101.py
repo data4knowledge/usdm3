@@ -16,14 +16,4 @@ class RuleDDF00101(RuleTemplate):
             "Within a study design, if study type is Interventional then at least one intervention is expected to be referenced from a procedure.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

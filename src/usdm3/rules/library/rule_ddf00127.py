@@ -16,14 +16,4 @@ class RuleDDF00127(RuleTemplate):
             "An encounter must only be scheduled at a timing that is defined within the same study design as the encounter.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

@@ -16,14 +16,4 @@ class RuleDDF00079(RuleTemplate):
             "If a synonym is specified then it is not expected to be equal to the name of the biomedical concept (case insensitive).",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")

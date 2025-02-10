@@ -1,0 +1,9 @@
+C123:
+  conceptId: C123
+  terms:
+  - conceptId: T1
+    preferredTerm: Term 1
+    submissionValue: VAL1
+  - conceptId: T2
+    preferredTerm: Term 2
+    submissionValue: VAL2

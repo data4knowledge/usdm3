@@ -16,14 +16,4 @@ class RuleDDF00111(RuleTemplate):
             "The unit of a planned age is expected to be specified using terms from the Age Unit (C66781) SDTM codelist.",
         )
 
-    def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
-        raise NotImplementedError("rule is not implemented")
