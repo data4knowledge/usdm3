@@ -1,16 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00064 import RuleDDF00064
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00064 instance"""
-    rule = "DDF00064"
-    level = RuleTemplate.WARNING
-    description = (
-        "A scheduled decision instance is not expected to refer to a timeline exit."
-    )
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00064()
 
 
 def test_initialization(rule):

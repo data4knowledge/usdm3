@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00088 import RuleDDF00088
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00088 instance"""
-    rule = "DDF00088"
-    level = RuleTemplate.WARNING
-    description = "Epoch ordering using previous and next attributes is expected to be consistent with the order of corresponding scheduled activity instances according to their specified default conditions."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00088()
 
 
 def test_initialization(rule):

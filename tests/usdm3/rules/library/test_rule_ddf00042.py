@@ -1,16 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00042 import RuleDDF00042
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00042 instance"""
-    rule = "DDF00042"
-    level = RuleTemplate.WARNING
-    description = (
-        "The range specified for a planned age is not expected to be approximate."
-    )
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00042()
 
 
 def test_initialization(rule):

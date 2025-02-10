@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00141 import RuleDDF00141
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00141 instance"""
-    rule = "DDF00141"
-    level = RuleTemplate.WARNING
-    description = "A planned sex must be specified using the Sex of Participants (C66732) SDTM codelist."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00141()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00141"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "A planned sex must be specified using the Sex of Participants (C66732) SDTM codelist."

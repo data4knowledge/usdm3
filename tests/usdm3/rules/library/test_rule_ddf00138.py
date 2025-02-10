@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00138 import RuleDDF00138
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00138 instance"""
-    rule = "DDF00138"
-    level = RuleTemplate.WARNING
-    description = "Every identifier must be unique within the scope of an identified organization."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00138()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00138"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Every identifier must be unique within the scope of an identified organization."

@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00146 import RuleDDF00146
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00146 instance"""
-    rule = "DDF00146"
-    level = RuleTemplate.WARNING
-    description = "A study title type must be specified using the study title type (C207419) DDF codelist."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00146()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00146"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "A study title type must be specified using the study title type (C207419) DDF codelist."

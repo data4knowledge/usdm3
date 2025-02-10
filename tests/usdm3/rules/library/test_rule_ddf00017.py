@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00017 import RuleDDF00017
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00017 instance"""
-    rule = "DDF00017"
-    level = RuleTemplate.WARNING
-    description = "Within subject enrollment, the quantity must be a number or a percentage (i.e. the unit must be empty or %)."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00017()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00017"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Within subject enrollment, the quantity must be a number or a percentage (i.e. the unit must be empty or %)."

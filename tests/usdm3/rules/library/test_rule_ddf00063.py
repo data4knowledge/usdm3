@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00063 import RuleDDF00063
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00063 instance"""
-    rule = "DDF00063"
-    level = RuleTemplate.WARNING
-    description = "A standard code alias is not expected to be equal to the standard code (e.g. no equal code or decode for the same coding system version is expected)."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00063()
 
 
 def test_initialization(rule):

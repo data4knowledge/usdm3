@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00075 import RuleDDF00075
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00075 instance"""
-    rule = "DDF00075"
-    level = RuleTemplate.WARNING
-    description = "An activity is expected to refer to at least one procedure, biomedical concept, biomedical concept category or biomedical concept surrogate."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00075()
 
 
 def test_initialization(rule):

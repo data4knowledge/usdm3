@@ -1,16 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00066 import RuleDDF00066
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00066 instance"""
-    rule = "DDF00066"
-    level = RuleTemplate.WARNING
-    description = (
-        "A scheduled decision instance is expected to refer to a default condition."
-    )
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00066()
 
 
 def test_initialization(rule):

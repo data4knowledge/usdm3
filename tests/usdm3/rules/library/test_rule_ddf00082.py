@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00082 import RuleDDF00082
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00082 instance"""
-    rule = "DDF00082"
-    level = RuleTemplate.WARNING
-    description = "Data types of attributes (string, number, boolean) must conform with the USDM schema based on the API specification."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00082()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00082"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Data types of attributes (string, number, boolean) must conform with the USDM schema based on the API specification."

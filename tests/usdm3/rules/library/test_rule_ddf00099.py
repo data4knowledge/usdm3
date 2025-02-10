@@ -1,16 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00099 import RuleDDF00099
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00099 instance"""
-    rule = "DDF00099"
-    level = RuleTemplate.WARNING
-    description = (
-        "All epochs are expected to be referred to from a scheduled Activity Instance."
-    )
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00099()
 
 
 def test_initialization(rule):

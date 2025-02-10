@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00101 import RuleDDF00101
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00101 instance"""
-    rule = "DDF00101"
-    level = RuleTemplate.WARNING
-    description = "Within a study design, if study type is Interventional then at least one intervention is expected to be referenced from a procedure."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00101()
 
 
 def test_initialization(rule):

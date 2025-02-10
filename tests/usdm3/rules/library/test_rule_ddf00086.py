@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00086 import RuleDDF00086
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00086 instance"""
-    rule = "DDF00086"
-    level = RuleTemplate.WARNING
-    description = "Syntax template text is expected to be HTML formatted."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00086()
 
 
 def test_initialization(rule):

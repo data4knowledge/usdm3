@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00132 import RuleDDF00132
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00132 instance"""
-    rule = "DDF00132"
-    level = RuleTemplate.WARNING
-    description = "Within a study design, if a planned completion number is defined, it must be specified either in the study population or in all cohorts."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00132()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00132"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Within a study design, if a planned completion number is defined, it must be specified either in the study population or in all cohorts."

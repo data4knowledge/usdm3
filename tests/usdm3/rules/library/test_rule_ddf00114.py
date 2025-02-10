@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00114 import RuleDDF00114
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00114 instance"""
-    rule = "DDF00114"
-    level = RuleTemplate.WARNING
-    description = "If specified, the context of a condition must point to a valid instance in the activity or scheduled activity instance class."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00114()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00114"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "If specified, the context of a condition must point to a valid instance in the activity or scheduled activity instance class."

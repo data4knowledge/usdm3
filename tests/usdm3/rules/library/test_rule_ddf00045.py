@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00045 import RuleDDF00045
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00045 instance"""
-    rule = "DDF00045"
-    level = RuleTemplate.WARNING
-    description = "At least one attribute must be specified for an address."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00045()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00045"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert rule._rule_text == "At least one attribute must be specified for an address."
     assert rule._errors.count() == 0
 

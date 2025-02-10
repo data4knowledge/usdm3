@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00103 import RuleDDF00103
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00103 instance"""
-    rule = "DDF00103"
-    level = RuleTemplate.WARNING
-    description = "Within a document version, the specified section numbers for narrative content must be unique."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00103()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00103"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Within a document version, the specified section numbers for narrative content must be unique."

@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00060 import RuleDDF00060
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00060 instance"""
-    rule = "DDF00060"
-    level = RuleTemplate.WARNING
-    description = "The value for each timing must be a non-negative duration specified in ISO 8601 format."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00060()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00060"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "The value for each timing must be a non-negative duration specified in ISO 8601 format."

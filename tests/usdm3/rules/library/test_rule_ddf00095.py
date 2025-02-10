@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00095 import RuleDDF00095
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00095 instance"""
-    rule = "DDF00095"
-    level = RuleTemplate.WARNING
-    description = "Within a study protocol document version, if a date of a specific type exists with a global geographic scope then no other dates are expected with the same type."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00095()
 
 
 def test_initialization(rule):

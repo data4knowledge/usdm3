@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00089 import RuleDDF00089
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00089 instance"""
-    rule = "DDF00089"
-    level = RuleTemplate.WARNING
-    description = "Any parameter name referenced in a tag in the text should be specified in the data dictionary parameter maps."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00089()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00089"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Any parameter name referenced in a tag in the text should be specified in the data dictionary parameter maps."

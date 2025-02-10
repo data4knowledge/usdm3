@@ -1,16 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00065 import RuleDDF00065
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00065 instance"""
-    rule = "DDF00065"
-    level = RuleTemplate.WARNING
-    description = (
-        "A scheduled decision instance is not expected to have a sub-timeline."
-    )
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00065()
 
 
 def test_initialization(rule):

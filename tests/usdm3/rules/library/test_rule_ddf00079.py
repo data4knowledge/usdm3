@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00079 import RuleDDF00079
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00079 instance"""
-    rule = "DDF00079"
-    level = RuleTemplate.WARNING
-    description = "If a synonym is specified then it is not expected to be equal to the name of the biomedical concept (case insensitive)."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00079()
 
 
 def test_initialization(rule):

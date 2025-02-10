@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00120 import RuleDDF00120
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00120 instance"""
-    rule = "DDF00120"
-    level = RuleTemplate.WARNING
-    description = "A study design's intervention model must be specified according to the extensible Intervention Model Response (C99076) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist)."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00120()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00120"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "A study design's intervention model must be specified according to the extensible Intervention Model Response (C99076) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist)."

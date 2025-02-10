@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00078 import RuleDDF00078
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00078 instance"""
-    rule = "DDF00078"
-    level = RuleTemplate.WARNING
-    description = "If a transition start rule is defined then an end rule is expected and vice versa."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00078()
 
 
 def test_initialization(rule):

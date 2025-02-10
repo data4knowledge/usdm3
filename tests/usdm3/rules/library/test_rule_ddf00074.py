@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00074 import RuleDDF00074
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00074 instance"""
-    rule = "DDF00074"
-    level = RuleTemplate.WARNING
-    description = "If the intervention model indicates a single group design then only one intervention is expected. In all other cases more interventions are expected."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00074()
 
 
 def test_initialization(rule):

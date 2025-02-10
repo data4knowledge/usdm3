@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00139 import RuleDDF00139
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00139 instance"""
-    rule = "DDF00139"
-    level = RuleTemplate.WARNING
-    description = "An identified organization is not expected to have more than one identifier for the study."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00139()
 
 
 def test_initialization(rule):

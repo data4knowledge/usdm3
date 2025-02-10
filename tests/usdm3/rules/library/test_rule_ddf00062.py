@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00062 import RuleDDF00062
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00062 instance"""
-    rule = "DDF00062"
-    level = RuleTemplate.WARNING
-    description = "When specified, the upper limit of a timing window must be a non-negative duration in ISO 8601 format."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00062()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00062"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "When specified, the upper limit of a timing window must be a non-negative duration in ISO 8601 format."

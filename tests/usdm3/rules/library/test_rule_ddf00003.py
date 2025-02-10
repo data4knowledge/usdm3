@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00003 import RuleDDF00003
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00003 instance"""
-    rule = "DDF00003"
-    level = RuleTemplate.WARNING
-    description = "If the duration of an administration will vary, a quantity is not expected for the administration duration and vice versa."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00003()
 
 
 def test_initialization(rule):

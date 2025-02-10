@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00090 import RuleDDF00090
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00090 instance"""
-    rule = "DDF00090"
-    level = RuleTemplate.WARNING
-    description = "The same Biomedical Concept Category must not be referenced more than once from the same activity."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00090()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00090"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "The same Biomedical Concept Category must not be referenced more than once from the same activity."

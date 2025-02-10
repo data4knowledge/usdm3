@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00036 import RuleDDF00036
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00036 instance"""
-    rule = "DDF00036"
-    level = RuleTemplate.WARNING
-    description = 'If timing type is "Fixed Reference" then the corresponding attribute relativeToFrom must be filled with "Start to Start".'
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00036()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00036"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == 'If timing type is "Fixed Reference" then the corresponding attribute relativeToFrom must be filled with "Start to Start".'

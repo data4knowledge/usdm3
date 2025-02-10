@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00056 import RuleDDF00056
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00056 instance"""
-    rule = "DDF00056"
-    level = RuleTemplate.WARNING
-    description = "Within a study design, if more therapeutic areas are defined, they must be distinct."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00056()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00056"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Within a study design, if more therapeutic areas are defined, they must be distinct."

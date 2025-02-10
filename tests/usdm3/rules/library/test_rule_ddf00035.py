@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00035 import RuleDDF00035
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00035 instance"""
-    rule = "DDF00035"
-    level = RuleTemplate.WARNING
-    description = "Within a code system and corresponding version, a one-to-one relationship between code and decode is expected."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00035()
 
 
 def test_initialization(rule):

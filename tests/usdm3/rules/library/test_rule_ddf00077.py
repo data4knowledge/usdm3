@@ -1,14 +1,11 @@
 import pytest
+from usdm3.rules.library.rule_ddf00077 import RuleDDF00077
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00077 instance"""
-    rule = "DDF00077"
-    level = RuleTemplate.WARNING
-    description = "If geographic scope type is global then no codes are expected to specify the specific area within scope while if it is not global then at least one code is expected to specify the specific area within scope."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00077()
 
 
 def test_initialization(rule):

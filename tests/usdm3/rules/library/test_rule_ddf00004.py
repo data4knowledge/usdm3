@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00004 import RuleDDF00004
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00004 instance"""
-    rule = "DDF00004"
-    level = RuleTemplate.WARNING
-    description = "If duration will vary (attribute durationWillVary is True) then a reason (attribute reasonDurationWillVary) must be given and vice versa."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00004()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00004"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "If duration will vary (attribute durationWillVary is True) then a reason (attribute reasonDurationWillVary) must be given and vice versa."

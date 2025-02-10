@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00009 import RuleDDF00009
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00009 instance"""
-    rule = "DDF00009"
-    level = RuleTemplate.WARNING
-    description = "Each schedule timeline must contain at least one anchor (fixed time) - i.e., at least one scheduled activity instance that is referenced by a Fixed Reference timing."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00009()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00009"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Each schedule timeline must contain at least one anchor (fixed time) - i.e., at least one scheduled activity instance that is referenced by a Fixed Reference timing."

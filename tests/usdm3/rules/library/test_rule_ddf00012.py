@@ -1,20 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00012 import RuleDDF00012
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00012 instance"""
-    rule = "DDF00012"
-    level = RuleTemplate.WARNING
-    description = "Within a study design, there must be exactly one scheduled timeline which identifies as the main Timeline."
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00012()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00012"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "Within a study design, there must be exactly one scheduled timeline which identifies as the main Timeline."

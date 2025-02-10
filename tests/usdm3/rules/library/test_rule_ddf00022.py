@@ -1,22 +1,17 @@
 import pytest
+from usdm3.rules.library.rule_ddf00022 import RuleDDF00022
 from usdm3.rules.library.rule_template import RuleTemplate
 
 
 @pytest.fixture
 def rule():
-    """Fixture to create a RuleDDF00022 instance"""
-    rule = "DDF00022"
-    level = RuleTemplate.WARNING
-    description = (
-        "An instance of a class must not refer to itself as its next instance."
-    )
-    return RuleTemplate(rule, level, description)
+    return RuleDDF00022()
 
 
 def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDF00022"
-    assert rule._level == RuleTemplate.WARNING
+    assert rule._level == RuleTemplate.ERROR
     assert (
         rule._rule_text
         == "An instance of a class must not refer to itself as its next instance."
