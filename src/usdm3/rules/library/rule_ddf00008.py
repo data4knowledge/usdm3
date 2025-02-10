@@ -28,6 +28,6 @@ class RuleDDF00008(RuleTemplate):
                         "Timeline exit and default condition both exist",
                         item["instanceType"],
                         "timelineExitId and defaultConditionId",
-                        item["id"],
+                        data.path_by_id(item["id"]),
                     )
         return self._result()

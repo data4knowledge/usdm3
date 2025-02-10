@@ -19,6 +19,11 @@ class DataStore:
             return None
         return self._ids[id]
 
+    def path_by_id(self, id: str) -> str:
+        if id not in self._path:
+            return None
+        return self._path[id]
+
     def instances_by_klass(self, klass: str) -> list:
         if klass not in self._klasses:
             return []
@@ -47,7 +52,7 @@ class DataStore:
     def _add_klass_instance(self, data, parent, path, instance_index) -> None:
         id = data["id"] if "id" in data else "-"
         klass = data["instanceType"] if "instanceType" in data else "Wrapper"
-        print(f"ADD KLASS INSTANCE: {id}, {klass}")
+        #print(f"ADD KLASS INSTANCE: {id}, {klass}")
         path = self._update_path(path, data, instance_index)
         if klass not in self._klasses:
             self._klasses[klass] = {}
@@ -56,7 +61,7 @@ class DataStore:
         if parent:
             self._parent[data["id"]] = parent
         self._path[id] = path
-        print(f"PATH: {path}")
+        #print(f"PATH: {path}")
         return path
 
     def _load_data(self) -> dict:

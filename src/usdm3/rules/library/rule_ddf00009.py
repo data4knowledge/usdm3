@@ -29,6 +29,6 @@ class RuleDDF00009(RuleTemplate):
                     "No fixed reference timing",
                     item["instanceType"],
                     "timings",
-                    item["id"],
+                    data.path_by_id(item["id"]),
                 )
         return self._result()
