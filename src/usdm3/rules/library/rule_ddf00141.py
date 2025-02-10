@@ -17,15 +17,7 @@ class RuleDDF00141(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
         pop_result = self._ct_check(config, "StudyDesignPopulation", "plannedSex")
         cohort_result = self._ct_check(config, "StudyCohort", "plannedSex")
         return pop_result or cohort_result

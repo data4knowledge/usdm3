@@ -10,15 +10,7 @@ class RuleDDF00045(RuleTemplate):
         )
 
     def validate(self, config: dict):
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
         data = config["data"]
         addresses = data.instances_by_klass("Address")
         for address in addresses:

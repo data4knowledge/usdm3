@@ -17,15 +17,7 @@ class RuleDDF00025(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
 
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
         data = config["data"]
         items = data.instances_by_klass("Timing")
         for item in items:

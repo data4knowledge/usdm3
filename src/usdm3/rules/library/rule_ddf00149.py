@@ -17,13 +17,4 @@ class RuleDDF00149(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-        """
-        Validate the rule against the provided data
-
-        Args:
-            config (dict): Standard configuration structure contain the data, CT etc
-
-        Returns:
-            bool: True if validation passes
-        """
         return self._ct_check(config, "StudyArm", "dataOriginType")
