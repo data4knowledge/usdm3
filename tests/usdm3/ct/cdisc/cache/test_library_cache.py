@@ -1,7 +1,6 @@
 import pytest
 import yaml
 import os
-import pathlib
 from usdm3.ct.cdisc.library_cache.library_cache import LibraryCache
 
 

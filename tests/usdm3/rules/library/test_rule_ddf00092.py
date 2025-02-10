@@ -1,6 +1,4 @@
 import pytest
-from unittest.mock import Mock
-from usdm3.rules.library.rule_ddf00092 import RuleDDF00092
 from usdm3.rules.library.rule_template import RuleTemplate
 
 

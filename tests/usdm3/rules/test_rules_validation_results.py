@@ -1,5 +1,5 @@
 import pytest
-from d4k_sel.errors import Errors, Error
+from d4k_sel.errors import Errors
 from usdm3.rules.rules_validation_results import RulesValidationResults
 from usdm3.rules.library.rule_template import ValidationLocation
 
