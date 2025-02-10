@@ -15,5 +15,3 @@ class RuleDDF00136(RuleTemplate):
             RuleTemplate.ERROR,
             "An encounter's contact modes must be specified according to the Mode of Subject Contact (C171445) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-
-

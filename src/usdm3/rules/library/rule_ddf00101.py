@@ -15,5 +15,3 @@ class RuleDDF00101(RuleTemplate):
             RuleTemplate.WARNING,
             "Within a study design, if study type is Interventional then at least one intervention is expected to be referenced from a procedure.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00079(RuleTemplate):
             RuleTemplate.WARNING,
             "If a synonym is specified then it is not expected to be equal to the name of the biomedical concept (case insensitive).",
         )
-
-

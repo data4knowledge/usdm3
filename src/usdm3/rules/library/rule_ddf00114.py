@@ -15,5 +15,3 @@ class RuleDDF00114(RuleTemplate):
             RuleTemplate.ERROR,
             "If specified, the context of a condition must point to a valid instance in the activity or scheduled activity instance class.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00016(RuleTemplate):
             RuleTemplate.ERROR,
             "A specified condition for assessments must apply to at least to a procedure, biomedical concept, biomedical concept surrogate, biomedical concept category or a whole activity.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00026(RuleTemplate):
             RuleTemplate.ERROR,
             'A scheduled activity instance must not point (via the "timeline" relationship) to the timeline in which it is specified.',
         )
-
-

@@ -10,7 +10,6 @@ class RuleDDF00045(RuleTemplate):
         )
 
     def validate(self, config: dict):
-
         data = config["data"]
         addresses = data.instances_by_klass("Address")
         for address in addresses:

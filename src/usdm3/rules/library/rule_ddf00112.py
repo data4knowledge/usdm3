@@ -15,5 +15,3 @@ class RuleDDF00112(RuleTemplate):
             RuleTemplate.ERROR,
             "A study intervention's role must be specified using the study intervention role (C207417) DDF codelist.",
         )
-
-

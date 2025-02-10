@@ -15,5 +15,3 @@ class RuleDDF00081(RuleTemplate):
             RuleTemplate.ERROR,
             "Class relationships must conform with the USDM schema based on the API specification.",
         )
-
-

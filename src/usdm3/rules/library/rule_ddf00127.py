@@ -15,5 +15,3 @@ class RuleDDF00127(RuleTemplate):
             RuleTemplate.ERROR,
             "An encounter must only be scheduled at a timing that is defined within the same study design as the encounter.",
         )
-
-

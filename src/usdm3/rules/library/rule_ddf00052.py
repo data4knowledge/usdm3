@@ -15,5 +15,3 @@ class RuleDDF00052(RuleTemplate):
             RuleTemplate.ERROR,
             "All standard code aliases referenced by an instance of the alias code class must be unique.",
         )
-
-

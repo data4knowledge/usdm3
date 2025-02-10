@@ -15,4 +15,3 @@ class RuleDDF00145(RuleTemplate):
             RuleTemplate.ERROR,
             "A unit must be coded according to the extensible unit (C71620) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-

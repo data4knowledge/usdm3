@@ -15,5 +15,3 @@ class RuleDDF00017(RuleTemplate):
             RuleTemplate.ERROR,
             "Within subject enrollment, the quantity must be a number or a percentage (i.e. the unit must be empty or %).",
         )
-
-

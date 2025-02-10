@@ -15,5 +15,3 @@ class RuleDDF00120(RuleTemplate):
             RuleTemplate.ERROR,
             "A study design's intervention model must be specified according to the extensible Intervention Model Response (C99076) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-
-

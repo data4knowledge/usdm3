@@ -15,5 +15,3 @@ class RuleDDF00014(RuleTemplate):
             RuleTemplate.WARNING,
             "A biomedical concept category is expected to have at least a member or a child.",
         )
-
-

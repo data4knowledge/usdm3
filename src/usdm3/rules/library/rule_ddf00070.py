@@ -15,5 +15,3 @@ class RuleDDF00070(RuleTemplate):
             RuleTemplate.ERROR,
             "The minimum value of a range must be less than or equal to the maximum value of the range.",
         )
-
-

@@ -17,7 +17,6 @@ class RuleDDF00141(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         pop_result = self._ct_check(config, "StudyDesignPopulation", "plannedSex")
         cohort_result = self._ct_check(config, "StudyCohort", "plannedSex")
         return pop_result or cohort_result

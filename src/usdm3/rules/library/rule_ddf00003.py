@@ -15,5 +15,3 @@ class RuleDDF00003(RuleTemplate):
             RuleTemplate.WARNING,
             "If the duration of an administration will vary, a quantity is not expected for the administration duration and vice versa.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00032(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study version, if more than 1 business therapeutic area is defined then they must be distinct.",
         )
-
-

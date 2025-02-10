@@ -15,5 +15,3 @@ class RuleDDF00128(RuleTemplate):
             RuleTemplate.ERROR,
             "A study intervention's type must be specified using the Intervention Type Response (C99078) SDTM codelist.",
         )
-
-

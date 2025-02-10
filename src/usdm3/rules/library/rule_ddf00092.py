@@ -15,5 +15,3 @@ class RuleDDF00092(RuleTemplate):
             RuleTemplate.ERROR,
             "Date values associated to a study protocol document version must be unique regarding the combination of type and geographic scopes of the date.",
         )
-
-

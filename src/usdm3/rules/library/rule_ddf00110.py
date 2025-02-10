@@ -15,5 +15,3 @@ class RuleDDF00110(RuleTemplate):
             RuleTemplate.ERROR,
             "An eligibility criterion's category must be specified using the Category of Inclusion/Exclusion (C66797) SDTM codelist.",
         )
-
-

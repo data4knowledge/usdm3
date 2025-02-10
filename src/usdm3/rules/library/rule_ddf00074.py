@@ -15,5 +15,3 @@ class RuleDDF00074(RuleTemplate):
             RuleTemplate.WARNING,
             "If the intervention model indicates a single group design then only one intervention is expected. In all other cases more interventions are expected.",
         )
-
-

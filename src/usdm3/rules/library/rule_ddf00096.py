@@ -15,5 +15,3 @@ class RuleDDF00096(RuleTemplate):
             RuleTemplate.ERROR,
             "All primary endpoints must be referenced by a primary objective.",
         )
-
-

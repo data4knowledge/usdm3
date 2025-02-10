@@ -15,5 +15,3 @@ class RuleDDF00018(RuleTemplate):
             RuleTemplate.ERROR,
             "An instance of a class must not reference itself as one of its own children.",
         )
-
-

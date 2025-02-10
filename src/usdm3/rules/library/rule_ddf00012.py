@@ -15,5 +15,3 @@ class RuleDDF00012(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, there must be exactly one scheduled timeline which identifies as the main Timeline.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00080(RuleTemplate):
             RuleTemplate.WARNING,
             "All scheduled activity instances are expected to refer to an epoch.",
         )
-
-

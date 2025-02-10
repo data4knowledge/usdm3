@@ -70,7 +70,7 @@ def test_execute_rules_exception():
     assert results.to_dict() == [
         {
             "attribute": "",
-            "exception": 'This is a test exception',
+            "exception": "This is a test exception",
             "klass": "",
             "level": "",
             "message": "",

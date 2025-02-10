@@ -15,5 +15,3 @@ class RuleDDF00042(RuleTemplate):
             RuleTemplate.WARNING,
             "The range specified for a planned age is not expected to be approximate.",
         )
-
-

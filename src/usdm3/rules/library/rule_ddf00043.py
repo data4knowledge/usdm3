@@ -15,5 +15,3 @@ class RuleDDF00043(RuleTemplate):
             RuleTemplate.ERROR,
             "A unit must not be specified for a planned enrollment number or a planned completion number.",
         )
-
-

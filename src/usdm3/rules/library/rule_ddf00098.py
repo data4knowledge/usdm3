@@ -15,5 +15,3 @@ class RuleDDF00098(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, the planned sex must be specified either in the study population or in all cohorts.",
         )
-
-

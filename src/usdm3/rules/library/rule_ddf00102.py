@@ -15,5 +15,3 @@ class RuleDDF00102(RuleTemplate):
             RuleTemplate.ERROR,
             "A scheduled activity instance must only reference a timeline exit that is defined within the same schedule timeline as the scheduled activity instance.",
         )
-
-

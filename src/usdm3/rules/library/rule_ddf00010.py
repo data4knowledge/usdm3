@@ -15,5 +15,3 @@ class RuleDDF00010(RuleTemplate):
             RuleTemplate.ERROR,
             "The names of all child instances of the same parent class must be unique.",
         )
-
-

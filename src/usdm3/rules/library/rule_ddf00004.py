@@ -15,5 +15,3 @@ class RuleDDF00004(RuleTemplate):
             RuleTemplate.ERROR,
             "If duration will vary (attribute durationWillVary is True) then a reason (attribute reasonDurationWillVary) must be given and vice versa.",
         )
-
-

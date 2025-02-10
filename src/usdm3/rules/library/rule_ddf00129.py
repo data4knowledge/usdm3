@@ -15,5 +15,3 @@ class RuleDDF00129(RuleTemplate):
             RuleTemplate.ERROR,
             "A study intervention's product designation must be specified using the product designation (C207418) DDF codelist.",
         )
-
-

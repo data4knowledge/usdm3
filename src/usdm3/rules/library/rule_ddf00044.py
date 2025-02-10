@@ -15,5 +15,3 @@ class RuleDDF00044(RuleTemplate):
             RuleTemplate.ERROR,
             "The target for a condition must not be equal to its parent.",
         )
-
-

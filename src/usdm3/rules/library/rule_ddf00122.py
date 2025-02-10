@@ -15,5 +15,3 @@ class RuleDDF00122(RuleTemplate):
             RuleTemplate.ERROR,
             "A study design's characteristics must be specified according to the Study design characteristics (C207416) DDF codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00090(RuleTemplate):
             RuleTemplate.ERROR,
             "The same Biomedical Concept Category must not be referenced more than once from the same activity.",
         )
-
-

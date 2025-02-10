@@ -15,5 +15,3 @@ class RuleDDF00138(RuleTemplate):
             RuleTemplate.ERROR,
             "Every identifier must be unique within the scope of an identified organization.",
         )
-
-

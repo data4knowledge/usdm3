@@ -15,5 +15,3 @@ class RuleDDF00131(RuleTemplate):
             RuleTemplate.ERROR,
             "Referenced items in the narrative content must be available elsewhere in the data model.",
         )
-
-

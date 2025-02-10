@@ -17,7 +17,6 @@ class RuleDDF00104(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         data = config["data"]
         ct = config["ct"]
         items = data.instances_by_klass("Timing")

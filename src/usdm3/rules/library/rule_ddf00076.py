@@ -15,5 +15,3 @@ class RuleDDF00076(RuleTemplate):
             RuleTemplate.WARNING,
             "If a biomedical concept is referenced from an activity then it is not expected to be referenced as well by a biomedical concept category that is referenced from the same activity.",
         )
-
-

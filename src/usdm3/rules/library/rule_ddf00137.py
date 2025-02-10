@@ -15,5 +15,3 @@ class RuleDDF00137(RuleTemplate):
             RuleTemplate.ERROR,
             "References must be a fixed value or a reference to items stored elsewhere in the data model which must be specified in the correct format. They must start with '<usdm:ref', end with either '/>' or '></usdm:ref>', and must contain 'klass=\"klassName\"', 'id=\"idValue\"', and 'attribute=\"attributeName\"/>' in any order (where \"klassName\" and \"attributeName\" contain only letters in upper or lower case).",
         )
-
-

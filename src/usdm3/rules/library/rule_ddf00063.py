@@ -15,5 +15,3 @@ class RuleDDF00063(RuleTemplate):
             RuleTemplate.WARNING,
             "A standard code alias is not expected to be equal to the standard code (e.g. no equal code or decode for the same coding system version is expected).",
         )
-
-

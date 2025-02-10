@@ -20,7 +20,6 @@ class RuleDDF00082(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         try:
             data: DataStore = config["data"]
             schema_path = "schema/usdm_v3.json"

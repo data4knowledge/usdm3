@@ -15,5 +15,3 @@ class RuleDDF00056(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, if more therapeutic areas are defined, they must be distinct.",
         )
-
-

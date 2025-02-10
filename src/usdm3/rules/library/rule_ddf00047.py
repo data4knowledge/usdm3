@@ -15,5 +15,3 @@ class RuleDDF00047(RuleTemplate):
             RuleTemplate.ERROR,
             "A study cell must only reference elements that are defined within the same study design as the study cell.",
         )
-
-

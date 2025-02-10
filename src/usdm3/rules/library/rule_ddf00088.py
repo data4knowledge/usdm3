@@ -15,5 +15,3 @@ class RuleDDF00088(RuleTemplate):
             RuleTemplate.WARNING,
             "Epoch ordering using previous and next attributes is expected to be consistent with the order of corresponding scheduled activity instances according to their specified default conditions.",
         )
-
-

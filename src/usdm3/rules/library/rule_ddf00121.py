@@ -15,5 +15,3 @@ class RuleDDF00121(RuleTemplate):
             RuleTemplate.ERROR,
             "A study design's blinding schema must be specified according to the extensible Trial Blinding Schema Response (C66735) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-
-

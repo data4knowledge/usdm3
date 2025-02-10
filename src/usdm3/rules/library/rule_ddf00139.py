@@ -15,5 +15,3 @@ class RuleDDF00139(RuleTemplate):
             RuleTemplate.WARNING,
             "An identified organization is not expected to have more than one identifier for the study.",
         )
-
-

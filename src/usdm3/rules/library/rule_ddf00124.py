@@ -15,5 +15,3 @@ class RuleDDF00124(RuleTemplate):
             RuleTemplate.ERROR,
             "Referenced items in a parameter map must be available elsewhere in the data model.",
         )
-
-

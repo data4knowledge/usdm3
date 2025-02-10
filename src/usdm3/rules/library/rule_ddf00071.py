@@ -15,5 +15,3 @@ class RuleDDF00071(RuleTemplate):
             RuleTemplate.ERROR,
             "A study cell must only reference an arm that is defined within the same study design as the study cell.",
         )
-
-

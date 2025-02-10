@@ -15,5 +15,3 @@ class RuleDDF00107(RuleTemplate):
             RuleTemplate.ERROR,
             "A scheduled activity instance must only have a sub-timeline that is defined within the same study design as the scheduled activity instance.",
         )
-
-

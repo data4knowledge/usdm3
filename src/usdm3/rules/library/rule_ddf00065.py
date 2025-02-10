@@ -15,5 +15,3 @@ class RuleDDF00065(RuleTemplate):
             RuleTemplate.WARNING,
             "A scheduled decision instance is not expected to have a sub-timeline.",
         )
-
-

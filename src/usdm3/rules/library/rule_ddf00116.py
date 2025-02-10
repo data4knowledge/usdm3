@@ -15,5 +15,3 @@ class RuleDDF00116(RuleTemplate):
             RuleTemplate.ERROR,
             "A study version's study type must be specified using the Study Type Response (C99077) SDTM codelist.",
         )
-
-

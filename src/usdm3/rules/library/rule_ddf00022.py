@@ -15,5 +15,3 @@ class RuleDDF00022(RuleTemplate):
             RuleTemplate.ERROR,
             "An instance of a class must not refer to itself as its next instance.",
         )
-
-

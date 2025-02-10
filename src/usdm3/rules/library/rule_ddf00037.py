@@ -15,5 +15,3 @@ class RuleDDF00037(RuleTemplate):
             RuleTemplate.ERROR,
             "At least one scheduled activity instance within a timeline must point to a timeline exit.",
         )
-
-

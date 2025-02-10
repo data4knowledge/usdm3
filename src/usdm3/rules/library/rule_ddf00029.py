@@ -15,5 +15,3 @@ class RuleDDF00029(RuleTemplate):
             RuleTemplate.ERROR,
             "An encounter must only reference encounters that are specified within the same study design.",
         )
-
-

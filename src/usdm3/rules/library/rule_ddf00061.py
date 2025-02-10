@@ -15,5 +15,3 @@ class RuleDDF00061(RuleTemplate):
             RuleTemplate.ERROR,
             "When specified, the lower limit of a timing window must be a non-negative duration in ISO 8601 format.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00099(RuleTemplate):
             RuleTemplate.WARNING,
             "All epochs are expected to be referred to from a scheduled Activity Instance.",
         )
-
-

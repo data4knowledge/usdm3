@@ -15,5 +15,3 @@ class RuleDDF00084(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design there must be exactly one objective with level 'Primary Objective'.",
         )
-
-

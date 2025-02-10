@@ -15,5 +15,3 @@ class RuleDDF00035(RuleTemplate):
             RuleTemplate.WARNING,
             "Within a code system and corresponding version, a one-to-one relationship between code and decode is expected.",
         )
-
-

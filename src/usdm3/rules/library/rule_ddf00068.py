@@ -15,5 +15,3 @@ class RuleDDF00068(RuleTemplate):
             RuleTemplate.ERROR,
             "Each StudyArm must have one StudyCell for each StudyEpoch.",
         )
-
-

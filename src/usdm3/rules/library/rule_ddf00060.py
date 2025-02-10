@@ -15,5 +15,3 @@ class RuleDDF00060(RuleTemplate):
             RuleTemplate.ERROR,
             "The value for each timing must be a non-negative duration specified in ISO 8601 format.",
         )
-
-

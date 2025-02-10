@@ -15,5 +15,3 @@ class RuleDDF00078(RuleTemplate):
             RuleTemplate.WARNING,
             "If a transition start rule is defined then an end rule is expected and vice versa.",
         )
-
-

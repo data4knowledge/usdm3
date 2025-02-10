@@ -15,5 +15,3 @@ class RuleDDF00040(RuleTemplate):
             RuleTemplate.ERROR,
             "Each study element must be referenced by at least one study cell.",
         )
-
-

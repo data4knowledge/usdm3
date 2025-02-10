@@ -17,5 +17,4 @@ class RuleDDF00142(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         return self._ct_check(config, "GovernanceDate", "type")

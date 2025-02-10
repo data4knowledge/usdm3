@@ -22,6 +22,7 @@ def test_initialization():
     lib_file = LibraryCache("test_library.yaml")
     assert lib_file._file_path == "test_library.yaml"
 
+
 def test_delete_file(temp_file):
     """Test deleting a file"""
     try:
@@ -46,6 +47,7 @@ def test_save_new_file(sample_data):
         saved_data = yaml.safe_load(f)
     assert saved_data == sample_data
     lib_file.delete()
+
 
 def test_read_existing_file(temp_file, sample_data):
     """Test reading from an existing file"""

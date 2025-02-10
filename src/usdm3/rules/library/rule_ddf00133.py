@@ -15,5 +15,3 @@ class RuleDDF00133(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, if a planned enrollment number is defined, it must be specified either in the study population or in all cohorts.",
         )
-
-

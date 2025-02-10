@@ -15,5 +15,3 @@ class RuleDDF00091(RuleTemplate):
             RuleTemplate.ERROR,
             "When a condition applies to a procedure, activity, biomedical concept, biomedical concept category, or biomedical concept surrogate then an instance must be available in the corresponding class with the specified id.",
         )
-
-

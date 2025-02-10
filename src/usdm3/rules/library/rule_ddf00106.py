@@ -17,7 +17,6 @@ class RuleDDF00106(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         data = config["data"]
         items = data.instances_by_klass("ScheduledActivityInstance")
         for item in items:

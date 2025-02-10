@@ -48,7 +48,9 @@ class RulesValidationResults:
             return []
         else:
             rows = []
-            location = ValidationLocation(rule="", rule_text="", klass="", attribute="", path="")
+            location = ValidationLocation(
+                rule="", rule_text="", klass="", attribute="", path=""
+            )
             for rule, item in self._items.items():
                 if item["errors"]:
                     for error in item["errors"]:
@@ -65,12 +67,16 @@ class RulesValidationResults:
                         "status": item["status"],
                         "exception": item["exception"],
                     }
-                    row.update(self._flatten_error({'message': '', 'level': '', 'location': location.to_dict()}))
+                    row.update(
+                        self._flatten_error(
+                            {"message": "", "level": "", "location": location.to_dict()}
+                        )
+                    )
                     rows.append(row)
             return rows
 
     def _flatten_error(self, error: dict) -> dict:
-        for key, value in error['location'].items():
+        for key, value in error["location"].items():
             error[key] = value
-        error.pop('location')
+        error.pop("location")
         return error

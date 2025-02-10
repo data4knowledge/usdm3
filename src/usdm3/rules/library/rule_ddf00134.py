@@ -15,5 +15,3 @@ class RuleDDF00134(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, if more characteristics are defined, they must be distinct.",
         )
-
-

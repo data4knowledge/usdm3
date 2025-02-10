@@ -15,5 +15,3 @@ class RuleDDF00117(RuleTemplate):
             RuleTemplate.ERROR,
             "A study protocol document version's protocol status must be specified using the Protocol Status Value Set Terminology (C188723) DDF codelist.",
         )
-
-

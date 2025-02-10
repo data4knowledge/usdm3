@@ -15,5 +15,3 @@ class RuleDDF00130(RuleTemplate):
             RuleTemplate.ERROR,
             "An agent administration's route must be specified according to the extensible Route of Administration Response (C66729) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00118(RuleTemplate):
             RuleTemplate.ERROR,
             "A study design's trial intent types must be specified according to the extensible Trial Intent Type Response (C66736) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-
-

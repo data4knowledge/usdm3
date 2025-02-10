@@ -15,5 +15,3 @@ class RuleDDF00115(RuleTemplate):
             RuleTemplate.ERROR,
             'Every study version must have a title of type "Official Study Title".',
         )
-
-

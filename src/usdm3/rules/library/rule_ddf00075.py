@@ -15,5 +15,3 @@ class RuleDDF00075(RuleTemplate):
             RuleTemplate.WARNING,
             "An activity is expected to refer to at least one procedure, biomedical concept, biomedical concept category or biomedical concept surrogate.",
         )
-
-

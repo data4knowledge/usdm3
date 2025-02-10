@@ -17,6 +17,5 @@ class RuleDDF00083(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         # See rule DDF00082 for schema checks
         return True

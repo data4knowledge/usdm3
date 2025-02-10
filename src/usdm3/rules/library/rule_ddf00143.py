@@ -17,5 +17,4 @@ class RuleDDF00143(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         return self._ct_check(config, "StudyAmendmentReason", "code")

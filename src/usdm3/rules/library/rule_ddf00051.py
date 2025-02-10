@@ -15,5 +15,3 @@ class RuleDDF00051(RuleTemplate):
             RuleTemplate.ERROR,
             "A timing's type must be specified using the Timing Type Value Set Terminology (C201264) DDF codelist.",
         )
-
-

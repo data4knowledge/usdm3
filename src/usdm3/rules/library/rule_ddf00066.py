@@ -15,5 +15,3 @@ class RuleDDF00066(RuleTemplate):
             RuleTemplate.WARNING,
             "A scheduled decision instance is expected to refer to a default condition.",
         )
-
-

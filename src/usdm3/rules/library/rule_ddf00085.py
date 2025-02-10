@@ -15,5 +15,3 @@ class RuleDDF00085(RuleTemplate):
             RuleTemplate.WARNING,
             "Narrative content text is expected to be HTML formatted.",
         )
-
-

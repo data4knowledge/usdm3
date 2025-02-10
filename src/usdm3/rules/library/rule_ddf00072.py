@@ -15,5 +15,3 @@ class RuleDDF00072(RuleTemplate):
             RuleTemplate.ERROR,
             "A study cell must only reference an epoch that is defined within the same study design as the study cell.",
         )
-
-

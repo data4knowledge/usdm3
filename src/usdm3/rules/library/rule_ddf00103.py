@@ -15,5 +15,3 @@ class RuleDDF00103(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a document version, the specified section numbers for narrative content must be unique.",
         )
-
-

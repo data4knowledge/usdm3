@@ -15,5 +15,3 @@ class RuleDDF00089(RuleTemplate):
             RuleTemplate.ERROR,
             "Any parameter name referenced in a tag in the text should be specified in the data dictionary parameter maps.",
         )
-
-

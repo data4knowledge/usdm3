@@ -15,5 +15,3 @@ class RuleDDF00077(RuleTemplate):
             RuleTemplate.WARNING,
             "If geographic scope type is global then no codes are expected to specify the specific area within scope while if it is not global then at least one code is expected to specify the specific area within scope.",
         )
-
-

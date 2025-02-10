@@ -15,5 +15,3 @@ class RuleDDF00053(RuleTemplate):
             RuleTemplate.ERROR,
             "Within an encounter there must be no duplicate environmental settings.",
         )
-
-

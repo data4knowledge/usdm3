@@ -15,5 +15,3 @@ class RuleDDF00046(RuleTemplate):
             RuleTemplate.ERROR,
             "A timing must only be specified as being relative to/from a scheduled activity/decision instance that is defined within the same timeline as the timing.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00028(RuleTemplate):
             RuleTemplate.ERROR,
             "An activity must only reference activities that are specified within the same study design.",
         )
-
-

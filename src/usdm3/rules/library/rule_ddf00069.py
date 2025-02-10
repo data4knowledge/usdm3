@@ -15,5 +15,3 @@ class RuleDDF00069(RuleTemplate):
             RuleTemplate.ERROR,
             "Each combination of arm and epoch must occur no more than once within a study design.",
         )
-
-

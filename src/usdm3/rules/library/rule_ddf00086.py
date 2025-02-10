@@ -15,5 +15,3 @@ class RuleDDF00086(RuleTemplate):
             RuleTemplate.WARNING,
             "Syntax template text is expected to be HTML formatted.",
         )
-
-

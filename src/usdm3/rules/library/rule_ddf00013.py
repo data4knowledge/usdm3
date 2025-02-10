@@ -15,5 +15,3 @@ class RuleDDF00013(RuleTemplate):
             RuleTemplate.ERROR,
             "If a biomedical concept property is required then it must also be enabled, while if it is not enabled then it must not be required.",
         )
-
-

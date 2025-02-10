@@ -17,7 +17,6 @@ class RuleDDF00108(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-
         data = config["data"]
         items = data.instances_by_klass("StudyTimeline")
         for item in items:

@@ -15,5 +15,3 @@ class RuleDDF00059(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study intervention, if more intervention codes are defined, they must be distinct.",
         )
-
-

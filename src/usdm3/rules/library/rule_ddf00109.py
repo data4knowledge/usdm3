@@ -15,5 +15,3 @@ class RuleDDF00109(RuleTemplate):
             RuleTemplate.ERROR,
             "A study element must only reference study interventions that are defined within the same study design as the study element.",
         )
-
-

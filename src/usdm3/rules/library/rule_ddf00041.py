@@ -15,5 +15,3 @@ class RuleDDF00041(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, there must be at least one endpoint with level primary.",
         )
-
-

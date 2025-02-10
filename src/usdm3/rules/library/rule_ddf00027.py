@@ -15,5 +15,3 @@ class RuleDDF00027(RuleTemplate):
             RuleTemplate.ERROR,
             "To ensure consistent ordering, the same instance must not be referenced more than once as previous or next.",
         )
-
-

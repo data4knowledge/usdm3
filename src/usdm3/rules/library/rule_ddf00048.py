@@ -15,5 +15,3 @@ class RuleDDF00048(RuleTemplate):
             RuleTemplate.ERROR,
             "A procedure must only reference a study intervention that is defined within the same study design as the activity within which the procedure is defined.",
         )
-
-

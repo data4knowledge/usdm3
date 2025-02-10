@@ -15,5 +15,3 @@ class RuleDDF00126(RuleTemplate):
             RuleTemplate.ERROR,
             "Cardinalities must be as defined in the USDM schema based on the API specification (i.e., required properties have at least one value and single-value properties are not lists).",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00073(RuleTemplate):
             RuleTemplate.WARNING,
             "Only one version of any code system is expected to be used within a study version.",
         )
-
-

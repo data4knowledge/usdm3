@@ -15,5 +15,3 @@ class RuleDDF00111(RuleTemplate):
             RuleTemplate.ERROR,
             "The unit of a planned age is expected to be specified using terms from the Age Unit (C66781) SDTM codelist.",
         )
-
-

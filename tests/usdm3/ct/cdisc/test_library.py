@@ -110,8 +110,8 @@ def test_load_from_api(
     assert "VAL1" in library._by_submission
     assert "Term 1" in library._by_pt
 
-
     library._cache.delete()
+
 
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
 @patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")

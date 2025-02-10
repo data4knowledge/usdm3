@@ -15,5 +15,3 @@ class RuleDDF00097(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, the planned age range must be specified either in the study population or in all cohorts.",
         )
-
-

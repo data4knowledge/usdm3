@@ -15,5 +15,3 @@ class RuleDDF00006(RuleTemplate):
             RuleTemplate.ERROR,
             "Timing windows must be fully defined, if one of the window attributes (i.e., window label, window lower, and window upper) is defined then all must be specified.",
         )
-
-

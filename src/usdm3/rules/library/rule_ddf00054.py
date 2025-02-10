@@ -15,5 +15,3 @@ class RuleDDF00054(RuleTemplate):
             RuleTemplate.ERROR,
             "Within an encounter there must be no duplicate contact modes.",
         )
-
-

@@ -15,5 +15,3 @@ class RuleDDF00058(RuleTemplate):
             RuleTemplate.ERROR,
             "Within an indication, if more indication codes are defined, they must be distinct.",
         )
-
-

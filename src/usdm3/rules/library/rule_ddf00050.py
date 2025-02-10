@@ -15,5 +15,3 @@ class RuleDDF00050(RuleTemplate):
             RuleTemplate.ERROR,
             "A study arm must only reference study populations or cohorts that are defined within the same study design as the study arm.",
         )
-
-

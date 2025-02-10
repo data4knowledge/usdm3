@@ -15,5 +15,3 @@ class RuleDDF00125(RuleTemplate):
             RuleTemplate.ERROR,
             "Attributes must be included as defined in the USDM schema based on the API specification (i.e., all required properties are present and no additional attributes are present).",
         )
-
-

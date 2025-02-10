@@ -15,5 +15,3 @@ class RuleDDF00019(RuleTemplate):
             RuleTemplate.ERROR,
             "A scheduled activity/decision instance must not refer to itself as its default condition.",
         )
-
-

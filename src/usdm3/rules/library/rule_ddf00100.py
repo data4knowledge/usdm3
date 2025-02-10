@@ -15,5 +15,3 @@ class RuleDDF00100(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study version, there must be no more than one title of each type.",
         )
-
-

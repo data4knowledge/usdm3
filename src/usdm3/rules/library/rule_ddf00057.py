@@ -15,5 +15,3 @@ class RuleDDF00057(RuleTemplate):
             RuleTemplate.ERROR,
             "Within a study design, if more trial intent types are defined, they must be distinct.",
         )
-
-

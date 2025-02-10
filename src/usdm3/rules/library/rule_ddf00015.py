@@ -15,5 +15,3 @@ class RuleDDF00015(RuleTemplate):
             RuleTemplate.ERROR,
             "A study version's study phase must be specified according to the extensible Trial Phase Response (C66737) SDTM codelist (e.g. an entry with a code or decode used from the codelist should be consistent with the full entry in the codelist).",
         )
-
-
