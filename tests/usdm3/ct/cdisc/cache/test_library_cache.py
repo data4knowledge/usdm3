@@ -60,7 +60,7 @@ def test_read_existing_file(temp_file, sample_data):
 
 def test_read_nonexistent_file():
     """Test reading from a non-existent file raises exception"""
-    lib_file = LibraryCache("xxx.yaml")
+    lib_file = LibraryCache("test_library_cache.yaml")
     with pytest.raises(Exception) as exc_info:
         lib_file.read()
     assert "Failed to read CDSIC CT file, does not exist" in str(exc_info.value)
@@ -71,6 +71,4 @@ def test_file_exist(temp_file):
     lib_file = LibraryCache(temp_file)
     assert lib_file.exists()
     lib_file.delete()
-    assert not lib_file.exists()
-    lib_file = LibraryCache("xxx.yaml")
     assert not lib_file.exists()

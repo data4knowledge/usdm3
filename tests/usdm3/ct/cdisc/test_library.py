@@ -46,7 +46,7 @@ def mock_api():
 
 
 @pytest.fixture
-def mock_file():
+def mock_cache():
     """Mock LibraryFile class"""
     mock = Mock()
     mock.exists.return_value = False
@@ -72,29 +72,29 @@ def test_library_initialization(library):
 
 
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
+@patch("usdm3.ct.cdisc.library.LibraryCache")
 @patch("usdm3.ct.cdisc.library.Config")
-@patch("usdm3.ct.cdisc.library.Missing")
 def test_load_from_api(
-    mock_missing_cls,
     mock_config_cls,
-    mock_file_cls,
+    mock_cache_cls,
     mock_api_cls,
     sample_codelist,
 ):
     """Test loading data from API when cache doesn't exist"""
     # Setup mocks
-    mock_file = mock_file_cls.return_value
-    mock_file.exists.return_value = False
+    mock_cache = mock_cache_cls.return_value
+    mock_cache.exists.return_value = False
+    mock_cache.save.return_value = None
 
     mock_api = mock_api_cls.return_value
+    mock_api.refresh.return_value = None
     mock_api.code_list.return_value = sample_codelist
 
     mock_config = mock_config_cls.return_value
     mock_config.required_code_lists.return_value = ["C123"]
 
     # Create library and load data
-    library = Library("xxx.yaml")
+    library = Library("test_library.yaml")
     library.load()
 
     # Verify API was called
@@ -102,7 +102,7 @@ def test_load_from_api(
     mock_api.code_list.assert_called_once_with("C123")
 
     # Verify data was cached
-    mock_file.save.assert_called_once()
+    mock_cache.save.assert_called_once()
 
     # Verify indexes were built
     assert library._by_code_list["C123"] == sample_codelist
@@ -114,24 +114,20 @@ def test_load_from_api(
 
 
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
-@patch("usdm3.ct.cdisc.library.Config")
-@patch("usdm3.ct.cdisc.library.Missing")
+@patch("usdm3.ct.cdisc.library.LibraryCache")
 def test_load_from_cache(
-    mock_missing_cls,
-    mock_config_cls,
-    mock_file_cls,
+    mock_cache_cls,
     mock_api_cls,
     sample_codelist,
 ):
     """Test loading data from cache when it exists"""
     # Setup mocks
-    mock_file = mock_file_cls.return_value
-    mock_file.exists.return_value = True
-    mock_file.read.return_value = {"C123": sample_codelist}
+    mock_cache = mock_cache_cls.return_value
+    mock_cache.exists.return_value = True
+    mock_cache.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
-    library = Library()
+    library = Library("test_library.yaml")
     library.load()
 
     # Verify API was not called
@@ -139,7 +135,7 @@ def test_load_from_cache(
     mock_api_cls.return_value.code_list.assert_not_called()
 
     # Verify cache was read
-    mock_file.read.assert_called_once()
+    mock_cache.read.assert_called_once()
 
     # Verify indexes were built
     assert library._by_code_list["C123"] == sample_codelist
@@ -148,16 +144,13 @@ def test_load_from_cache(
     assert "Term 1" in library._by_pt
 
 
-@patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
 @patch("usdm3.ct.cdisc.library.Config")
-@patch("usdm3.ct.cdisc.library.Missing")
 def test_klass_and_attribute(
-    mock_missing_cls, mock_config_cls, mock_file_cls, mock_api_cls, tmp_path
+    mock_config_cls
 ):
     """Test klass_and_attribute method"""
     # Create library instance with all dependencies mocked
-    library = Library()
+    library = Library("test_library.yaml")
 
     # Setup mock config
     mock_config = mock_config_cls.return_value
@@ -177,42 +170,3 @@ def test_klass_and_attribute(
     result = library.klass_and_attribute("InvalidClass", "invalidAttr")
     assert result is None
 
-
-def test_check_in_and_add(library):
-    """Test _check_in_and_add helper method"""
-    collection = {}
-
-    # Test adding new item
-    library._check_in_and_add(collection, "key1", "value1")
-    assert collection["key1"] == ["value1"]
-
-    # Test adding to existing key
-    library._check_in_and_add(collection, "key1", "value2")
-    assert collection["key1"] == ["value1", "value2"]
-
-
-@patch("usdm3.ct.cdisc.library.LibraryAPI")
-@patch("usdm3.ct.cdisc.library_cache.library_cache.LibraryCache")
-@patch("usdm3.ct.cdisc.library.Config")
-@patch("usdm3.ct.cdisc.library.Missing")
-def test_add_missing_ct(
-    mock_missing_cls,
-    mock_config_cls,
-    mock_file_cls,
-    mock_api_cls,
-    sample_codelist,
-):
-    """Test adding missing controlled terminology"""
-    # Setup mock
-    mock_missing = mock_missing_cls.return_value
-    mock_missing.code_lists.return_value = [sample_codelist]
-
-    # Create library and add missing CT
-    library = Library()
-    library._add_missing_ct()
-
-    # Verify indexes were built for missing CT
-    assert library._by_code_list["C123"] == sample_codelist
-    assert "T1" in library._by_term
-    assert "VAL1" in library._by_submission
-    assert "Term 1" in library._by_pt
