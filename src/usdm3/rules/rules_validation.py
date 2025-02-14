@@ -1,21 +1,23 @@
 import inspect
-import pkgutil
 import importlib
+import sys
 from pathlib import Path
 from typing import List, Type
+
 from usdm3.rules.library.rule_template import RuleTemplate
 from usdm3.data_store.data_store import DataStore
 from usdm3.ct.cdisc.library import Library
 from usdm3.rules.rules_validation_results import RulesValidationResults
+from usdm3.base.singleton import Singleton
 
+class RulesValidation(metaclass=Singleton):
 
-class RulesValidation:
     def __init__(self, rules_dir: str):
         self.rules_dir = rules_dir
         self.rules: List[Type[RuleTemplate]] = []
+        self._load_rules()
 
     def validate_rules(self, filename: str) -> RulesValidationResults:
-        self._load_rules()
         data_store = DataStore(filename)
         data_store.decompose()
         ct = Library()
@@ -24,21 +26,45 @@ class RulesValidation:
         return results
 
     def _load_rules(self) -> None:
-        # Get the package module
-        package = importlib.import_module(self.rules_dir)
-        package_path = Path(package.__file__).parent
+        # Get absolute path to the rules library directory
+        library_path = Path(__file__).parent / "library"
+        package_name = "usdm3.rules.library"
 
-        # Find all rule classes in the package
-        for _, module_name, _ in pkgutil.iter_modules([str(package_path)]):
-            # Import the module
-            module = importlib.import_module(f"{self.rules_dir}.{module_name}")
-            for name, obj in inspect.getmembers(module):
-                if (
-                    inspect.isclass(obj)
-                    and issubclass(obj, RuleTemplate)
-                    and obj != RuleTemplate
-                ):
-                    self.rules.append(obj)
+        # Iterate through all .py files in the library directory
+        for file in library_path.glob("rule_*.py"):
+            print(f"file: {file}")
+            if file.name.startswith("rule_") and file.name.endswith(".py"):
+                try:
+                    # Create module name from file name
+                    module_name = f"{package_name}.{file.stem}"
+                    
+                    # Load module using absolute path
+                    spec = importlib.util.spec_from_file_location(module_name, str(file))
+                    if spec is None or spec.loader is None:
+                        continue
+
+                    print(f"spec: {spec}")
+                    module = importlib.util.module_from_spec(spec)
+                    sys.modules[spec.name] = module
+                    spec.loader.exec_module(module)
+
+                    for name, obj in inspect.getmembers(module):
+                        #print(f"name: {name} obj: {obj}")
+                        if (
+                            inspect.isclass(obj)
+                            and issubclass(obj, RuleTemplate)
+                            and obj != RuleTemplate
+                        ):
+                            try:
+                                self.rules.append(obj)
+                                print(f"Rule: {obj}")
+                            except Exception as e:
+                                print(f"Failed to load rule from {file}: {str(e)}")
+                                continue
+                except Exception as e:
+                    print(f"Failed to load rule from {file}: {str(e)}")
+                    continue
+
 
     def _execute_rules(self, config: dict) -> RulesValidationResults:
         results = RulesValidationResults()
@@ -47,6 +73,7 @@ class RulesValidation:
                 # Execute the rule
                 rule: RuleTemplate = rule_class()
                 passed = rule.validate(config)
+                print(f"rule: {rule._rule} passed: {passed}")
                 if passed:
                     results.add_success(rule._rule)
                 else:
