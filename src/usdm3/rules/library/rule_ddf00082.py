@@ -2,8 +2,12 @@ import os
 import pathlib
 from .rule_template import RuleTemplate
 from usdm3.rules.library.schema.schema_location import SchemaErrorLocation
-from usdm3.rules.library.schema.schema_validation import SchemaValidation, ValidationError
+from usdm3.rules.library.schema.schema_validation import (
+    SchemaValidation,
+    ValidationError,
+)
 from usdm3.data_store.data_store import DataStore
+
 
 class RuleDDF00082(RuleTemplate):
     """

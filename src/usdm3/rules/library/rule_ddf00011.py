@@ -20,6 +20,6 @@ class RuleDDF00011(RuleTemplate):
                         "Missing relativeFromScheduledInstance",
                         "Timing",
                         "relativeFromScheduledInstance",
-                        item["id"],
+                        data.path_by_id(item["id"]),
                     )
         return self._result()

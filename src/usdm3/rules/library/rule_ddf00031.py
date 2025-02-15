@@ -27,7 +27,7 @@ class RuleDDF00031(RuleTemplate):
                         "Missing relativeToScheduledInstance",
                         "Timing",
                         "relativeToScheduledInstance",
-                        data.path_by_id(item["id"])
+                        data.path_by_id(item["id"]),
                     )
                     check = False
                 if "relativeFromScheduledInstance" not in item:
@@ -35,7 +35,7 @@ class RuleDDF00031(RuleTemplate):
                         "Missing relativeFromScheduledInstance",
                         "Timing",
                         "relativeFromScheduledInstance",
-                        data.path_by_id(item["id"])
+                        data.path_by_id(item["id"]),
                     )
                     check = False
                 if (
@@ -47,7 +47,7 @@ class RuleDDF00031(RuleTemplate):
                         "relativeToScheduledInstance and relativeFromScheduledInstance are equal",
                         "Timing",
                         "relativeToScheduledInstance and relativeFromScheduledInstance",
-                        data.path_by_id(item["id"])
+                        data.path_by_id(item["id"]),
                     )
         return self._result()
         return self._result()

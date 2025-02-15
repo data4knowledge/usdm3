@@ -1,4 +1,29 @@
 import json
+from d4k_sel.errors import Errors
+from d4k_sel import ErrorLocation
+
+
+class DataStoreErrorLocation(ErrorLocation):
+    def __init__(self, path: str, missing: str, extra: str):
+        self.path = path
+        self.missing = missing
+        self.extra = extra
+
+    def to_dict(self):
+        return {"path": self.path, "missing": self.missing}
+
+    def __str__(self):
+        extra = f", {self.extra}" if self.extra else ""
+        return f"[{self.path}, missing '{self.missing}' attribute{extra}]"
+
+
+class DecompositionError(Exception):
+    def __init__(self, error: DataStoreErrorLocation):
+        print(f"DE: {error}")
+        self.error = error
+
+    def __str__(self):
+        return f"error decomposing the '.json' file, missing {self.error.missing} at {self.error.path}"
 
 
 class DataStore:
@@ -9,6 +34,7 @@ class DataStore:
         self._path = {}
         self.filename = filename
         self.data = None
+        self.errors = Errors
 
     def decompose(self):
         self.data = self._load_data()
@@ -52,18 +78,14 @@ class DataStore:
                         self._decompose(item, data, path, index)
 
     def _add_klass_instance(self, data, parent, path, instance_index) -> None:
-        id = data["id"] if "id" in data else "-"
-        klass = data["instanceType"] if "instanceType" in data else "Wrapper"
-        #print(f"ADD KLASS INSTANCE: {id}, {klass}")
+        id, klass = self._check_id_klass(parent, data, path)
         path = self._update_path(path, data, instance_index)
         if klass not in self._klasses:
             self._klasses[klass] = {}
         self._klasses[klass][id] = data
         self._ids[id] = data
-        if parent:
-            self._parent[data["id"]] = parent
         self._path[id] = path
-        #print(f"PATH: {path}")
+        self._parent[id] = parent
         return path
 
     def _load_data(self) -> dict:
@@ -71,6 +93,41 @@ class DataStore:
             return json.load(file)
 
     def _update_path(self, path: str, data: dict, instance_index: int) -> str:
-        path = path + "." + data["instanceType"] if "instanceType" in data else "root"
+        path = path + "." + data["instanceType"] if "instanceType" in data else "$"
         path = path + f"[{instance_index}]" if instance_index is not None else path
         return path
+
+    def _check_id_klass(self, parent: dict, data: dict, path: str) -> None:
+        id, error = self._check_id(parent, data, path)
+        if error:
+            print(f"RAISE: {error}")
+            raise DecompositionError(error)
+        klass, error = self._check_instance_type(parent, data, path)
+        if error:
+            print(f"RAISE: {error}")
+            raise DecompositionError(error)
+        return id, klass
+
+    def _check_id(self, parent: dict, data: dict, path: str) -> None:
+        if parent:
+            if "id" in data:
+                return data["id"], None
+            else:
+                klass = data["instanceType"] if "instanceType" in data else ""
+                return None, DataStoreErrorLocation(
+                    path, "id", f"with instanceType '{klass}'"
+                )
+        else:
+            return "$root", None
+
+    def _check_instance_type(self, parent: dict, data: dict, path: str) -> None:
+        if parent:
+            if "instanceType" in data:
+                return data["instanceType"], None
+            else:
+                id = data["id"] if "id" in data else ""
+                return None, DataStoreErrorLocation(
+                    path, "instanceType", f"with id '{id}'"
+                )
+        else:
+            return "Wrapper", None

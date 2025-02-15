@@ -145,9 +145,7 @@ def test_load_from_cache(
 
 
 @patch("usdm3.ct.cdisc.library.Config")
-def test_klass_and_attribute(
-    mock_config_cls
-):
+def test_klass_and_attribute(mock_config_cls):
     """Test klass_and_attribute method"""
     # Create library instance with all dependencies mocked
     library = Library("test_library.yaml")
@@ -169,4 +167,3 @@ def test_klass_and_attribute(
     mock_config.klass_and_attribute.side_effect = Exception("Not found")
     result = library.klass_and_attribute("InvalidClass", "invalidAttr")
     assert result is None
-

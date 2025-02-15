@@ -35,9 +35,8 @@ class SchemaValidation:
         component_schema = self.get_component_schema(component_name)
         validate(instance=data, schema=component_schema, resolver=self.resolver)
         return True
-    
+
     def validate_file(self, json_file_path, component_name):
         with open(json_file_path, "r") as f:
             data = json.load(f)
         return self.validate_against_component(data, component_name)
-    
