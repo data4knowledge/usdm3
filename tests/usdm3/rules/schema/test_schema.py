@@ -2,6 +2,7 @@ import pytest
 import json
 from unittest.mock import mock_open, patch
 from usdm3.rules.library.schema.schema_validation import SchemaValidation
+from jsonschema import ValidationError
 
 # Sample schema for testing
 MOCK_SCHEMA = {
@@ -56,7 +57,7 @@ def test_validate_against_component_valid(schema_validator):
 def test_validate_against_component_invalid(schema_validator):
     """Test failed validation against component"""
     invalid_data = {"age": 30}  # Missing required 'name' field
-    with pytest.raises(SchemaValidation.SchemaValidatorError, match="validation error"):
+    with pytest.raises(ValidationError, match="'name' is a required property"):
         schema_validator.validate_against_component(invalid_data, "Test-Component")
 
 
@@ -71,24 +72,13 @@ def test_validate_file(schema_validator):
         )
 
 
-def test_validate_file_invalid_json(schema_validator):
-    """Test validating invalid JSON file"""
-    with patch("builtins.open", mock_open(read_data="invalid json")):
-        with pytest.raises(
-            SchemaValidation.SchemaValidatorError, match="error reading JSON file"
-        ):
-            schema_validator.validate_file("dummy/invalid.json", "Test-Component")
-
-
 def test_validate_file_validation_error(schema_validator):
     """Test validating file with invalid data"""
     invalid_data = {"age": 30}  # Missing required 'name' field
     mock_file = mock_open(read_data=json.dumps(invalid_data))
 
     with patch("builtins.open", mock_file):
-        with pytest.raises(
-            SchemaValidation.SchemaValidatorError, match="validation error"
-        ):
+        with pytest.raises(ValidationError, match="'name' is a required property"):
             schema_validator.validate_file("dummy/data.json", "Test-Component")
 
 

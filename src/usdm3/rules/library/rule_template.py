@@ -75,8 +75,13 @@ class RuleTemplate:
                     or item[attribute]["decode"] not in decodes
                 ):
                     self._add_failure(
-                        "Invalid code/decode", klass, attribute, item["id"]
+                        "Invalid code/decode",
+                        klass,
+                        attribute,
+                        data.path_by_id(item["id"]),
                     )
             else:
-                self._add_failure("Missing attribute", klass, attribute, item["id"])
+                self._add_failure(
+                    "Missing attribute", klass, attribute, data.path_by_id(item["id"])
+                )
         return self._result()

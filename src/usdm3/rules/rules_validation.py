@@ -22,7 +22,9 @@ class RulesValidation(metaclass=Singleton):
     def validate_rules(self, filename: str) -> RulesValidationResults:
         data_store, e = self._data_store(filename)
         if data_store:
-            config = {"data": data_store, "ct": Library()}
+            ct = Library()
+            ct.load()
+            config = {"data": data_store, "ct": ct}
             results = self._execute_rules(config)
         else:
             results = RulesValidationResults()
