@@ -1,7 +1,7 @@
 import pytest
 import json
 from unittest.mock import mock_open, patch
-from usdm3.schema.schema_validation import SchemaValidation
+from usdm3.rules.library.schema.schema_validation import SchemaValidation
 
 # Sample schema for testing
 MOCK_SCHEMA = {

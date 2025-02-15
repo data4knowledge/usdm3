@@ -15,7 +15,7 @@ class RulesValidation(metaclass=Singleton):
     def __init__(self, library_path: str, package_name: str):
         self.library_path = Path(library_path)
         self.package_name = package_name
-        print(f"library_path: {self.library_path}, {self.package_name}")
+        #print(f"library_path: {self.library_path}, {self.package_name}")
         self.rules: List[Type[RuleTemplate]] = []
         self._load_rules()
 
@@ -30,8 +30,8 @@ class RulesValidation(metaclass=Singleton):
     def _load_rules(self) -> None:
         # Iterate through all .py files in the library directory
         for file in self.library_path.glob("rule_*.py"):
-            print(f"file: {file}")
-            if file.name.startswith("rule_") and file.name.endswith(".py"):
+            #print(f"file: {file}")
+            if file.name.startswith("rule_ddf") and file.name.endswith(".py"):
                 try:
                     # Create module name from file name
                     module_name = f"{self.package_name}.{file.stem}"
@@ -41,13 +41,13 @@ class RulesValidation(metaclass=Singleton):
                     if spec is None or spec.loader is None:
                         continue
 
-                    print(f"spec: {spec}")
+                    print(f"SPEC: {spec}")
                     module = importlib.util.module_from_spec(spec)
                     sys.modules[spec.name] = module
                     spec.loader.exec_module(module)
 
                     for name, obj in inspect.getmembers(module):
-                        #print(f"name: {name} obj: {obj}")
+                        print(f"INSPECT")
                         if (
                             inspect.isclass(obj)
                             and issubclass(obj, RuleTemplate)
@@ -55,12 +55,13 @@ class RulesValidation(metaclass=Singleton):
                         ):
                             try:
                                 self.rules.append(obj)
-                                print(f"Rule: {obj}")
+                                print(f"LOADED: {obj}")
                             except Exception as e:
-                                print(f"Failed to load rule from {file}: {str(e)}")
+                                print(f"FAILED: {str(e)}")
                                 continue
+                              
                 except Exception as e:
-                    print(f"Failed to load rule from {file}: {str(e)}")
+                    print(f"FAILED: {str(e)}")
                     continue
 
 
@@ -71,7 +72,7 @@ class RulesValidation(metaclass=Singleton):
                 # Execute the rule
                 rule: RuleTemplate = rule_class()
                 passed = rule.validate(config)
-                print(f"rule: {rule._rule} passed: {passed}")
+                print(f"RULE: {rule._rule}, {passed}")
                 if passed:
                     results.add_success(rule._rule)
                 else:
@@ -80,5 +81,6 @@ class RulesValidation(metaclass=Singleton):
                 # Rule not implemented yet
                 results.add_not_implemented(rule._rule)
             except Exception as e:
+                print(f"RULE: {rule._rule} exception: {e}")
                 results.add_exception(rule._rule, e)
         return results

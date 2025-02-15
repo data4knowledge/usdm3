@@ -26,7 +26,7 @@ class RuleDDF00155(RuleTemplate):
                         "Missing codeSystemVersion",
                         "Code",
                         "codeSystemVersion",
-                        item["id"],
+                        data.path_by_id(item["id"]),
                     )
                 else:
                     if item["codeSystemVersion"] not in ["2023-06-01", "2023-06-01"]:
@@ -34,6 +34,6 @@ class RuleDDF00155(RuleTemplate):
                             "Invalid codeSystemVersion",
                             "Code",
                             "codeSystemVersion",
-                            item["id"],
+                            data.path_by_id(item["id"]),
                         )
         return self._result()

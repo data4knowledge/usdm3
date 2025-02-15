@@ -23,9 +23,9 @@ def test_rules():
             "message": "",
             "path": "",
             "rule": "",
-            "rule_id": "TEST_RULE_3",
+            "rule_id": "TEST_RULE_1",
             "rule_text": "",
-            "status": "Not Implemented",
+            "status": "Success",
         },        
         {
             'attribute': 'attribute',
@@ -47,9 +47,9 @@ def test_rules():
             'message': '',
             'path': '',
             'rule': '',
-            'rule_id': 'TEST_RULE_1',
+            'rule_id': 'TEST_RULE_3',
             'rule_text': '',
-            'status': 'Success',
+            'status': 'Not Implemented',
         },        
         {
             "attribute": "",

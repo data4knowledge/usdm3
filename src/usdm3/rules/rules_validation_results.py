@@ -73,6 +73,7 @@ class RulesValidationResults:
                         )
                     )
                     rows.append(row)
+            rows.sort(key=lambda x: x["rule_id"])
             return rows
 
     def _flatten_error(self, error: dict) -> dict:

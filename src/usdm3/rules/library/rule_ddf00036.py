@@ -26,6 +26,6 @@ class RuleDDF00036(RuleTemplate):
                         "Invalid relativeToFrom",
                         "Timing",
                         "relativeToFrom",
-                        item["id"],
+                        data.path_by_id(item["id"]),
                     )
         return self._result()

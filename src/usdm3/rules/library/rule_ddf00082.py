@@ -1,8 +1,9 @@
+import os
+import pathlib
 from .rule_template import RuleTemplate
-from usdm3.schema.schema_location import SchemaErrorLocation
-from usdm3.schema.schema_validation import SchemaValidation, ValidationError
+from usdm3.rules.library.schema.schema_location import SchemaErrorLocation
+from usdm3.rules.library.schema.schema_validation import SchemaValidation, ValidationError
 from usdm3.data_store.data_store import DataStore
-
 
 class RuleDDF00082(RuleTemplate):
     """
@@ -22,11 +23,15 @@ class RuleDDF00082(RuleTemplate):
     def validate(self, config: dict) -> bool:
         try:
             data: DataStore = config["data"]
-            schema_path = "schema/usdm_v3.json"
-            validator = SchemaValidation(schema_path)
+            print(f"SCHEMA PATH: {self._schema_path()}")
+            validator = SchemaValidation(self._schema_path())
             validator.validate_file(data.filename, "Wrapper-Input")
             return True
         except ValidationError as e:
             location = SchemaErrorLocation(e.json_path, e.instance)
             self._errors.add(e.message, location)
             return False
+
+    def _schema_path(self) -> str:
+        root = pathlib.Path(__file__).parent.resolve()
+        return os.path.join(root, "schema/usdm_v3.json")
