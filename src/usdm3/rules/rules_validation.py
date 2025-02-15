@@ -12,8 +12,10 @@ from usdm3.base.singleton import Singleton
 
 class RulesValidation(metaclass=Singleton):
 
-    def __init__(self, rules_dir: str):
-        self.rules_dir = rules_dir
+    def __init__(self, library_path: str, package_name: str):
+        self.library_path = Path(library_path)
+        self.package_name = package_name
+        print(f"library_path: {self.library_path}, {self.package_name}")
         self.rules: List[Type[RuleTemplate]] = []
         self._load_rules()
 
@@ -26,17 +28,13 @@ class RulesValidation(metaclass=Singleton):
         return results
 
     def _load_rules(self) -> None:
-        # Get absolute path to the rules library directory
-        library_path = Path(__file__).parent / "library"
-        package_name = "usdm3.rules.library"
-
         # Iterate through all .py files in the library directory
-        for file in library_path.glob("rule_*.py"):
+        for file in self.library_path.glob("rule_*.py"):
             print(f"file: {file}")
             if file.name.startswith("rule_") and file.name.endswith(".py"):
                 try:
                     # Create module name from file name
-                    module_name = f"{package_name}.{file.stem}"
+                    module_name = f"{self.package_name}.{file.stem}"
                     
                     # Load module using absolute path
                     spec = importlib.util.spec_from_file_location(module_name, str(file))
