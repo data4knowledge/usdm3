@@ -44,9 +44,6 @@ class RuleTemplate:
         self._rule_text = rule_text
 
     def validate(self, config: dict) -> bool:
-        """
-        Run the rule on the data
-        """
         raise NotImplementedError("rule is not implemented")
 
     def errors(self) -> Errors:
@@ -66,16 +63,38 @@ class RuleTemplate:
         ct = config["ct"]
         items = data.instances_by_klass(klass)
         codelist = ct.klass_and_attribute(klass, attribute)
-        codes = [x["conceptId"] for x in codelist["terms"]]
-        decodes = [x["preferredTerm"] for x in codelist["terms"]]
+        codes, decodes = self._codes_and_decodes(codelist)
+        print(codes, decodes)
         for item in items:
             if attribute in item:
-                if (
-                    item[attribute]["code"] not in codes
-                    or item[attribute]["decode"] not in decodes
-                ):
+                code = item[attribute]["code"]
+                decode = item[attribute]["decode"]
+                code_index = self._find_index(codes, code)
+                decode_index = self._find_index(decodes, decode)
+                if code_index is None and decode_index is not None:
                     self._add_failure(
-                        "Invalid code/decode",
+                        f"Invalid code '{code}', the code is not in the codelist",
+                        klass,
+                        attribute,
+                        data.path_by_id(item["id"]),
+                    )
+                elif code_index is not None and decode_index is None:
+                    self._add_failure(
+                        f"Invalid decode '{decode}', the decode is not in the codelist",
+                        klass,
+                        attribute,
+                        data.path_by_id(item["id"]),
+                    )
+                elif code_index is None and decode_index is None:
+                    self._add_failure(
+                        f"Invalid code and decode '{code}' and '{decode}', neither the code and decode are in the codelist",
+                        klass,
+                        attribute,
+                        data.path_by_id(item["id"]),
+                    )
+                elif code_index != decode_index:
+                    self._add_failure(
+                        f"Invalid code and decode pair '{code}' and '{decode}', the code and decode do not match",
                         klass,
                         attribute,
                         data.path_by_id(item["id"]),
@@ -85,3 +104,16 @@ class RuleTemplate:
                     "Missing attribute", klass, attribute, data.path_by_id(item["id"])
                 )
         return self._result()
+
+    def _codes_and_decodes(self, codelist: dict) -> tuple[list[str], list[str]]:
+        if "terms" not in codelist:
+            return [], []
+        codes = [x["code"] for x in codelist["terms"]]
+        decodes = [x["decode"] for x in codelist["terms"]]
+        return codes, decodes
+
+    def _find_index(self, items: list[str], value: str) -> int | None:
+        try:
+            return items.index(value)
+        except ValueError:
+            return None
