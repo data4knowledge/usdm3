@@ -19,7 +19,6 @@ class DataStoreErrorLocation(ErrorLocation):
 
 class DecompositionError(Exception):
     def __init__(self, error: DataStoreErrorLocation):
-        print(f"DE: {error}")
         self.error = error
 
     def __str__(self):
@@ -100,11 +99,9 @@ class DataStore:
     def _check_id_klass(self, parent: dict, data: dict, path: str) -> None:
         id, error = self._check_id(parent, data, path)
         if error:
-            print(f"RAISE: {error}")
             raise DecompositionError(error)
         klass, error = self._check_instance_type(parent, data, path)
         if error:
-            print(f"RAISE: {error}")
             raise DecompositionError(error)
         return id, klass
 

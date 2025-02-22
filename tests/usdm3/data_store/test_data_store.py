@@ -1,4 +1,5 @@
 import pytest
+import json
 from pathlib import Path
 from usdm3.data_store.data_store import DataStore, DecompositionError
 
@@ -86,17 +87,83 @@ def test_parent_by_klass_not_found(data_store):
     parent = data_store.parent_by_klass("nonexistent", "Study")
     assert parent is None
 
+def test_id_errors(tmp_path):
+    """Test handling of missing IDs"""
+    # Create test data with missing id in StudyDesign
+    test_data = {
+        "Study": {
+            "id": "study1",
+            "instanceType": "Study",
+            "StudyVersion": [{
+                "id": "version1",
+                "instanceType": "StudyVersion",
+                "StudyDesign": [{
+                    "instanceType": "Encounter",
+                    # Missing id here
+                    "contactModes": [{
+                        "code": "C175574",
+                        "codeSystem": "http://www.cdisc.org",
+                        "codeSystemVersion": "2023-12-15",
+                        "decode": "Clinic"
+                    }]
+                }]
+            }]
+        }
+    }
+    
+    # Create temporary test file
+    test_file = tmp_path / "test_missing_id.json"
+    with open(test_file, 'w') as f:
+        json.dump(test_data, f)
+    
+    # Verify that attempting to create and decompose DataStore with invalid data raises DecompositionError
+    data_store = DataStore(test_file)
+    with pytest.raises(DecompositionError) as exc_info:
+        data_store.decompose()
+    
+    # Verify error message contains expected information
+    error_msg = str(exc_info.value)
+    assert "missing id" in error_msg
+    assert "$.Study.StudyVersion[0]" in error_msg
 
-def test_id_errors(data_store_with_id_errors):
-    """Test id errors in JSON"""
-    with pytest.raises(DecompositionError) as e:
-        data_store_with_id_errors.decompose()
-    # assert str(e) == "error decomposing the '.json' file, missing id at $.Study.StudyVersion[0].StudyDesign[0], with xxx"
-    print(f"X: {str(e.value)}")
+def test_type_errors(tmp_path):
+    """Test handling of missing IDs"""
+    # Create test data with missing id in StudyDesign
+    test_data = {
+        "Study": {
+            "id": "study1",
+            "instanceType": "Study",
+            "StudyVersion": [{
+                "id": "version1",
+                "instanceType": "StudyVersion",
+                "StudyDesign": [{
+                    "id": "design1",
+                    "instanceType": "Encounter",
+                    # Missing id here
+                    "contactModes": [{
+                        "id": "contactMode1",
+                        "code": 175574,
+                        "codeSystem": "http://www.cdisc.org",
+                        "codeSystemVersion": "2023-12-15",
+                        "decode": "Clinic"
+                    }]
+                }]
+            }]
+        }
+    }
+    
+    # Create temporary test file
+    test_file = tmp_path / "test_missing_id.json"
+    with open(test_file, 'w') as f:
+        json.dump(test_data, f)
+    
+    # Verify that attempting to create and decompose DataStore with invalid data raises DecompositionError
+    data_store = DataStore(test_file)
+    with pytest.raises(DecompositionError) as exc_info:
+        data_store.decompose()
+    
+    # Verify error message contains expected information
+    error_msg = str(exc_info.value)
+    assert "instanceType" in error_msg
+    assert "$.Study.StudyVersion[0].Encounter[0]" in error_msg
 
-
-def test_instance_type_errors(data_store_with_instance_type_errors):
-    """Test id errors in JSON"""
-    with pytest.raises(DecompositionError) as e:
-        data_store_with_id_errors.decompose()
-    print(f"X: {str(e.value)}")
