@@ -21,7 +21,7 @@ class RuleDDF00036(RuleTemplate):
         items = data.instances_by_klass("Timing")
         for item in items:
             if item["type"]["decode"] == "Fixed Reference":
-                if "relativeToFrom" != "Start to Start":
+                if item["relativeToFrom"] != "Start to Start":
                     self._add_failure(
                         "Invalid relativeToFrom",
                         "Timing",

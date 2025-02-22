@@ -1,13 +1,13 @@
 import os
 import json
-from jsonschema import validate, RefResolver
+from jsonschema import validate, RefResolver, ValidationError
 
 
 class SchemaValidation:
-    # class SchemaValidatorError(Exception):
-    #     """Custom exception for schema validator errors"""
+    class Dummy(ValidationError):
+        """Include so ruff doesnot complain about the ValidationError class not being used. Want it to be propagated."""
 
-    #     pass
+        pass
 
     def __init__(self, schema_file_path: str):
         self.schema_file_path = schema_file_path

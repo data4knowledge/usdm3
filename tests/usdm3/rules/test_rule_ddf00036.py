@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00036 import RuleDDF00036
 from usdm3.rules.library.rule_template import RuleTemplate
 
@@ -19,9 +20,47 @@ def test_initialization(rule):
     assert rule._errors.count() == 0
 
 
-def test_validate_not_implemented(rule):
-    """Test that validate method raises NotImplementedError"""
-    config = {"data": {}, "ct": {}}
-    with pytest.raises(NotImplementedError) as exc_info:
-        rule.validate(config)
-    assert str(exc_info.value) == "rule is not implemented"
+def test_validate_valid(rule):
+    data_store = Mock()
+    data_store.instances_by_klass.return_value = [
+        {
+            "id": "timing1",
+            "type": {"decode": "Fixed Reference"},
+            "instanceType": "Timing",
+            "relativeToFrom": "Start to Start",
+        }
+    ]
+
+    config = {"data": data_store}
+
+    assert rule.validate(config) is True
+    assert rule._errors.count() == 0
+
+
+def test_validate_invalid_both_references(rule):
+    data_store = Mock()
+    data_store.instances_by_klass.return_value = [
+        {
+            "id": "timing1",
+            "type": {"decode": "Fixed Reference"},
+            "instanceType": "Timing",
+            "relativeToFrom": "Not Start to Start",
+        }
+    ]
+    data_store.path_by_id.side_effect = ["path/path1"]
+
+    config = {"data": data_store}
+
+    assert rule.validate(config) is False
+    assert rule._errors.count() == 1
+    assert rule._errors._items[0].to_dict() == {
+        "level": "Error",
+        "location": {
+            "attribute": "relativeToFrom",
+            "klass": "Timing",
+            "path": "path/path1",
+            "rule": "DDF00036",
+            "rule_text": 'If timing type is "Fixed Reference" then the corresponding attribute relativeToFrom must be filled with "Start to Start".',
+        },
+        "message": "Invalid relativeToFrom",
+    }

@@ -50,4 +50,3 @@ class RuleDDF00031(RuleTemplate):
                         data.path_by_id(item["id"]),
                     )
         return self._result()
-        return self._result()
