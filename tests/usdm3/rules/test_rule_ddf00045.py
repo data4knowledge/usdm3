@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00045 import RuleDDF00045
 from usdm3.rules.library.rule_template import RuleTemplate
 
@@ -16,9 +17,67 @@ def test_initialization(rule):
     assert rule._errors.count() == 0
 
 
-def test_validate_not_implemented(rule):
-    """Test that validate method raises NotImplementedError"""
-    config = {"data": {}, "ct": {}}
-    with pytest.raises(NotImplementedError) as exc_info:
-        rule.validate(config)
-    assert str(exc_info.value) == "rule is not implemented"
+def test_validate_valid(rule):
+    empty_address = {
+        "id": "address1",
+        "text": "",
+        "line": "",
+        "city": "",
+        "district": "",
+        "state": "",
+        "postalCode": "",
+        "country": "",
+        "instanceType": "Address",
+    }
+    data_store = Mock()
+    data = []
+    for attribute in [
+        "text",
+        "line",
+        "city",
+        "district",
+        "state",
+        "postalCode",
+        "country",
+    ]:
+        address = dict(empty_address)
+        address[attribute] = "value"
+        data.append(address)
+    data_store.instances_by_klass.return_value = data
+
+    config = {"data": data_store}
+
+    assert rule.validate(config) is True
+    assert rule._errors.count() == 0
+
+
+def test_validate_invalid(rule):
+    empty_address = {
+        "id": "address1",
+        "text": "",
+        "line": "",
+        "city": "",
+        "district": "",
+        "state": "",
+        "postalCode": "",
+        "country": "",
+        "instanceType": "Address",
+    }
+    data_store = Mock()
+    data_store.instances_by_klass.return_value = [empty_address]
+    data_store.path_by_id.return_value = "path/address1"
+    config = {"data": data_store}
+
+    assert rule.validate(config) is False
+    assert rule._errors.count() == 1
+    assert rule._errors._items[0].to_dict() == {
+        "level": "Warning",
+        "location": {
+            "attribute": "",
+            "klass": "Address",
+            "path": "path/address1",
+            "rule": "DDF00045",
+            "rule_text": "At least one attribute must be specified for an address.",
+        },
+        "message": "No attributes specified for address",
+    }

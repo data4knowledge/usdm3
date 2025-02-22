@@ -30,6 +30,6 @@ class RuleDDF00045(RuleTemplate):
                     "No attributes specified for address",
                     "Address",
                     "",
-                    address["id"],
+                    data.path_by_id(address["id"]),
                 )
         return self._result()
