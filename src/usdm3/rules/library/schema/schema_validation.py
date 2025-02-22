@@ -1,6 +1,6 @@
 import os
 import json
-from jsonschema import validate, ValidationError, RefResolver
+from jsonschema import validate, RefResolver
 
 
 class SchemaValidation:

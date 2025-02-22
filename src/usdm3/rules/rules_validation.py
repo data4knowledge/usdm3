@@ -70,7 +70,7 @@ class RulesValidation(metaclass=Singleton):
                             try:
                                 self.rules.append(obj)
                                 # print(f"LOADED: {obj}")
-                            except Exception as e:
+                            except Exception:
                                 # print(f"FAILED: {str(e)}")
                                 continue
 
