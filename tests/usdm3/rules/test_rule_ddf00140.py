@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch
 from usdm3.rules.library.rule_ddf00140 import RuleDDF00140
 from usdm3.rules.library.rule_template import RuleTemplate
 
@@ -19,9 +20,12 @@ def test_initialization(rule):
     assert rule._errors.count() == 0
 
 
-def test_validate_not_implemented(rule):
-    """Test that validate method raises NotImplementedError"""
-    config = {"data": {}, "ct": {}}
-    with pytest.raises(NotImplementedError) as exc_info:
-        rule.validate(config)
-    assert str(exc_info.value) == "rule is not implemented"
+@patch("usdm3.rules.library.rule_template.RuleTemplate._ct_check")
+def test_validate(mock_ct_check, rule):
+    """Test validate method with ct_check"""
+    rule.validate({"data": {}, "ct": {}})
+    assert mock_ct_check.call_count == 1
+    assert mock_ct_check.call_args[0][0] == {"data": {}, "ct": {}}
+    assert mock_ct_check.call_args[0][1] == "Organization"
+    assert mock_ct_check.call_args[0][2] == "organizationType"
+
