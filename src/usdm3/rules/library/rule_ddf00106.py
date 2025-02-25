@@ -21,18 +21,21 @@ class RuleDDF00106(RuleTemplate):
         items = data.instances_by_klass("ScheduledActivityInstance")
         for item in items:
             if "encounterId" in item:
+                print(f"encounterId: {item['encounterId']}")
                 encounter = data.instance_by_id(item["encounterId"])
                 if encounter:
+                    print(f"encounter: {encounter}")
                     item_parent = data.parent_by_klass(item["id"], "StudyDesign")
+                    print(f"item_parent: {item_parent}")
                     encounter_parent = data.parent_by_klass(
                         encounter["id"], "StudyDesign"
                     )
+                    print(f"encounter_parent: {encounter_parent}")
                     if item_parent["id"] != encounter_parent["id"]:
                         self._add_failure(
                             "Encounter defined in a different study design",
                             item["instanceType"],
                             "encounterId",
-                            item["id"],
+                            data.path_by_id(item["id"]),
                         )
-        return self._result()
         return self._result()
