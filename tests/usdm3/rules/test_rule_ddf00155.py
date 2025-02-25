@@ -68,6 +68,11 @@ def test_validate_valid(rule):
             "codeSystem": "http://www.cdisc.org",
             "codeSystemVersion": "2024-09-27",
         },
+        {
+            "id": "code10",
+            "codeSystem": "http://www.example.com",
+            "codeSystemVersion": "2024-09-27",
+        },
     ]
 
     config = {"data": data_store}
