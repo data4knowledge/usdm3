@@ -20,19 +20,19 @@ class RuleDDF00108(RuleTemplate):
         data = config["data"]
         items = data.instances_by_klass("StudyTimeline")
         for item in items:
-            if exits := item.get("exits"):
-                if len(exits) == 0:
+            if "exits" in item:
+                if len(item["exits"]) == 0:
                     self._add_failure(
                         "No exits defined for timeline",
                         "StudyTimeline",
                         "exits",
-                        item["id"],
+                        data.path_by_id(item["id"]),
                     )
             else:
                 self._add_failure(
                     "Missing exits",
                     "StudyTimeline",
                     "exits",
-                    item["id"],
+                    data.path_by_id(item["id"]),
                 )
         return self._errors.count() == 0

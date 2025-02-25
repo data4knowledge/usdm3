@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00108 import RuleDDF00108
 from usdm3.rules.library.rule_template import RuleTemplate
 
@@ -19,9 +20,67 @@ def test_initialization(rule):
     assert rule._errors.count() == 0
 
 
-def test_validate_not_implemented(rule):
-    """Test that validate method raises NotImplementedError"""
-    config = {"data": {}, "ct": {}}
-    with pytest.raises(NotImplementedError) as exc_info:
-        rule.validate(config)
-    assert str(exc_info.value) == "rule is not implemented"
+def test_validate_valid(rule):
+    data_store = Mock()
+    data_store.instances_by_klass.return_value = [
+        {
+            "id": "code1",
+            "exits": ["id1", "id2"],
+        },
+    ]
+    data_store.path_by_id.side_effect = ["path/path1"]
+
+    config = {"data": data_store}
+    assert rule.validate(config) is True
+    assert rule._errors.count() == 0
+
+
+def test_validate_no_exits(rule):
+    data_store = Mock()
+    data_store.instances_by_klass.return_value = [
+        {
+            "id": "code1",
+            "exits": [],
+        },
+    ]
+    data_store.path_by_id.side_effect = ["path/path1"]
+
+    config = {"data": data_store}
+    assert rule.validate(config) is False
+    assert rule._errors.count() == 1
+    assert rule._errors._items[0].to_dict() == {
+        "level": "Error",
+        "location": {
+            "attribute": "exits",
+            "klass": "StudyTimeline",
+            "path": "path/path1",
+            "rule": "DDF00108",
+            "rule_text": "There must be at least one exit defined for each timeline (i.e., at least one instance of StudyTimelineExit linked via the 'exits' relationship).",
+        },
+        "message": "No exits defined for timeline",
+    }
+
+
+def test_validate_missing_exits(rule):
+    data_store = Mock()
+    data_store.instances_by_klass.return_value = [
+        {
+            "id": "code1",
+        },
+    ]
+    data_store.path_by_id.side_effect = ["path/path1"]
+
+    config = {"data": data_store}
+    assert rule.validate(config) is False
+    assert rule._errors.count() == 1
+    assert rule._errors._items[0].to_dict() == {
+        "level": "Error",
+        "location": {
+            "attribute": "exits",
+            "klass": "StudyTimeline",
+            "path": "path/path1",
+            "rule": "DDF00108",
+            "rule_text": "There must be at least one exit defined for each timeline (i.e., at least one instance of StudyTimelineExit linked via the 'exits' relationship).",
+        },
+        "message": "Missing exits",
+    }

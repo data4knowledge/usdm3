@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import patch, call
 from usdm3.rules.library.rule_ddf00145 import RuleDDF00145
 from usdm3.rules.library.rule_template import RuleTemplate
 

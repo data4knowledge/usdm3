@@ -25,7 +25,9 @@ def test_validate(mock_ct_check, rule):
     """Test validate method with ct_check"""
     rule.validate({"data": {}, "ct": {}})
     mock_ct_check.side_effect = [True, True]
-    mock_ct_check.assert_has_calls([
-        call({"data": {}, "ct": {}}, "StudyDesignPopulation", "plannedSex"),
-        call({"data": {}, "ct": {}}, "StudyCohort", "plannedSex"),
-    ])
+    mock_ct_check.assert_has_calls(
+        [
+            call({"data": {}, "ct": {}}, "StudyDesignPopulation", "plannedSex"),
+            call({"data": {}, "ct": {}}, "StudyCohort", "plannedSex"),
+        ]
+    )

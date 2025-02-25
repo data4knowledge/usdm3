@@ -28,4 +28,3 @@ def test_validate(mock_ct_check, rule):
     assert mock_ct_check.call_args[0][0] == {"data": {}, "ct": {}}
     assert mock_ct_check.call_args[0][1] == "Organization"
     assert mock_ct_check.call_args[0][2] == "organizationType"
-

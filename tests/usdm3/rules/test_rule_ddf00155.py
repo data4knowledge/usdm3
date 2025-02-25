@@ -79,13 +79,11 @@ def test_validate_valid(rule):
     assert rule.validate(config) is True
     assert rule._errors.count() == 0
 
+
 def test_validate_missing_code_system_version(rule):
     data_store = Mock()
     data_store.instances_by_klass.return_value = [
-        {
-            "id": "code1",
-            "codeSystem": "http://www.cdisc.org"
-        },
+        {"id": "code1", "codeSystem": "http://www.cdisc.org"},
     ]
     data_store.path_by_id.side_effect = ["path/path1"]
 
@@ -94,12 +92,12 @@ def test_validate_missing_code_system_version(rule):
     assert rule._errors.count() == 1
     assert rule._errors._items[0].to_dict() == {
         "level": "Error",
-        'location': {
-            'attribute': 'codeSystemVersion',
-            'klass': 'Code',
-            'path': 'path/path1',
-            'rule': 'DDF00155',
-            'rule_text': "For CDISC codelist references (where the code system is 'http://www.cdisc.org'), the code system version must be a valid CDISC terminology release date in ISO 8601 date format.",
+        "location": {
+            "attribute": "codeSystemVersion",
+            "klass": "Code",
+            "path": "path/path1",
+            "rule": "DDF00155",
+            "rule_text": "For CDISC codelist references (where the code system is 'http://www.cdisc.org'), the code system version must be a valid CDISC terminology release date in ISO 8601 date format.",
         },
         "message": "Missing codeSystemVersion",
     }
@@ -121,12 +119,12 @@ def test_validate_invalid_code_system_version(rule):
     assert rule._errors.count() == 1
     assert rule._errors._items[0].to_dict() == {
         "level": "Error",
-        'location': {
-            'attribute': 'codeSystemVersion',
-            'klass': 'Code',
-            'path': 'path/path1',
-            'rule': 'DDF00155',
-            'rule_text': "For CDISC codelist references (where the code system is 'http://www.cdisc.org'), the code system version must be a valid CDISC terminology release date in ISO 8601 date format.",
+        "location": {
+            "attribute": "codeSystemVersion",
+            "klass": "Code",
+            "path": "path/path1",
+            "rule": "DDF00155",
+            "rule_text": "For CDISC codelist references (where the code system is 'http://www.cdisc.org'), the code system version must be a valid CDISC terminology release date in ISO 8601 date format.",
         },
         "message": "Invalid codeSystemVersion",
     }
