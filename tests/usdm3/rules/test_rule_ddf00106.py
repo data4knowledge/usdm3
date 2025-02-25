@@ -67,6 +67,7 @@ def test_validate_encounter_in_different_study_design(rule):
         "message": "Encounter defined in a different study design",
     }
 
+
 def test_validate_encounter_in_same_study_design(rule):
     data_store = Mock()
     data_store.instances_by_klass.return_value = [

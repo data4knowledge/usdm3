@@ -17,29 +17,4 @@ class RuleDDF00104(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-        data = config["data"]
-        ct = config["ct"]
-        items = data.instances_by_klass("Timing")
-        codelist = ct.klass_and_attribute("Timing", "timingRelativeToFrom")
-        codes = [x["conceptId"] for x in codelist["terms"]]
-        decodes = [x["preferredTerm"] for x in codelist["terms"]]
-        for item in items:
-            if "relativeToFrom" in item:
-                if (
-                    item["relativeToFrom"]["code"] not in codes
-                    or item["relativeToFrom"]["decode"] not in decodes
-                ):
-                    self._add_failure(
-                        "Invalid relativeToFrom",
-                        "Timing",
-                        "relativeToFrom",
-                        item["id"],
-                    )
-            else:
-                self._add_failure(
-                    "Missing relativeToFrom",
-                    "Timing",
-                    "relativeToFrom",
-                    item["id"],
-                )
-        return self._result()
+        return self._ct_check(config, "Timing", "timingRelativeToFrom")
