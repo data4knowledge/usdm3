@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock, patch
 from usdm3.rules.library.rule_ddf00082 import RuleDDF00082
 from usdm3.rules.library.rule_template import RuleTemplate
 
@@ -19,9 +20,24 @@ def test_initialization(rule):
     assert rule._errors.count() == 0
 
 
-def test_validate_not_implemented(rule):
-    """Test that validate method raises NotImplementedError"""
-    config = {"data": {}, "ct": {}}
-    with pytest.raises(NotImplementedError) as exc_info:
-        rule.validate(config)
-    assert str(exc_info.value) == "rule is not implemented"
+@patch("usdm3.rules.library.schema.schema_validation.SchemaValidation.validate_file")
+def test_validate_passed(mock_validate_file, rule):
+    data_store = Mock()
+    data_store.filename = "filename.txt"
+
+    mock_validate_file.return_value = True
+    result = rule.validate({"data": data_store})
+    assert result == True
+
+
+def test_validate_fails(rule):
+    data_store = Mock()
+    data_store.filename = "filename.txt"
+
+    with patch(
+        "usdm3.rules.library.schema.schema_validation.SchemaValidation.validate_file",
+        side_effect=Exception("ValidationError"),
+    ):
+        with pytest.raises(Exception) as excinfo:
+            result = rule.validate({"data": data_store})
+            assert result == False

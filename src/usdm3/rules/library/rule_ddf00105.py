@@ -31,6 +31,6 @@ class RuleDDF00105(RuleTemplate):
                             "Epoch defined in a different study design",
                             item["instanceType"],
                             "epochId",
-                            item["id"],
+                            data.path_by_id(item["id"]),
                         )
         return self._result()

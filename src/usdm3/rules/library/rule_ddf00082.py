@@ -1,6 +1,6 @@
 import os
 import pathlib
-from .rule_template import RuleTemplate
+from usdm3.rules.library.rule_template import RuleTemplate
 from usdm3.rules.library.schema.schema_location import SchemaErrorLocation
 from usdm3.rules.library.schema.schema_validation import (
     SchemaValidation,
@@ -27,7 +27,6 @@ class RuleDDF00082(RuleTemplate):
     def validate(self, config: dict) -> bool:
         try:
             data: DataStore = config["data"]
-            print(f"SCHEMA PATH: {self._schema_path()}")
             validator = SchemaValidation(self._schema_path())
             validator.validate_file(data.filename, "Wrapper-Input")
             return True
