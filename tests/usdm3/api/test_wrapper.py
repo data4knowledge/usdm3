@@ -97,6 +97,6 @@ def test_init():
             ],
         },
         "systemName": "Python USDM3 Package",
-        "systemVersion": "0.1.0",
+        "systemVersion": "0.2.0",
         "usdmVersion": "3.0.0",
     }
