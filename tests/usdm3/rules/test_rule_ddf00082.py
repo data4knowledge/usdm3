@@ -27,7 +27,7 @@ def test_validate_passed(mock_validate_file, rule):
 
     mock_validate_file.return_value = True
     result = rule.validate({"data": data_store})
-    assert result == True
+    assert result 
 
 
 def test_validate_fails(rule):
@@ -38,6 +38,6 @@ def test_validate_fails(rule):
         "usdm3.rules.library.schema.schema_validation.SchemaValidation.validate_file",
         side_effect=Exception("ValidationError"),
     ):
-        with pytest.raises(Exception) as excinfo:
+        with pytest.raises(Exception): # as excinfo: ... removed from ruff check but keep as a reminder
             result = rule.validate({"data": data_store})
-            assert result == False
+            assert not result

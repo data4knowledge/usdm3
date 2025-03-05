@@ -1,8 +1,8 @@
-from usdm3.api.wrapper import Wrapper
+from src.usdm3.minimum.minimum import Minimum
 
 
 def test_init():
-    instance = Wrapper.minimum("Test Study", "SPONSOR-1234", "1.0.0")
+    instance = Minimum.minimum("Test Study", "SPONSOR-1234", "1.0.0")
     assert instance.study.versions[0].titles[0].text == "Test Study"
     assert (
         instance.study.versions[0].studyIdentifiers[0].studyIdentifier == "SPONSOR-1234"
@@ -97,6 +97,6 @@ def test_init():
             ],
         },
         "systemName": "Python USDM3 Package",
-        "systemVersion": "0.2.0",
+        "systemVersion": "0.3.0",
         "usdmVersion": "3.0.0",
     }
