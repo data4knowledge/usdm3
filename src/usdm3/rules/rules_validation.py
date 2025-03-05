@@ -9,6 +9,7 @@ from usdm3.ct.cdisc.library import Library
 from usdm3.rules.rules_validation_results import RulesValidationResults
 from usdm3.base.singleton import Singleton
 
+
 class RulesValidation(metaclass=Singleton):
     def __init__(self, library_path: str, package_name: str):
         self.library_path = Path(library_path)
@@ -66,7 +67,7 @@ class RulesValidation(metaclass=Singleton):
                             except Exception:
                                 continue
 
-                except Exception as e:
+                except Exception:
                     continue
 
     def _execute_rules(self, config: dict) -> RulesValidationResults:
