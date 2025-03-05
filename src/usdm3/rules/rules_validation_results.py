@@ -43,6 +43,12 @@ class RulesValidationResults:
     def passed(self):
         return all(item["status"] == "Success" for item in self._items.values())
 
+    def passed_or_not_implemented(self):
+        return all(
+            item["status"] == "Success" or item["status"] == "Not Implemented"
+            for item in self._items.values()
+        )
+
     def to_dict(self) -> list[dict]:
         if len(self._items) == 0:
             return []

@@ -67,8 +67,8 @@ def test_ct_check_valid(rule):
     ct = Mock()
     ct.klass_and_attribute.return_value = {
         "terms": [
-            {"code": "C12345", "decode": "Decode 1"},
-            {"code": "C12346", "decode": "Decode 2"},
+            {"conceptId": "C12345", "preferredTerm": "Decode 1"},
+            {"conceptId": "C12346", "preferredTerm": "Decode 2"},
         ]
     }
 
@@ -94,8 +94,8 @@ def test_ct_check_invalid(rule):
     ct = Mock()
     ct.klass_and_attribute.return_value = {
         "terms": [
-            {"code": "C12345", "decode": "Decode 1"},
-            {"code": "C12346", "decode": "Decode 2"},
+            {"conceptId": "C12345", "preferredTerm": "Decode 1"},
+            {"conceptId": "C12346", "preferredTerm": "Decode 2"},
         ]
     }
 

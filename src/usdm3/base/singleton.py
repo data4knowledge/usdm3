@@ -1,16 +1,19 @@
 class Singleton(type):
-    # Inherit from "type" in order to gain access to method __call__
-    def __init__(self, *args, **kwargs):
-        self.__instance = None  # Create a variable to store the object reference
-        super().__init__(*args, **kwargs)
 
-    def __call__(self, *args, **kwargs):
-        if self.__instance is None:
-            # if the object has not already been created
-            self.__instance = super().__call__(
-                *args, **kwargs
-            )  # Call the __init__ method of the subclass (Spam) and save the reference
-            return self.__instance
-        else:
-            # if object (Spam) reference already exists; return it
-            return self.__instance
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        name = cls.__name__
+        print(f"SINGLETON __class__ 1: {cls.__name__} {cls._instances}")
+        if name not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[name] = instance
+        print(f"SINGLETON __call__ 2: {cls._instances}")
+        return cls._instances[name]
+    
+    @classmethod
+    def clear(cls, the_cls):
+        print(f"SINGLETON clear 1: {cls._instances}")
+        name = the_cls.__name__
+        del cls._instances[name]
+        print(f"SINGLETON clear 2: {cls._instances}")

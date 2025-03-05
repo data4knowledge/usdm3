@@ -77,5 +77,5 @@ class LibraryAPI:
         return None
 
     def _url(self, relative_url: str) -> str:
-        print(f"{self.API_ROOT} + {relative_url}")
+        # print(f"{self.API_ROOT} + {relative_url}")
         return f"{self.API_ROOT}{relative_url}"

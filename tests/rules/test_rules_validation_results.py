@@ -94,7 +94,8 @@ def test_passed_all_success(validation_results):
     validation_results.add_success("rule1")
     validation_results.add_success("rule2")
 
-    assert validation_results.passed() is True
+    assert validation_results.passed()
+    assert validation_results.passed_or_not_implemented()
 
 
 def test_passed_with_failure(validation_results):
@@ -102,7 +103,8 @@ def test_passed_with_failure(validation_results):
     validation_results.add_success("rule1")
     validation_results.add_failure("rule2", Errors())
 
-    assert validation_results.passed() is False
+    assert not validation_results.passed()
+    assert not validation_results.passed_or_not_implemented()
 
 
 def test_passed_with_exception(validation_results):
@@ -110,7 +112,8 @@ def test_passed_with_exception(validation_results):
     validation_results.add_success("rule1")
     validation_results.add_exception("rule2", Exception("test"))
 
-    assert validation_results.passed() is False
+    assert not validation_results.passed()
+    assert not validation_results.passed_or_not_implemented()
 
 
 def test_passed_with_not_implemented(validation_results):
@@ -118,7 +121,8 @@ def test_passed_with_not_implemented(validation_results):
     validation_results.add_success("rule1")
     validation_results.add_not_implemented("rule2")
 
-    assert validation_results.passed() is False
+    assert not validation_results.passed()
+    assert validation_results.passed_or_not_implemented()
 
 
 def test_to_dict_empty(validation_results):

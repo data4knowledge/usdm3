@@ -1,4 +1,4 @@
-from usdm3.rules.rules_validation import RulesValidation
+from src.usdm3.rules.rules_validation import RulesValidation
 import pathlib
 import os
 
@@ -6,14 +6,14 @@ import os
 def library_path(path: str):
     root = pathlib.Path(__file__).parent.resolve()
     path = os.path.join(root, path)
-    print(f"path: {path}")
     return path
 
 
 def test_rules():
     """Test loading rules"""
+    RulesValidation.__instance = None
     validator = RulesValidation(
-        library_path("test_library"), "tests.usdm3.rules.test_library"
+        library_path("test_library"), "tests.rules.test_library"
     )
     assert len(validator.rules) == 4
     results = validator._execute_rules({"data": {}, "ct": {}})

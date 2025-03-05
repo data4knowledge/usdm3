@@ -38,13 +38,13 @@ class Minimum:
         cdisc_code_system_version = "2023-12-15"
 
         # Define the codes to be used in the study
-        study_type = api_instance.create(
+        title_type = api_instance.create(
             Code,
             {
-                "code": "C98388",
+                "code": "C207616",
                 "codeSystem": cdisc_code_system,
                 "codeSystemVersion": cdisc_code_system_version,
-                "decode": "Interventional Study",
+                "decode": "Official Study Title",
             },
         )
         organization_type = api_instance.create(
@@ -59,15 +59,15 @@ class Minimum:
         doc_status = api_instance.create(
             Code,
             {
-                "code": "C98388",
+                "code": "C25425",
                 "codeSystem": cdisc_code_system,
                 "codeSystemVersion": cdisc_code_system_version,
-                "decode": "Interventional Study",
+                "decode": "Approved",
             },
         )
 
         study_title = api_instance.create(
-            StudyTitle, {"text": title, "type": study_type}
+            StudyTitle, {"text": title, "type": title_type}
         )
 
         # Define the protocol documents

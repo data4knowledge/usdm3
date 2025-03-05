@@ -64,7 +64,6 @@ class RuleTemplate:
         items = data.instances_by_klass(klass)
         codelist = ct.klass_and_attribute(klass, attribute)
         codes, decodes = self._codes_and_decodes(codelist)
-        print(codes, decodes)
         for item in items:
             if attribute in item:
                 code = item[attribute]["code"]
@@ -108,8 +107,8 @@ class RuleTemplate:
     def _codes_and_decodes(self, codelist: dict) -> tuple[list[str], list[str]]:
         if "terms" not in codelist:
             return [], []
-        codes = [x["code"] for x in codelist["terms"]]
-        decodes = [x["decode"] for x in codelist["terms"]]
+        codes = [x["conceptId"] for x in codelist["terms"]]
+        decodes = [x["preferredTerm"] for x in codelist["terms"]]
         return codes, decodes
 
     def _find_index(self, items: list[str], value: str) -> int | None:

@@ -7,9 +7,12 @@ from usdm3.api.wrapper import Wrapper
 
 
 class USDM3:
+    def __init__(self):
+        path = self._library_path()
+        self.validator = RulesValidation(path, "usdm3.rules.library")
+
     def validate(self, file_path: str) -> RulesValidationResults:
-        validator = RulesValidation(self._library_path(), "usdm3.rules.library")
-        return validator.validate_rules(file_path)
+        return self.validator.validate_rules(file_path)
 
     def minimum(self, study_name: str, sponsor_id: str, version: str) -> Wrapper:
         return Minimum.minimum(study_name, sponsor_id, version)
