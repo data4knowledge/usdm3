@@ -13,10 +13,27 @@ def test_validate(tmp_path):
     assert result.passed_or_not_implemented()
 
 
+def test_validate_error(tmp_path):
+    # Create temporary test file
+    clear_rules_library()
+    test_file = tmp_path / "validate.json"
+    with open(test_file, "w") as f:
+        json.dump(_bad(), f)
+    result = USDM3().validate(test_file)
+    # print(f"RESULT: {result._items['DDF00082']}")
+    assert not result.passed_or_not_implemented()
+
+
 def test_minimum():
     result = USDM3().minimum("Name", "ACME", "1")
     result.study.id = "FAKE-UUID"
     assert result.model_dump() == _expected()
+
+
+def _bad():
+    data = _expected()
+    data["study"]["documentedBy"]["id"] = None
+    return data
 
 
 def _expected():
