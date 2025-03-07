@@ -94,7 +94,9 @@ def test_load_from_api(
     mock_config.required_code_lists.return_value = ["C123"]
 
     # Create library and load data
-    library = Library("test_library.yaml")
+    library = Library(
+
+    )
     library.load()
 
     # Verify API was called
@@ -127,7 +129,7 @@ def test_load_from_cache(
     mock_cache.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
-    library = Library("test_library.yaml")
+    library = Library()
     library.load()
 
     # Verify API was not called
@@ -148,7 +150,7 @@ def test_load_from_cache(
 def test_klass_and_attribute(mock_config_cls):
     """Test klass_and_attribute method"""
     # Create library instance with all dependencies mocked
-    library = Library("test_library.yaml")
+    library = Library()
 
     # Setup mock config
     mock_config = mock_config_cls.return_value
