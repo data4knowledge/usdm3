@@ -6,7 +6,6 @@ class Config:
     def __init__(self, filepath: str, filename: str = "ct_config.yaml"):
         self.filename = filename
         self.filepath = filepath
-        print(f"CONFIG: {self._full_filepath()}")
         f = open(os.path.join(self._full_filepath()))
         self._cdisc_ct_config = yaml.load(f, Loader=yaml.FullLoader)
         self._by_klass_attribute = {}
