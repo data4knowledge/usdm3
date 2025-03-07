@@ -1,5 +1,6 @@
 import sys
 import inspect
+import os
 import importlib
 from pathlib import Path
 from typing import List, Type
@@ -11,6 +12,9 @@ from usdm3.base.singleton import Singleton
 
 
 class RulesValidation(metaclass=Singleton):
+
+    CDISC_CT_LIBRARY = os.path.join(Path(__file__).parent.parent.resolve(), "ct/cdisc")
+
     def __init__(self, library_path: str, package_name: str):
         self.library_path = Path(library_path)
         self.package_name = package_name
@@ -20,7 +24,7 @@ class RulesValidation(metaclass=Singleton):
     def validate_rules(self, filename: str) -> RulesValidationResults:
         data_store, e = self._data_store(filename)
         if data_store:
-            ct = Library()
+            ct = Library(self.CDISC_CT_LIBRARY)
             ct.load()
             config = {"data": data_store, "ct": ct}
             results = self._execute_rules(config)

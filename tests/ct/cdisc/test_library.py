@@ -1,3 +1,4 @@
+import os
 import pytest
 from unittest.mock import Mock, patch
 from usdm3.ct.cdisc.library import Library
@@ -54,9 +55,23 @@ def mock_cache():
 
 
 @pytest.fixture
-def library():
-    """Create a Library instance with default path"""
-    return Library()
+def library(tmp_path):
+    filename = "ct_config.yaml"
+    config_content = """
+    code_lists:
+      - "codelist1"
+      - "codelist2"
+    packages:
+      - "package1"
+      - "package2"
+    klass_attribute_mapping:
+      TestClass:
+        testAttribute: "test-codelist"
+    """
+    os.mkdir(tmp_path / "config")
+    config_file = tmp_path / "config" / filename
+    config_file.write_text(config_content)
+    return Library(tmp_path)
 
 
 def test_library_initialization(library):
@@ -94,9 +109,7 @@ def test_load_from_api(
     mock_config.required_code_lists.return_value = ["C123"]
 
     # Create library and load data
-    library = Library(
-
-    )
+    library = Library("xxx")
     library.load()
 
     # Verify API was called
@@ -121,6 +134,7 @@ def test_load_from_cache(
     mock_cache_cls,
     mock_api_cls,
     sample_codelist,
+    library
 ):
     """Test loading data from cache when it exists"""
     # Setup mocks
@@ -129,7 +143,6 @@ def test_load_from_cache(
     mock_cache.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
-    library = Library()
     library.load()
 
     # Verify API was not called
@@ -150,7 +163,7 @@ def test_load_from_cache(
 def test_klass_and_attribute(mock_config_cls):
     """Test klass_and_attribute method"""
     # Create library instance with all dependencies mocked
-    library = Library()
+    library = Library("xxx")
 
     # Setup mock config
     mock_config = mock_config_cls.return_value

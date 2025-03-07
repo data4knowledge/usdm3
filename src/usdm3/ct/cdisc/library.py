@@ -15,11 +15,12 @@ class Library:
     cache file or fetch it from the CDISC API when needed.
     """
 
-    def __init__(self):
-        self._config = Config(self._filepath("config"))  # Configuration for required code lists and mappings
+    def __init__(self, filepath: str):
+        self.filepath = filepath
+        self._config = Config(os.path.join(self.filepath, "config"))  # Configuration for required code lists and mappings
         self._missing = Missing()  # Handler for missing/additional code lists
         self._api = LibraryAPI()  # Interface to CDISC Library API
-        self._cache = LibraryCache(self._filepath("library_cache"))  # Cache file handler
+        self._cache = LibraryCache(os.path.join(self.filepath, "library_cache"))  # Cache file handler
 
         # Data structures to store and index controlled terminology
         self._by_code_list = {}  # Maps concept IDs to complete code list data
@@ -89,7 +90,3 @@ class Library:
         if id not in collection:
             collection[id] = []
         collection[id].append(item)
-
-    def _filepath(self, sub_dir) -> str:
-        file_path = os.path.join(pathlib.Path(__file__).parent.resolve(), sub_dir)
-        return file_path
