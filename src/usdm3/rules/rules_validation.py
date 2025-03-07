@@ -57,7 +57,6 @@ class RulesValidation(metaclass=Singleton):
                     spec.loader.exec_module(module)
 
                     for name, obj in inspect.getmembers(module):
-                        print(f"ITEM: {name}, {type(obj)}, {obj}, {obj.__module__}, {obj.__module__ + '.' + obj.__qualname__}")
                         if (
                             inspect.isclass(obj)
                             and issubclass(obj, RuleTemplate)
@@ -65,7 +64,6 @@ class RulesValidation(metaclass=Singleton):
                             and obj.__module__.startswith(self.package_name)
                         ):
                             try:
-                                print(f"RULE LOAD: {name}")
                                 self.rules.append(obj)
                             except Exception:
                                 continue
@@ -75,13 +73,11 @@ class RulesValidation(metaclass=Singleton):
 
     def _execute_rules(self, config: dict) -> RulesValidationResults:
         results = RulesValidationResults()
-        print(f"RULE SET: {self.rules}")
         for rule_class in self.rules:
             try:
                 # Execute the rule
                 rule: RuleTemplate = rule_class()
                 passed = rule.validate(config)
-                print(f"RULE: {rule._rule}, {passed}")
                 if passed:
                     results.add_success(rule._rule)
                 else:

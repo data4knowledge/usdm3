@@ -32,7 +32,7 @@ class RuleDDF00082(RuleTemplate):
             return True
         except ValidationError as e:
             location = SchemaErrorLocation(e.json_path, e.instance)
-            self._errors.add(e.message, location)
+            self._errors.add(f"Message: {e.message}\nContext: {e.context}", location)
             return False
 
     def _schema_path(self) -> str:
