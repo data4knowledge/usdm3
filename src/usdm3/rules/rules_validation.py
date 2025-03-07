@@ -6,16 +6,17 @@ from pathlib import Path
 from typing import List, Type
 from usdm3.rules.library.rule_template import RuleTemplate
 from usdm3.data_store.data_store import DataStore, DecompositionError
-from usdm3.ct.cdisc.library import Library
+from usdm3.ct.cdisc.library import Library as CTLibrary
 from usdm3.rules.rules_validation_results import RulesValidationResults
 from usdm3.base.singleton import Singleton
 
 
 class RulesValidation(metaclass=Singleton):
-    CDISC_CT_LIBRARY = os.path.join(Path(__file__).parent.parent.resolve(), "ct/cdisc")
-
-    def __init__(self, library_path: str, package_name: str):
-        self.library_path = Path(library_path)
+    def __init__(self, root_path: str, package_name: str):
+        self.root_path = root_path
+        self.library_path = os.path.join(self.root_path, "rules/library")
+        self.ct_path = os.path.join(self.root_path, "ct/cdisc")
+        print(f"PATHS: {self.root_path}, {self.library_path}, {self.ct_path}")
         self.package_name = package_name
         self.rules: List[Type[RuleTemplate]] = []
         self._load_rules()
@@ -23,7 +24,7 @@ class RulesValidation(metaclass=Singleton):
     def validate_rules(self, filename: str) -> RulesValidationResults:
         data_store, e = self._data_store(filename)
         if data_store:
-            ct = Library(self.CDISC_CT_LIBRARY)
+            ct = CTLibrary(self.ct_path)
             ct.load()
             config = {"data": data_store, "ct": ct}
             results = self._execute_rules(config)
@@ -42,7 +43,7 @@ class RulesValidation(metaclass=Singleton):
 
     def _load_rules(self) -> None:
         # Iterate through all .py files in the library directory
-        for file in self.library_path.glob("rule_*.py"):
+        for file in Path(self.library_path).glob("rule_*.py"):
             if file.name.startswith("rule_ddf") and file.name.endswith(".py"):
                 try:
                     # Create module name from file name

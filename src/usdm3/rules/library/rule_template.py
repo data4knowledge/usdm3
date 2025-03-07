@@ -59,11 +59,19 @@ class RuleTemplate:
         return self._errors.count() == 0
 
     def _ct_check(self, config: dict, klass: str, attribute: str) -> bool:
+        if klass == "Organization" and attribute == "type":
+            print("HERE")
         data = config["data"]
         ct = config["ct"]
         items = data.instances_by_klass(klass)
         codelist = ct.klass_and_attribute(klass, attribute)
+        if klass == "Organization" and attribute == "type":
+            print(f"CL: {codelist}")
         codes, decodes = self._codes_and_decodes(codelist)
+        if klass == "Organization" and attribute == "type":
+            print(f"ITEMS: {items}")
+            print(f"CODELIST: {codelist}")
+            print(f"CODES: {codes}")
         for item in items:
             if attribute in item:
                 code = item[attribute]["code"]
