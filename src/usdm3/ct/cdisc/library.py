@@ -1,5 +1,4 @@
 import os
-import pathlib
 from usdm3.ct.cdisc.library_api import LibraryAPI
 from usdm3.ct.cdisc.config.config import Config
 from usdm3.ct.cdisc.missing.missing import Missing
@@ -17,10 +16,14 @@ class Library:
 
     def __init__(self, filepath: str):
         self.filepath = filepath
-        self._config = Config(os.path.join(self.filepath, "config"))  # Configuration for required code lists and mappings
+        self._config = Config(
+            os.path.join(self.filepath, "config")
+        )  # Configuration for required code lists and mappings
         self._missing = Missing()  # Handler for missing/additional code lists
         self._api = LibraryAPI()  # Interface to CDISC Library API
-        self._cache = LibraryCache(os.path.join(self.filepath, "library_cache"))  # Cache file handler
+        self._cache = LibraryCache(
+            os.path.join(self.filepath, "library_cache")
+        )  # Cache file handler
 
         # Data structures to store and index controlled terminology
         self._by_code_list = {}  # Maps concept IDs to complete code list data

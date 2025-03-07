@@ -130,12 +130,7 @@ def test_load_from_api(
 
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
 @patch("usdm3.ct.cdisc.library.LibraryCache")
-def test_load_from_cache(
-    mock_cache_cls,
-    mock_api_cls,
-    sample_codelist,
-    library
-):
+def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library):
     """Test loading data from cache when it exists"""
     # Setup mocks
     mock_cache = mock_cache_cls.return_value

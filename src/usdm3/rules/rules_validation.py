@@ -12,7 +12,6 @@ from usdm3.base.singleton import Singleton
 
 
 class RulesValidation(metaclass=Singleton):
-
     CDISC_CT_LIBRARY = os.path.join(Path(__file__).parent.parent.resolve(), "ct/cdisc")
 
     def __init__(self, library_path: str, package_name: str):

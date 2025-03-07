@@ -1,6 +1,7 @@
 import pytest
 from src.usdm3.ct.cdisc.config.config import Config
 
+
 @pytest.fixture
 def temp_file(tmp_path):
     filename = "ct_config.yaml"

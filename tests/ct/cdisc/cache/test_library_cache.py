@@ -4,6 +4,7 @@ import os
 import pathlib
 from usdm3.ct.cdisc.library_cache.library_cache import LibraryCache
 
+
 @pytest.fixture
 def temp_dir():
     return pathlib.Path(__file__).parent.resolve()
@@ -64,7 +65,9 @@ def test_read_existing_file(temp_dir, temp_file, sample_data):
     assert read_data == sample_data
 
 
-def test_read_nonexistent_file(temp_dir, ):
+def test_read_nonexistent_file(
+    temp_dir,
+):
     """Test reading from a non-existent file raises exception"""
     lib_file = LibraryCache(temp_dir, "test_library_cache.yaml")
     with pytest.raises(Exception) as exc_info:
