@@ -138,7 +138,10 @@ def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library)
     mock_cache.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
-    library.load()
+    local_library = Library(
+        library.filepath
+    )  # Borrowing the file path from the ficture, bit naughty.
+    local_library.load()
 
     # Verify API was not called
     mock_api_cls.return_value.refresh.assert_not_called()
@@ -148,10 +151,10 @@ def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library)
     mock_cache.read.assert_called_once()
 
     # Verify indexes were built
-    assert library._by_code_list["C123"] == sample_codelist
-    assert "T1" in library._by_term
-    assert "VAL1" in library._by_submission
-    assert "Term 1" in library._by_pt
+    assert local_library._by_code_list["C123"] == sample_codelist
+    assert "T1" in local_library._by_term
+    assert "VAL1" in local_library._by_submission
+    assert "Term 1" in local_library._by_pt
 
 
 @patch("usdm3.ct.cdisc.library.Config")
