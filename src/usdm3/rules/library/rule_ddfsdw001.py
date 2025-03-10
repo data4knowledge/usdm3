@@ -1,5 +1,5 @@
 from .rule_template import RuleTemplate
-
+from usdm3.__version__ import __model_version__ as model_version
 
 class RuleDDFSDW001(RuleTemplate):
     """
@@ -16,9 +16,12 @@ class RuleDDFSDW001(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
+        return self._validate_version(config, model_version)
+
+    def _validate_version(self, config: dict, version: str) -> bool:
         data = config["data"]
         items = data.instances_by_klass("Wrapper")
-        if len(items) == 1 and "usdmVersion" in items[0] and items[0]["usdmVersion"] == "3.0.0":
+        if len(items) == 1 and "usdmVersion" in items[0] and items[0]["usdmVersion"] == version:
             pass
         else:
             self._add_failure(
