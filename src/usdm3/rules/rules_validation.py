@@ -92,6 +92,6 @@ class RulesValidation(metaclass=Singleton):
                 results.add_not_implemented(rule._rule)
             except Exception as e:
                 # print(f"RULE: {rule._rule} exception: {e}")
-                # print(traceback.format_exc())
+                print(traceback.format_exc())
                 results.add_exception(rule._rule, e)
         return results
