@@ -1,7 +1,8 @@
+import os
 import sys
 import inspect
-import os
 import importlib
+import traceback
 from pathlib import Path
 from typing import List, Type
 from usdm3.rules.library.rule_template import RuleTemplate
@@ -16,7 +17,7 @@ class RulesValidation(metaclass=Singleton):
         self.root_path = root_path
         self.library_path = os.path.join(self.root_path, "rules/library")
         self.ct_path = os.path.join(self.root_path, "ct/cdisc")
-        print(f"PATHS: {self.root_path}, {self.library_path}, {self.ct_path}")
+        # print(f"PATHS: {self.root_path}, {self.library_path}, {self.ct_path}")
         self.package_name = package_name
         self.rules: List[Type[RuleTemplate]] = []
         self._load_rules()

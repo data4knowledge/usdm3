@@ -1,6 +1,7 @@
 from .rule_template import RuleTemplate
 from usdm3.__version__ import __model_version__ as model_version
 
+
 class RuleDDFSDW001(RuleTemplate):
     """
     DDFSDW001: The version in the wrapper should be set to 3.0.0
@@ -21,7 +22,11 @@ class RuleDDFSDW001(RuleTemplate):
     def _validate_version(self, config: dict, version: str) -> bool:
         data = config["data"]
         items = data.instances_by_klass("Wrapper")
-        if len(items) == 1 and "usdmVersion" in items[0] and items[0]["usdmVersion"] == version:
+        if (
+            len(items) == 1
+            and "usdmVersion" in items[0]
+            and items[0]["usdmVersion"] == version
+        ):
             pass
         else:
             self._add_failure(

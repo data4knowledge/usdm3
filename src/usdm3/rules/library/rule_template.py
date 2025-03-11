@@ -59,53 +59,55 @@ class RuleTemplate:
         return self._errors.count() == 0
 
     def _ct_check(self, config: dict, klass: str, attribute: str) -> bool:
-        if klass == "Organization" and attribute == "type":
-            print("HERE")
         data = config["data"]
         ct = config["ct"]
-        items = data.instances_by_klass(klass)
+        instances = data.instances_by_klass(klass)
         codelist = ct.klass_and_attribute(klass, attribute)
-        if klass == "Organization" and attribute == "type":
-            print(f"CL: {codelist}")
         codes, decodes = self._codes_and_decodes(codelist)
-        if klass == "Organization" and attribute == "type":
-            print(f"ITEMS: {items}")
-            print(f"CODELIST: {codelist}")
-            print(f"CODES: {codes}")
-        for item in items:
-            if attribute in item:
-                code = item[attribute]["code"]
-                decode = item[attribute]["decode"]
-                code_index = self._find_index(codes, code)
-                decode_index = self._find_index(decodes, decode)
-                if code_index is None and decode_index is not None:
-                    self._add_failure(
-                        f"Invalid code '{code}', the code is not in the codelist",
-                        klass,
-                        attribute,
-                        data.path_by_id(item["id"]),
-                    )
-                elif code_index is not None and decode_index is None:
-                    self._add_failure(
-                        f"Invalid decode '{decode}', the decode is not in the codelist",
-                        klass,
-                        attribute,
-                        data.path_by_id(item["id"]),
-                    )
-                elif code_index is None and decode_index is None:
-                    self._add_failure(
-                        f"Invalid code and decode '{code}' and '{decode}', neither the code and decode are in the codelist",
-                        klass,
-                        attribute,
-                        data.path_by_id(item["id"]),
-                    )
-                elif code_index != decode_index:
-                    self._add_failure(
-                        f"Invalid code and decode pair '{code}' and '{decode}', the code and decode do not match",
-                        klass,
-                        attribute,
-                        data.path_by_id(item["id"]),
-                    )
+        print(f"INSTANCES: {instances}")
+        print(f"CODELIST: {codelist}")
+        print(f"CODES: {codes}")
+        for instance in instances:
+            if attribute in instance:
+                items = (
+                    instance[attribute]
+                    if isinstance(instance[attribute], list)
+                    else [instance[attribute]]
+                )
+                for item in items:
+                    print(f"ITEM: {item}")
+                    code = item["code"] if "code" in item else None
+                    decode = item["decode"] if "decode" in item else None
+                    code_index = self._find_index(codes, code)
+                    decode_index = self._find_index(decodes, decode)
+                    if code_index is None and decode_index is not None:
+                        self._add_failure(
+                            f"Invalid code '{code}', the code is not in the codelist",
+                            klass,
+                            attribute,
+                            data.path_by_id(instance["id"]),
+                        )
+                    elif code_index is not None and decode_index is None:
+                        self._add_failure(
+                            f"Invalid decode '{decode}', the decode is not in the codelist",
+                            klass,
+                            attribute,
+                            data.path_by_id(instance["id"]),
+                        )
+                    elif code_index is None and decode_index is None:
+                        self._add_failure(
+                            f"Invalid code and decode '{code}' and '{decode}', neither the code and decode are in the codelist",
+                            klass,
+                            attribute,
+                            data.path_by_id(instance["id"]),
+                        )
+                    elif code_index != decode_index:
+                        self._add_failure(
+                            f"Invalid code and decode pair '{code}' and '{decode}', the code and decode do not match",
+                            klass,
+                            attribute,
+                            data.path_by_id(instance["id"]),
+                        )
             else:
                 self._add_failure(
                     "Missing attribute", klass, attribute, data.path_by_id(item["id"])

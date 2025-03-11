@@ -62,6 +62,7 @@ def test_ct_check_valid(rule):
     data_store.instances_by_klass.return_value = [
         {"id": "TEST ID", "attribute": {"code": "C12345", "decode": "Decode 1"}},
         {"id": "TEST ID", "attribute": {"code": "C12346", "decode": "Decode 2"}},
+        {"id": "TEST ID", "attribute": [{"code": "C12346", "decode": "Decode 2"}]},
     ]
     data_store.path_by_id.return_value = "path/address1"
     ct = Mock()
@@ -84,6 +85,66 @@ def test_ct_check_invalid(rule):
         {"id": "TEST ID", "attribute": {"code": "C12345", "decode": "Decode 1"}},
         {"id": "TEST ID", "attribute": {"code": "C12347", "decode": "Decode 2"}},
         {"id": "TEST ID", "attribute": {"code": "C12346", "decode": "Decode 3"}},
+        {"id": "TEST ID", "attribute": {"code": "C12348", "decode": "Decode 3"}},
+    ]
+    data_store.path_by_id.side_effect = [
+        "path/address1",
+        "path/address2",
+        "path/address3",
+    ]
+    ct = Mock()
+    ct.klass_and_attribute.return_value = {
+        "terms": [
+            {"conceptId": "C12345", "preferredTerm": "Decode 1"},
+            {"conceptId": "C12346", "preferredTerm": "Decode 2"},
+        ]
+    }
+
+    config = {"data": data_store, "ct": ct}
+    assert rule._ct_check(config, "klass", "attribute") is False
+    assert rule.errors().count() == 3
+    assert rule._result() is False
+    assert rule.errors()._items[0].to_dict() == {
+        "level": "Error",
+        "location": {
+            "attribute": "attribute",
+            "klass": "klass",
+            "path": "path/address1",
+            "rule": "TEST0001",
+            "rule_text": "TEST RULE",
+        },
+        "message": "Invalid code 'C12347', the code is not in the codelist",
+    }
+    assert rule.errors()._items[1].to_dict() == {
+        "level": "Error",
+        "location": {
+            "attribute": "attribute",
+            "klass": "klass",
+            "path": "path/address2",
+            "rule": "TEST0001",
+            "rule_text": "TEST RULE",
+        },
+        "message": "Invalid decode 'Decode 3', the decode is not in the codelist",
+    }
+    assert rule.errors()._items[2].to_dict() == {
+        "level": "Error",
+        "location": {
+            "attribute": "attribute",
+            "klass": "klass",
+            "path": "path/address3",
+            "rule": "TEST0001",
+            "rule_text": "TEST RULE",
+        },
+        "message": "Invalid code and decode 'C12348' and 'Decode 3', neither the code and decode are in the codelist",
+    }
+
+
+def test_ct_check_invalid_list(rule):
+    data_store = Mock()
+    data_store.instances_by_klass.return_value = [
+        {"id": "TEST ID", "attribute": [{"code": "C12345", "decode": "Decode 1"}]},
+        {"id": "TEST ID", "attribute": [{"code": "C12347", "decode": "Decode 2"}]},
+        {"id": "TEST ID", "attribute": [{"code": "C12346", "decode": "Decode 3"}]},
         {"id": "TEST ID", "attribute": {"code": "C12348", "decode": "Decode 3"}},
     ]
     data_store.path_by_id.side_effect = [

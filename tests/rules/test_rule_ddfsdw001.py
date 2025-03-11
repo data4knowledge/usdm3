@@ -13,10 +13,7 @@ def test_initialization(rule):
     """Test rule initialization"""
     assert rule._rule == "DDFSDW001"
     assert rule._level == RuleTemplate.ERROR
-    assert (
-        rule._rule_text
-        == "The version in the wrapper should be set to 3.0.0"
-    )
+    assert rule._rule_text == "The version in the wrapper should be set to 3.0.0"
     assert rule._errors.count() == 0
 
 
