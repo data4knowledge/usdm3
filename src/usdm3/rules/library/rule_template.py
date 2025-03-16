@@ -64,9 +64,9 @@ class RuleTemplate:
         instances = data.instances_by_klass(klass)
         codelist = ct.klass_and_attribute(klass, attribute)
         codes, decodes = self._codes_and_decodes(codelist)
-        #print(f"INSTANCES: {instances}")
-        #print(f"CODELIST: {codelist}")
-        #print(f"CODES: {codes}")
+        # print(f"INSTANCES: {instances}")
+        # print(f"CODELIST: {codelist}")
+        # print(f"CODES: {codes}")
         for instance in instances:
             if attribute in instance:
                 items = (
@@ -110,7 +110,10 @@ class RuleTemplate:
                         )
             else:
                 self._add_failure(
-                    "Missing attribute", klass, attribute, data.path_by_id(instance["id"])
+                    "Missing attribute",
+                    klass,
+                    attribute,
+                    data.path_by_id(instance["id"]),
                 )
         return self._result()
 

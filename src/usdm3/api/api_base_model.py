@@ -18,17 +18,11 @@ def _serialize_as_json(obj):
 
 
 class ApiBaseModel(BaseModel):
-    pass
-
-class ApiBaseModel(ApiBaseModel):
     id: str = Field(min_length=1)
-
-    def __init__(self, *args, **kwargs):
-        kwargs["instanceType"] = self.__class__.__name__
-        super().__init__(*args, **kwargs)
 
     def to_json(self):
         return json.dumps(self, default=_serialize_as_json)
+
 
 class ApiBaseModelAndDesc(ApiBaseModel):
     description: Union[str, None] = None
@@ -49,4 +43,3 @@ class ApiBaseModelNameLabel(ApiBaseModelName):
 
 class ApiBaseModelNameDesc(ApiBaseModelName):
     description: Union[str, None] = None
-
