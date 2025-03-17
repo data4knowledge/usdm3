@@ -22,31 +22,31 @@ class RuleDDF00031(RuleTemplate):
         for item in items:
             check = True
             if item["type"]["decode"] != "Fixed Reference":
-                if "relativeToScheduledInstance" not in item:
+                if "relativeToScheduledInstanceId" not in item:
                     self._add_failure(
-                        "Missing relativeToScheduledInstance",
+                        "Missing relativeToScheduledInstanceId",
                         "Timing",
-                        "relativeToScheduledInstance",
+                        "relativeToScheduledInstanceId",
                         data.path_by_id(item["id"]),
                     )
                     check = False
-                if "relativeFromScheduledInstance" not in item:
+                if "relativeFromScheduledInstanceId" not in item:
                     self._add_failure(
-                        "Missing relativeFromScheduledInstance",
+                        "Missing relativeFromScheduledInstanceId",
                         "Timing",
-                        "relativeFromScheduledInstance",
+                        "relativeFromScheduledInstanceId",
                         data.path_by_id(item["id"]),
                     )
                     check = False
                 if (
                     check
-                    and item["relativeToScheduledInstance"]
-                    == item["relativeFromScheduledInstance"]
+                    and item["relativeToScheduledInstanceId"]
+                    == item["relativeFromScheduledInstanceId"]
                 ):
                     self._add_failure(
-                        "relativeToScheduledInstance and relativeFromScheduledInstance are equal",
+                        "relativeToScheduledInstanceId and relativeFromScheduledInstanceId are equal",
                         "Timing",
-                        "relativeToScheduledInstance and relativeFromScheduledInstance",
+                        "relativeToScheduledInstanceId and relativeFromScheduledInstanceId",
                         data.path_by_id(item["id"]),
                     )
         return self._result()

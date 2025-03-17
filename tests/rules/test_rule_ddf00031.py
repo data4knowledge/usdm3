@@ -27,8 +27,8 @@ def test_validate_valid(rule):
             "id": "timing1",
             "type": {"decode": "Not Fixed Reference"},
             "instanceType": "Timing",
-            "relativeToScheduledInstance": "instance1",
-            "relativeFromScheduledInstance": "instance2",
+            "relativeToScheduledInstanceId": "instance1",
+            "relativeFromScheduledInstanceId": "instance2",
         }
     ]
     data_store.instance_by_id.return_value = {"id": "instance1"}
@@ -57,7 +57,7 @@ def test_validate_invalid_both_references(rule):
     assert rule._errors._items[0].to_dict() == {
         "level": "Error",
         "location": {
-            "attribute": "relativeToScheduledInstance",
+            "attribute": "relativeToScheduledInstanceId",
             "klass": "Timing",
             "path": "path/path1",
             "rule": "DDF00031",
@@ -66,12 +66,12 @@ def test_validate_invalid_both_references(rule):
             "relativeToScheduledInstance attributes must not be missing and must "
             "not be equal to each other).",
         },
-        "message": "Missing relativeToScheduledInstance",
+        "message": "Missing relativeToScheduledInstanceId",
     }
     assert rule._errors._items[1].to_dict() == {
         "level": "Error",
         "location": {
-            "attribute": "relativeFromScheduledInstance",
+            "attribute": "relativeFromScheduledInstanceId",
             "klass": "Timing",
             "path": "path/path2",
             "rule": "DDF00031",
@@ -80,7 +80,7 @@ def test_validate_invalid_both_references(rule):
             "relativeToScheduledInstance attributes must not be missing and must "
             "not be equal to each other).",
         },
-        "message": "Missing relativeFromScheduledInstance",
+        "message": "Missing relativeFromScheduledInstanceId",
     }
 
 
@@ -90,7 +90,7 @@ def test_validate_invalid_from_references(rule):
         {
             "id": "timing1",
             "type": {"decode": "Not Fixed Reference"},
-            "relativeToScheduledInstance": "instance1",
+            "relativeToScheduledInstanceId": "instance1",
             "instanceType": "Timing",
         }
     ]
@@ -103,7 +103,7 @@ def test_validate_invalid_from_references(rule):
     assert rule._errors._items[0].to_dict() == {
         "level": "Error",
         "location": {
-            "attribute": "relativeFromScheduledInstance",
+            "attribute": "relativeFromScheduledInstanceId",
             "klass": "Timing",
             "path": "path/path1",
             "rule": "DDF00031",
@@ -112,7 +112,7 @@ def test_validate_invalid_from_references(rule):
             "relativeToScheduledInstance attributes must not be missing and must "
             "not be equal to each other).",
         },
-        "message": "Missing relativeFromScheduledInstance",
+        "message": "Missing relativeFromScheduledInstanceId",
     }
 
 
@@ -122,7 +122,7 @@ def test_validate_invalid_to_references(rule):
         {
             "id": "timing1",
             "type": {"decode": "Not Fixed Reference"},
-            "relativeToScheduledInstance": "instance1",
+            "relativeToScheduledInstanceId": "instance1",
             "instanceType": "Timing",
         }
     ]
@@ -135,7 +135,7 @@ def test_validate_invalid_to_references(rule):
     assert rule._errors._items[0].to_dict() == {
         "level": "Error",
         "location": {
-            "attribute": "relativeFromScheduledInstance",
+            "attribute": "relativeFromScheduledInstanceId",
             "klass": "Timing",
             "path": "path/path1",
             "rule": "DDF00031",
@@ -144,7 +144,7 @@ def test_validate_invalid_to_references(rule):
             "relativeToScheduledInstance attributes must not be missing and must "
             "not be equal to each other).",
         },
-        "message": "Missing relativeFromScheduledInstance",
+        "message": "Missing relativeFromScheduledInstanceId",
     }
 
 
