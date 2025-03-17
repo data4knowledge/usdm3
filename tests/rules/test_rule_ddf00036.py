@@ -27,7 +27,7 @@ def test_validate_valid(rule):
             "id": "timing1",
             "type": {"decode": "Fixed Reference"},
             "instanceType": "Timing",
-            "relativeToFrom": "Start to Start",
+            "relativeToFrom": {"decode": "Start to Start"},
         }
     ]
 
@@ -44,7 +44,7 @@ def test_validate_invalid_both_references(rule):
             "id": "timing1",
             "type": {"decode": "Fixed Reference"},
             "instanceType": "Timing",
-            "relativeToFrom": "Not Start to Start",
+            "relativeToFrom": {"decode": "Not Start to Start"},
         }
     ]
     data_store.path_by_id.side_effect = ["path/path1"]
