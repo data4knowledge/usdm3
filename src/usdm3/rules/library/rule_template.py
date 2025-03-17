@@ -1,6 +1,6 @@
 from d4k_sel.error_location import ErrorLocation
 from d4k_sel.errors import Errors
-
+from usdm3.ct.cdisc.library import Library as CTLibrary
 
 class ValidationLocation(ErrorLocation):
     def __init__(
@@ -37,6 +37,9 @@ class RuleTemplate:
     ERROR = Errors.ERROR
     WARNING = Errors.WARNING
 
+    class CTException(Exception):
+        pass
+
     def __init__(self, rule: str, level: int, rule_text: str):
         self._errors = Errors()
         self._rule = rule
@@ -62,11 +65,7 @@ class RuleTemplate:
         data = config["data"]
         ct = config["ct"]
         instances = data.instances_by_klass(klass)
-        codelist = ct.klass_and_attribute(klass, attribute)
-        codes, decodes = self._codes_and_decodes(codelist)
-        # print(f"INSTANCES: {instances}")
-        # print(f"CODELIST: {codelist}")
-        # print(f"CODES: {codes}")
+        codes, decodes = self._check_codelist(ct, klass, attribute)
         for instance in instances:
             if attribute in instance:
                 items = (
@@ -75,7 +74,7 @@ class RuleTemplate:
                     else [instance[attribute]]
                 )
                 for item in items:
-                    print(f"ITEM: {item}")
+                    #print(f"ITEM: {item}")
                     code = item["code"] if "code" in item else None
                     decode = item["decode"] if "decode" in item else None
                     code_index = self._find_index(codes, code)
@@ -117,9 +116,18 @@ class RuleTemplate:
                 )
         return self._result()
 
+    def _check_codelist(self, ct: CTLibrary, klass: str, attribute: str) -> tuple[list[str], list[str]]:
+        codelist = ct.klass_and_attribute(klass, attribute)
+        if codelist is None:
+            raise self.CTException(f"Failed to find code list for '{klass}' and '{attribute}'")
+        codes, decodes = self._codes_and_decodes(codelist)
+        if codes is None:
+            raise self.CTException(f"Failed to find terms for '{klass}' and '{attribute}'")
+        return codes, decodes
+    
     def _codes_and_decodes(self, codelist: dict) -> tuple[list[str], list[str]]:
-        if "terms" not in codelist:
-            return [], []
+        if "terms" not in codelist or codelist["terms"] == []:
+            return None, None
         codes = [x["conceptId"] for x in codelist["terms"]]
         decodes = [x["preferredTerm"] for x in codelist["terms"]]
         return codes, decodes
