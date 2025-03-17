@@ -21,11 +21,20 @@ class RuleDDF00025(RuleTemplate):
         items = data.instances_by_klass("Timing")
         for item in items:
             if item["type"]["decode"] == "Fixed Reference":
-                if "windowLower" in item or "windowUpper" in item:
-                    self._add_failure(
-                        "Window defined for anchor timing",
-                        "Timing",
-                        "windowLower or windowUpper",
-                        data.path_by_id(item["id"]),
-                    )
+                if "windowLower" in item:
+                    if item["windowLower"] is not None:
+                        self._add_failure(
+                            "Window lower defined for anchor timing",
+                            "Timing",
+                            "windowLower",
+                            data.path_by_id(item["id"]),
+                        )
+                if "windowUpper" in item:
+                    if item["windowUpper"] is not None:
+                        self._add_failure(
+                            "Window upper defined for anchor timing",
+                            "Timing",
+                            "windowUpper",
+                            data.path_by_id(item["id"]),
+                        )
         return self._result()
