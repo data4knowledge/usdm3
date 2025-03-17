@@ -24,7 +24,7 @@ def test_validate_valid_timing(rule):
         {
             "id": "timing1",
             "type": {"decode": "Fixed Reference"},
-            "relativeFromScheduledInstance": "some_instance",
+            "relativeFromScheduledInstanceId": "some_instance",
         }
     ]
 
@@ -89,7 +89,7 @@ def test_validate_multiple_timings(rule):
         {
             "id": "timing1",
             "type": {"decode": "Fixed Reference"},
-            "relativeFromScheduledInstance": "instance1",
+            "relativeFromScheduledInstanceId": "instance1",
         },
         {
             "id": "timing2",

@@ -15,11 +15,11 @@ class RuleDDF00011(RuleTemplate):
         items = data.instances_by_klass("Timing")
         for item in items:
             if item["type"]["decode"] == "Fixed Reference":
-                if "relativeFromScheduledInstance" not in item:
+                if "relativeFromScheduledInstanceId" not in item:
                     self._add_failure(
                         "Missing relativeFromScheduledInstance",
                         "Timing",
-                        "relativeFromScheduledInstance",
+                        "relativeFromScheduledInstanceId",
                         data.path_by_id(item["id"]),
                     )
         return self._result()
