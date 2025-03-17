@@ -17,4 +17,4 @@ class RuleDDF00104(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
-        return self._ct_check(config, "Timing", "timingRelativeToFrom")
+        return self._ct_check(config, "Timing", "relativeToFrom")
