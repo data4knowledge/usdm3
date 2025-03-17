@@ -27,6 +27,6 @@ def test_validate(mock_ct_check, rule):
     mock_ct_check.side_effect = [True]
     mock_ct_check.assert_has_calls(
         [
-            call({"data": {}, "ct": {}}, "Timing", "timingRelativeToFrom"),
+            call({"data": {}, "ct": {}}, "Timing", "relativeToFrom"),
         ]
     )
