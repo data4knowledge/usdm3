@@ -209,8 +209,8 @@ def test_ct_no_code_list(rule):
     ]
     ct = Mock()
     ct.klass_and_attribute.return_value = None
-    #config = {"data": data_store, "ct": ct}
-    with pytest.raises(RuleTemplate.CTException): # as exc_info:
+    # config = {"data": data_store, "ct": ct}
+    with pytest.raises(RuleTemplate.CTException):  # as exc_info:
         rule._check_codelist(ct, "x", "y")
 
 
@@ -224,8 +224,8 @@ def test_ct_no_terms(rule):
     ]
     ct = Mock()
     ct.klass_and_attribute.return_value = {"terms": []}
-    #config = {"data": data_store, "ct": ct}
-    with pytest.raises(RuleTemplate.CTException): # as exc_info:
+    # config = {"data": data_store, "ct": ct}
+    with pytest.raises(RuleTemplate.CTException):  # as exc_info:
         rule._check_codelist(ct, "x", "y")
 
 
@@ -239,6 +239,6 @@ def test_ct_missing_terms(rule):
     ]
     ct = Mock()
     ct.klass_and_attribute.return_value = {"termsXX": []}
-    #config = {"data": data_store, "ct": ct}
-    with pytest.raises(RuleTemplate.CTException): # as exc_info:
+    # config = {"data": data_store, "ct": ct}
+    with pytest.raises(RuleTemplate.CTException):  # as exc_info:
         rule._check_codelist(ct, "x", "y")

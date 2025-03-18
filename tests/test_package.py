@@ -1,6 +1,7 @@
 import json
 from src.usdm3 import USDM3
 from tests.rules.helpers import clear_rules_library
+from src.usdm3.__version__ import __package_version__
 
 
 def test_validate(tmp_path):
@@ -126,6 +127,6 @@ def _expected():
             ],
         },
         "systemName": "Python USDM3 Package",
-        "systemVersion": "0.3.0",
+        "systemVersion": __package_version__,
         "usdmVersion": "3.0.0",
     }

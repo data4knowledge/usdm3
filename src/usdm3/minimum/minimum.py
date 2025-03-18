@@ -9,7 +9,7 @@ from usdm3.api.study_identifier import StudyIdentifier
 from usdm3.api.organization import Organization
 from usdm3.base.api_instance import APIInstance
 from usdm3.base.id_manager import IdManager
-from usdm3.__version__ import __model_version__, __package_name__, __package_version__
+from usdm3.__version__ import __model_version__, __package_version__
 from uuid import uuid4
 
 
@@ -131,7 +131,7 @@ class Minimum:
             {
                 "study": study,
                 "usdmVersion": __model_version__,
-                "systemName": f"Python {__package_name__} Package",
+                "systemName": "Python USDM3 Package",
                 "systemVersion": __package_version__,
             },
         )

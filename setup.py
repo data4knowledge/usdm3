@@ -8,7 +8,7 @@ with open("src/usdm3/__version__.py") as fp:
     exec(fp.read(), package_info)
 
 setuptools.setup(
-    name=package_info["__package_name__"],
+    name="usdm3",
     version=package_info["__package_version__"],
     author="D Iberson-Hurst",
     author_email="",
@@ -21,10 +21,19 @@ setuptools.setup(
         "pyyaml",
         "simple-error-log",
         "jsonschema",
+        "beautifulsoup4",
+        "simple-error-log",
+        "jsonschema",
+        "python-dotenv",
     ],
     packages=setuptools.find_packages(where="src"),
     package_dir={"": "src"},
-    package_data={},
+    package_data={
+        "usdm3": [
+            "ct/cdisc/missing/missing_ct.yaml",
+            "ct/cdisc/library_cache/library_cache.yaml",
+        ]
+    },
     tests_require=["pytest", "pytest-cov", "pytest-mock", "python-dotenv"],
     classifiers=[
         "Intended Audience :: Developers",
