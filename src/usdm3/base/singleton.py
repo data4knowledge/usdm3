@@ -12,4 +12,5 @@ class Singleton(type):
     @classmethod
     def _clear(cls, the_cls):
         name = the_cls.__name__
-        del cls._instances[name]
+        if name in cls._instances:
+            del cls._instances[name]

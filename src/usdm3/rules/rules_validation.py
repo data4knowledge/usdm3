@@ -11,10 +11,18 @@ from usdm3.ct.cdisc.library import Library as CTLibrary
 from usdm3.rules.rules_validation_results import RulesValidationResults
 from usdm3.base.singleton import Singleton
 
+class RulesValidation3(metaclass=Singleton):
+    def __init__(self, root_path: str, package_name: str):
+        self.rules_validation = RulesValidationEngine(root_path, package_name)
 
-class RulesValidation(metaclass=Singleton):
+    def validate(self, filename: str):
+        return self.rules_validation.validate_rules(filename)
+    
+
+class RulesValidationEngine():
     def __init__(self, root_path: str, package_name: str):
         self.root_path = root_path
+        print(f"LIBRARY: {root_path}, {package_name}")
         self.library_path = os.path.join(self.root_path, "rules/library")
         self.ct_path = os.path.join(self.root_path, "ct/cdisc")
         # print(f"PATHS: {self.root_path}, {self.library_path}, {self.ct_path}")
@@ -92,6 +100,6 @@ class RulesValidation(metaclass=Singleton):
                 results.add_not_implemented(rule._rule)
             except Exception as e:
                 # print(f"RULE: {rule._rule} exception: {e}")
-                print(traceback.format_exc())
+                #print(traceback.format_exc())
                 results.add_exception(rule._rule, e)
         return results

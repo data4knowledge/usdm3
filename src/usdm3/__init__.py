@@ -1,5 +1,5 @@
 import pathlib
-from usdm3.rules.rules_validation import RulesValidation
+from usdm3.rules.rules_validation import RulesValidation3
 from usdm3.rules.rules_validation_results import RulesValidationResults
 from usdm3.minimum.minimum import Minimum
 from usdm3.api.wrapper import Wrapper
@@ -8,10 +8,10 @@ from usdm3.api.wrapper import Wrapper
 class USDM3:
     def __init__(self):
         self.root = self._root_path()
-        self.validator = RulesValidation(self.root, "usdm3.rules.library")
+        self.validator = RulesValidation3(self.root, "usdm3.rules.library")
 
     def validate(self, file_path: str) -> RulesValidationResults:
-        return self.validator.validate_rules(file_path)
+        return self.validator.validate(file_path)
 
     def minimum(self, study_name: str, sponsor_id: str, version: str) -> Wrapper:
         return Minimum.minimum(study_name, sponsor_id, version)
