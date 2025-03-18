@@ -8,7 +8,7 @@ def library_path(path: str):
 
 def test_rules():
     """Test loading rules"""
-    #RulesValidationEngine.__instance = None
+    # RulesValidationEngine.__instance = None
     validator = RulesValidationEngine(library_path(""), "tests.rules.test_library")
     assert len(validator.rules) == 4
     results = validator._execute_rules({"data": {}, "ct": {}})

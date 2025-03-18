@@ -1,6 +1,5 @@
 import datetime
-from uuid import UUID, uuid4
-from unittest.mock import patch
+from uuid import UUID
 from usdm3.api.api_base_model import ApiBaseModel
 
 
@@ -29,11 +28,19 @@ def test_create():
 def test_to_json_direct():
     # Instead of mocking uuid4, we directly use a fixed UUID for testing
     # This effectively serves as a mock for uuid4() by providing a predictable value
-    fixed_uuid = UUID('12345678-1234-5678-1234-567812345678')
-    
+    fixed_uuid = UUID("12345678-1234-5678-1234-567812345678")
+
     to = TestOne(**{"id": "id", "x": "x", "y": "y"})
-    tt = TestTwo(**{"id": "id", "z": "z", "d": datetime.date(2025, 1, 1), "u": fixed_uuid, "a": to})
-    
+    tt = TestTwo(
+        **{
+            "id": "id",
+            "z": "z",
+            "d": datetime.date(2025, 1, 1),
+            "u": fixed_uuid,
+            "a": to,
+        }
+    )
+
     # Get the actual JSON and compare it to expected values
     actual_json = tt.to_json()
     assert '"id": "id"' in actual_json
@@ -41,5 +48,3 @@ def test_to_json_direct():
     assert '"d": "2025-01-01"' in actual_json
     assert '"u": "12345678-1234-5678-1234-567812345678"' in actual_json
     assert '"a": {"id": "id", "x": "x", "y": "y"}' in actual_json
-
-

@@ -2,7 +2,6 @@ import os
 import sys
 import inspect
 import importlib
-import traceback
 from pathlib import Path
 from typing import List, Type
 from usdm3.rules.library.rule_template import RuleTemplate
@@ -11,15 +10,16 @@ from usdm3.ct.cdisc.library import Library as CTLibrary
 from usdm3.rules.rules_validation_results import RulesValidationResults
 from usdm3.base.singleton import Singleton
 
+
 class RulesValidation3(metaclass=Singleton):
     def __init__(self, root_path: str, package_name: str):
         self.rules_validation = RulesValidationEngine(root_path, package_name)
 
     def validate(self, filename: str):
         return self.rules_validation.validate_rules(filename)
-    
 
-class RulesValidationEngine():
+
+class RulesValidationEngine:
     def __init__(self, root_path: str, package_name: str):
         self.root_path = root_path
         print(f"LIBRARY: {root_path}, {package_name}")
@@ -100,6 +100,6 @@ class RulesValidationEngine():
                 results.add_not_implemented(rule._rule)
             except Exception as e:
                 # print(f"RULE: {rule._rule} exception: {e}")
-                #print(traceback.format_exc())
+                # print(traceback.format_exc())
                 results.add_exception(rule._rule, e)
         return results

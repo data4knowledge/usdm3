@@ -2,6 +2,7 @@ from d4k_sel.error_location import ErrorLocation
 from d4k_sel.errors import Errors
 from usdm3.ct.cdisc.library import Library as CTLibrary
 
+
 class ValidationLocation(ErrorLocation):
     def __init__(
         self, rule: str, rule_text: str, klass: str, attribute: str, path: str
@@ -74,7 +75,7 @@ class RuleTemplate:
                     else [instance[attribute]]
                 )
                 for item in items:
-                    #print(f"ITEM: {item}")
+                    # print(f"ITEM: {item}")
                     code = item["code"] if "code" in item else None
                     decode = item["decode"] if "decode" in item else None
                     code_index = self._find_index(codes, code)
@@ -116,15 +117,21 @@ class RuleTemplate:
                 )
         return self._result()
 
-    def _check_codelist(self, ct: CTLibrary, klass: str, attribute: str) -> tuple[list[str], list[str]]:
+    def _check_codelist(
+        self, ct: CTLibrary, klass: str, attribute: str
+    ) -> tuple[list[str], list[str]]:
         codelist = ct.klass_and_attribute(klass, attribute)
         if codelist is None:
-            raise self.CTException(f"Failed to find code list for '{klass}' and '{attribute}'")
+            raise self.CTException(
+                f"Failed to find code list for '{klass}' and '{attribute}'"
+            )
         codes, decodes = self._codes_and_decodes(codelist)
         if codes is None:
-            raise self.CTException(f"Failed to find terms for '{klass}' and '{attribute}'")
+            raise self.CTException(
+                f"Failed to find terms for '{klass}' and '{attribute}'"
+            )
         return codes, decodes
-    
+
     def _codes_and_decodes(self, codelist: dict) -> tuple[list[str], list[str]]:
         if "terms" not in codelist or codelist["terms"] == []:
             return None, None

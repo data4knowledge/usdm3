@@ -198,6 +198,7 @@ def test_ct_check_invalid_list(rule):
         "message": "Invalid code and decode 'C12348' and 'Decode 3', neither the code and decode are in the codelist",
     }
 
+
 def test_ct_no_code_list(rule):
     data_store = Mock()
     data_store.instances_by_klass.return_value = [
@@ -208,9 +209,10 @@ def test_ct_no_code_list(rule):
     ]
     ct = Mock()
     ct.klass_and_attribute.return_value = None
-    config = {"data": data_store, "ct": ct}
-    with pytest.raises(RuleTemplate.CTException) as exc_info:
+    #config = {"data": data_store, "ct": ct}
+    with pytest.raises(RuleTemplate.CTException): # as exc_info:
         rule._check_codelist(ct, "x", "y")
+
 
 def test_ct_no_terms(rule):
     data_store = Mock()
@@ -221,12 +223,11 @@ def test_ct_no_terms(rule):
         "path/address1",
     ]
     ct = Mock()
-    ct.klass_and_attribute.return_value = {
-        "terms": []
-    }
-    config = {"data": data_store, "ct": ct}
-    with pytest.raises(RuleTemplate.CTException) as exc_info:
+    ct.klass_and_attribute.return_value = {"terms": []}
+    #config = {"data": data_store, "ct": ct}
+    with pytest.raises(RuleTemplate.CTException): # as exc_info:
         rule._check_codelist(ct, "x", "y")
+
 
 def test_ct_missing_terms(rule):
     data_store = Mock()
@@ -237,9 +238,7 @@ def test_ct_missing_terms(rule):
         "path/address1",
     ]
     ct = Mock()
-    ct.klass_and_attribute.return_value = {
-        "termsXX": []
-    }
-    config = {"data": data_store, "ct": ct}
-    with pytest.raises(RuleTemplate.CTException) as exc_info:
+    ct.klass_and_attribute.return_value = {"termsXX": []}
+    #config = {"data": data_store, "ct": ct}
+    with pytest.raises(RuleTemplate.CTException): # as exc_info:
         rule._check_codelist(ct, "x", "y")

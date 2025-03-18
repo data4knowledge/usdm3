@@ -38,20 +38,20 @@ def test_validate_valid_timing(rule):
             "id": "t3",
             "instanceType": "Timing",
             "type": {"decode": "Fixed Reference"},
-            "windowLoweer": None
+            "windowLoweer": None,
         },
         {
             "id": "t3",
             "instanceType": "Timing",
             "type": {"decode": "Fixed Reference"},
-            "windowUpper": None
+            "windowUpper": None,
         },
         {
             "id": "t3",
             "instanceType": "Timing",
             "type": {"decode": "Fixed Reference"},
             "windowLoweer": None,
-            "windowUpper": None
+            "windowUpper": None,
         },
         {
             "id": "t6",
@@ -91,9 +91,14 @@ def test_validate_invalid_timing(rule):
             "type": {"decode": "Fixed Reference"},
             "windowLower": "1",
             "windowUpper": "2",
-        }
+        },
     ]
-    data_store.path_by_id.side_effect = ["root.path1", "root.path2", "root.path3", "root.path4"]
+    data_store.path_by_id.side_effect = [
+        "root.path1",
+        "root.path2",
+        "root.path3",
+        "root.path4",
+    ]
 
     config = {"data": data_store}
 
