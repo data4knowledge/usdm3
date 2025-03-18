@@ -32,6 +32,7 @@ setuptools.setup(
         "usdm3": [
             "ct/cdisc/missing/missing_ct.yaml",
             "ct/cdisc/library_cache/library_cache.yaml",
+            "ct/cdisc/config/ct_config.yaml",
         ]
     },
     tests_require=["pytest", "pytest-cov", "pytest-mock", "python-dotenv"],
