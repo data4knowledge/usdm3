@@ -1,5 +1,5 @@
 from .rule_template import RuleTemplate
-import traceback
+
 
 class RuleDDF00106(RuleTemplate):
     """
@@ -23,9 +23,13 @@ class RuleDDF00106(RuleTemplate):
             if "encounterId" in item:
                 encounter = data.instance_by_id(item["encounterId"])
                 if encounter:
-                    item_parent = data.parent_by_klass(item["id"], ["InterventionalStudyDesign", "ObservationalStudyDesign"])
+                    item_parent = data.parent_by_klass(
+                        item["id"],
+                        ["InterventionalStudyDesign", "ObservationalStudyDesign"],
+                    )
                     encounter_parent = data.parent_by_klass(
-                        encounter["id"], ["InterventionalStudyDesign", "ObservationalStudyDesign"]
+                        encounter["id"],
+                        ["InterventionalStudyDesign", "ObservationalStudyDesign"],
                     )
                     if item_parent["id"] != encounter_parent["id"]:
                         print(f"**** ITEM: {item}")

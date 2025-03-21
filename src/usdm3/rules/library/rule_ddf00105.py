@@ -24,8 +24,14 @@ class RuleDDF00105(RuleTemplate):
             if "epochId" in item:
                 epoch = data.instance_by_id(item["epochId"])
                 if epoch:
-                    item_parent = data.parent_by_klass(item["id"], ["InterventionalStudyDesign", "ObservationalStudyDesign"])
-                    epoch_parent = data.parent_by_klass(epoch["id"], ["InterventionalStudyDesign", "ObservationalStudyDesign"])
+                    item_parent = data.parent_by_klass(
+                        item["id"],
+                        ["InterventionalStudyDesign", "ObservationalStudyDesign"],
+                    )
+                    epoch_parent = data.parent_by_klass(
+                        epoch["id"],
+                        ["InterventionalStudyDesign", "ObservationalStudyDesign"],
+                    )
                     if item_parent["id"] != epoch_parent["id"]:
                         self._add_failure(
                             "Epoch defined in a different study design",
