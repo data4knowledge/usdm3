@@ -49,5 +49,5 @@ def test_validate_missing_code_system_version(rule):
             "rule": "DDFSDW001",
             "rule_text": "The version in the wrapper should be set to 3.0.0",
         },
-        "message": "Invalid version",
+        "message": "Invalid version detected, not set to 3.0.0",
     }

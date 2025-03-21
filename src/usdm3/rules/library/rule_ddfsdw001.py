@@ -30,7 +30,7 @@ class RuleDDFSDW001(RuleTemplate):
             pass
         else:
             self._add_failure(
-                "Invalid version",
+                f"Invalid version detected, not set to {version}",
                 "Wrapper",
                 "usdmVersion",
                 data.path_by_id("$root"),

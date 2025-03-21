@@ -54,13 +54,14 @@ class DataStore:
             return []
         return list(self._klasses[klass].values())
 
-    def parent_by_klass(self, id: str, klass: str) -> dict:
+    def parent_by_klass(self, id: str, klasses: str | list) -> dict:
+        klasses = [klasses] if isinstance(klasses, str) else klasses
         found = False
         if id not in self._ids:
             return None
         instance = self._ids[id]
         while not found:
-            if instance["instanceType"] == klass:
+            if instance["instanceType"] in klasses:
                 found = True
             else:
                 instance = self._parent[instance["id"]]
