@@ -24,11 +24,12 @@ class RulesValidationResults:
             item = error.to_dict()
             self._items[rule]["errors"].append(item)
 
-    def add_exception(self, rule: str, exception: Exception):
+    def add_exception(self, rule: str, exception: Exception, traceback: str = ""):
+        text = f"{str(exception)}\n\n{traceback}" if traceback else f"{str(exception)}"
         self._items[rule] = {
             "status": "Exception",
             "errors": None,
-            "exception": str(exception),
+            "exception": text,
         }
 
     def add_not_implemented(self, rule: str):

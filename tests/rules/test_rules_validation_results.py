@@ -69,6 +69,17 @@ def test_add_exception(validation_results):
     assert validation_results.count() == 1
 
 
+def test_add_exception_traceback(validation_results):
+    """Test adding an exception result"""
+    exception = ValueError("Test exception")
+    validation_results.add_exception("test_rule", exception, "traceback")
+
+    assert "test_rule" in validation_results._items
+    assert validation_results._items["test_rule"]["status"] == "Exception"
+    assert validation_results._items["test_rule"]["errors"] is None
+    assert validation_results._items["test_rule"]["exception"] == f"{str(exception)}\n\ntraceback"
+    assert validation_results.count() == 1
+
 def test_add_not_implemented(validation_results):
     """Test adding a not implemented result"""
     validation_results.add_not_implemented("test_rule")
