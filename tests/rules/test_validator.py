@@ -13,7 +13,10 @@ def test_rules():
     assert len(validator.rules) == 4
     results = validator._execute_rules({"data": {}, "ct": {}})
     assert results.count() == 4
-    assert results.to_dict() == [
+    actual = results.to_dict()
+    assert actual[3]["exception"].startswith("This is a test exception\n")
+    actual[3]["exception"] = "This is a test exception" # has extra text from the traceback
+    assert actual == [
         {
             "attribute": "",
             "exception": None,

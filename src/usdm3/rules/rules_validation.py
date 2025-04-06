@@ -2,6 +2,7 @@ import os
 import sys
 import inspect
 import importlib
+import traceback
 from pathlib import Path
 from typing import List, Type
 from usdm3.rules.library.rule_template import RuleTemplate
@@ -99,7 +100,5 @@ class RulesValidationEngine:
                 # Rule not implemented yet
                 results.add_not_implemented(rule._rule)
             except Exception as e:
-                # print(f"RULE: {rule._rule} exception: {e}")
-                # print(traceback.format_exc())
-                results.add_exception(rule._rule, e)
+                results.add_exception(rule._rule, e, f"{traceback.format_exc()}")
         return results

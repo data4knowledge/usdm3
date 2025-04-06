@@ -17,6 +17,9 @@ class RuleDDF00106(RuleTemplate):
         )
 
     def validate(self, config: dict) -> bool:
+        return self._validate(config, ["StudyDesign"])
+
+    def _validate(self, config: dict, klass_list: list[str]) -> bool:
         data = config["data"]
         items = data.instances_by_klass("ScheduledActivityInstance")
         for item in items:
@@ -25,14 +28,34 @@ class RuleDDF00106(RuleTemplate):
                 if encounter:
                     item_parent = data.parent_by_klass(
                         item["id"],
-                        ["InterventionalStudyDesign", "ObservationalStudyDesign"],
+                        klass_list,
                     )
                     encounter_parent = data.parent_by_klass(
                         encounter["id"],
-                        ["InterventionalStudyDesign", "ObservationalStudyDesign"],
+                        klass_list,
                     )
-                    if item_parent["id"] != encounter_parent["id"]:
-                        print(f"**** ITEM: {item}")
+                    if (item_parent is None) and (encounter_parent is None):
+                        self._add_failure(
+                            f"{item['instanceType']} and {encounter['instanceType']} missing parents",
+                            item["instanceType"],
+                            "encounterId",
+                            data.path_by_id(item["id"]),
+                        )
+                    elif item_parent is None:
+                        self._add_failure(
+                            f"{item['instanceType']} missing parent",
+                            item["instanceType"],
+                            "encounterId",
+                            data.path_by_id(item["id"]),
+                        )
+                    elif encounter_parent is None:
+                        self._add_failure(
+                            f"{encounter['instanceType']} missing parent",
+                            item["instanceType"],
+                            "encounterId",
+                            data.path_by_id(item["id"]),
+                        )
+                    elif item_parent["id"] != encounter_parent["id"]:
                         self._add_failure(
                             "Encounter defined in a different study design",
                             item["instanceType"],
