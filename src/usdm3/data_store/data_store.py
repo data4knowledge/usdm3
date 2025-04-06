@@ -37,6 +37,7 @@ class DataStore:
 
     def decompose(self):
         self.data = self._load_data()
+        self._check_study_id(self.data)
         self._decompose(self.data, None, "")
 
     def instance_by_id(self, id: str) -> dict:
@@ -131,3 +132,17 @@ class DataStore:
                 )
         else:
             return "Wrapper", None
+
+    def _check_study_id(self, data):
+        # Do not want a null study id though it is permitted
+        if "study" not in data:
+            location = DataStoreErrorLocation(
+                "$", "study", ""
+            )
+            raise DecompositionError(location)
+        if "id" not in data["study"]:
+            location = DataStoreErrorLocation(
+                "$.Study", "id", ""
+            )
+            raise DecompositionError(location)
+        data["study"]["id"] = "$root.study.id" if data["study"]["id"] is None else data["study"]["id"]

@@ -100,7 +100,7 @@ def test_parent_by_klass_not_instance(tmp_path):
     """Test handling of missing instance type"""
     # Create test data with missing id in StudyDesign
     test_data = {
-        "Study": {
+        "study": {
             "id": "Study-1",
             "instanceType": "Study",
             "StudyVersion": [
@@ -158,7 +158,7 @@ def test_id_errors(tmp_path):
     """Test handling of missing IDs"""
     # Create test data with missing id in StudyDesign
     test_data = {
-        "Study": {
+        "study": {
             "id": "study1",
             "instanceType": "Study",
             "StudyVersion": [
@@ -204,7 +204,7 @@ def test_type_errors(tmp_path):
     """Test handling of missing IDs"""
     # Create test data with missing id in StudyDesign
     test_data = {
-        "Study": {
+        "study": {
             "id": "study1",
             "instanceType": "Study",
             "StudyVersion": [
@@ -246,3 +246,99 @@ def test_type_errors(tmp_path):
     error_msg = str(exc_info.value)
     assert "instanceType" in error_msg
     assert "$.Study.StudyVersion[0].Encounter[0]" in error_msg
+
+def test_parent_by_study_missing(tmp_path):
+    """Test handling of missing instance type"""
+    # Create test data with missing id in StudyDesign
+    test_data = {
+        "Study": {
+            "id": "Study-1",
+            "instanceType": "Study",
+            "StudyVersion": [
+                {
+                    "id": "Version-1",
+                    "instanceType": "StudyVersion",
+                    "StudyDesign": [
+                        {
+                            "instanceType": "Encounter",
+                            "id": "Encounter-1",
+                            "contactModes": [
+                                {
+                                    "id": "Code-1",
+                                    "code": "C175574",
+                                    "codeSystem": "http://www.cdisc.org",
+                                    "codeSystemVersion": "2023-12-15",
+                                    "decode": "Clinic",
+                                    "instanceType": "Code"
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+    }
+
+    # Create temporary test file
+    test_file = tmp_path / "test_missing_study.json"
+    with open(test_file, "w") as f:
+        json.dump(test_data, f)
+
+    # Verify exception
+    data_store = DataStore(test_file)
+    with pytest.raises(DecompositionError) as exc_info:
+        data_store.decompose()
+
+    # Verify error message contains expected information
+    error_msg = str(exc_info.value)
+    print(f"ERRROR: {error_msg}")
+    assert "study" in error_msg
+    assert "$" in error_msg
+
+def test_parent_by_study_id_missing(tmp_path):
+    """Test handling of missing instance type"""
+    # Create test data with missing id in StudyDesign
+    test_data = {
+        "study": {
+            "idx": "Study-1",
+            "instanceType": "Study",
+            "StudyVersion": [
+                {
+                    "id": "Version-1",
+                    "instanceType": "StudyVersion",
+                    "StudyDesign": [
+                        {
+                            "instanceType": "Encounter",
+                            "id": "Encounter-1",
+                            "contactModes": [
+                                {
+                                    "id": "Code-1",
+                                    "code": "C175574",
+                                    "codeSystem": "http://www.cdisc.org",
+                                    "codeSystemVersion": "2023-12-15",
+                                    "decode": "Clinic",
+                                    "instanceType": "Code"
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+    }
+
+    # Create temporary test file
+    test_file = tmp_path / "test_missing_id.json"
+    with open(test_file, "w") as f:
+        json.dump(test_data, f)
+
+    # Verify exception
+    data_store = DataStore(test_file)
+    with pytest.raises(DecompositionError) as exc_info:
+        data_store.decompose()
+
+    # Verify error message contains expected information
+    error_msg = str(exc_info.value)
+    print(f"ERRROR: {error_msg}")
+    assert "id" in error_msg
+    assert "$.Study" in error_msg

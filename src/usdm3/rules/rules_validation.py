@@ -23,7 +23,7 @@ class RulesValidation3(metaclass=Singleton):
 class RulesValidationEngine:
     def __init__(self, root_path: str, package_name: str):
         self.root_path = root_path
-        print(f"LIBRARY: {root_path}, {package_name}")
+        #print(f"LIBRARY: {root_path}, {package_name}")
         self.library_path = os.path.join(self.root_path, "rules/library")
         self.ct_path = os.path.join(self.root_path, "ct/cdisc")
         # print(f"PATHS: {self.root_path}, {self.library_path}, {self.ct_path}")
