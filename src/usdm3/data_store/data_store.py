@@ -61,7 +61,9 @@ class DataStore:
             return None
         instance = self._ids[id]
         while not found:
-            if instance["instanceType"] in klasses:
+            if "instanceType" not in instance:
+                return None
+            elif instance["instanceType"] in klasses:
                 found = True
             else:
                 instance = self._parent[instance["id"]]

@@ -1,7 +1,7 @@
 import pytest
 import json
 from pathlib import Path
-from usdm3.data_store.data_store import DataStore, DecompositionError
+from usdm3.data_store.data_store import DataStore, DecompositionError, DataStoreErrorLocation
 
 
 @pytest.fixture
@@ -33,6 +33,14 @@ def data_store_with_instance_type_errors():
     data_store.decompose()
     return data_store
 
+
+def test_data_store_error_location():
+    instance = DataStoreErrorLocation("x.y.z", "missing", "extra")
+    assert instance.to_dict() == {
+        'missing': 'missing',
+        'path': 'x.y.z',
+    }
+    assert instance.__str__() == "[x.y.z, missing 'missing' attribute, extra]"
 
 def test_instances_by_klass(data_store):
     """Test getting instances by class"""
@@ -87,6 +95,64 @@ def test_parent_by_klass_not_found(data_store):
     parent = data_store.parent_by_klass("nonexistent", "Study")
     assert parent is None
 
+
+def test_parent_by_klass_not_instance(tmp_path):
+    """Test handling of missing instance type"""
+    # Create test data with missing id in StudyDesign
+    test_data = {
+        "Study": {
+            "id": "Study-1",
+            "instanceType": "Study",
+            "StudyVersion": [
+                {
+                    "id": "Version-1",
+                    "instanceType": "StudyVersion",
+                    "StudyDesign": [
+                        {
+                            "instanceType": "Encounter",
+                            "id": "Encounter-1",
+                            "contactModes": [
+                                {
+                                    "id": "Code-1",
+                                    "code": "C175574",
+                                    "codeSystem": "http://www.cdisc.org",
+                                    "codeSystemVersion": "2023-12-15",
+                                    "decode": "Clinic",
+                                    "instanceType": "Code"
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+    }
+
+    # Create temporary test file
+    test_file = tmp_path / "test_missing_instance_type.json"
+    with open(test_file, "w") as f:
+        json.dump(test_data, f)
+
+    # Verify that attempting to create and decompose DataStore with invalid data raises DecompositionError
+    data_store = DataStore(test_file)
+    data_store.decompose()
+    # Remove the instanceType in the right place to force the error
+    data_store._parent["Code-1"] = {
+        # instanceType removed
+        "id": "Encounter-1",
+        "contactModes": [
+            {
+                "id": "Code-1",
+                "code": "C175574",
+                "codeSystem": "http://www.cdisc.org",
+                "codeSystemVersion": "2023-12-15",
+                "decode": "Clinic",
+                "instanceType": "Code"
+            }
+        ],
+    }
+    result = data_store.parent_by_klass("Code-1", "Study")
+    assert result is None
 
 def test_id_errors(tmp_path):
     """Test handling of missing IDs"""
