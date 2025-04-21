@@ -41,11 +41,9 @@ class DataStore:
         self._check_study_id(self.data)
         self._decompose(self.data, None, "")
 
-    def reallocate(self):
+    def reallocate(self, id_manager: IdManager) -> bool:
         if not self.data:
             return False
-        class_names = list(self._klasses.keys())
-        id_manager = IdManager(class_names)
         new_klasses = {}
         new_ids = {}
         new_path = {}

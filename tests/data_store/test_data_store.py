@@ -6,6 +6,7 @@ from usdm3.data_store.data_store import (
     DecompositionError,
     DataStoreErrorLocation,
 )
+from usdm3.base.id_manager import IdManager
 
 
 @pytest.fixture
@@ -356,7 +357,8 @@ def test_reallocate_no_data():
     """Test reallocate when no data is loaded"""
     data_store = DataStore("nonexistent_file.json")
     # Don't call decompose, so data is None
-    result = data_store.reallocate()
+    id_manager = IdManager(["DummyClass"])
+    result = data_store.reallocate(id_manager)
     assert result is False
 
 
@@ -366,8 +368,11 @@ def test_reallocate(data_store):
     original_ids = list(data_store._ids.keys())
     original_id_count = len(original_ids)
 
+    # Create IdManager with classes from data_store
+    id_manager = IdManager(list(data_store._klasses.keys()))
+    
     # Call reallocate
-    data_store.reallocate()
+    data_store.reallocate(id_manager)
 
     # Get new IDs
     new_ids = list(data_store._ids.keys())
@@ -400,8 +405,11 @@ def test_reallocate_maintains_relationships(data_store):
     original_path = data_store.path_by_id(encounter_id)
     assert original_path is not None
 
+    # Create IdManager with classes from data_store
+    id_manager = IdManager(list(data_store._klasses.keys()))
+    
     # Reallocate IDs
-    data_store.reallocate()
+    data_store.reallocate(id_manager)
 
     # Find the new encounter instances
     new_encounter_instances = data_store.instances_by_klass("Encounter")
@@ -433,8 +441,11 @@ def test_reallocate_maintains_paths(data_store):
         if path:
             original_paths[path] = id
 
+    # Create IdManager with classes from data_store
+    id_manager = IdManager(list(data_store._klasses.keys()))
+    
     # Reallocate IDs
-    data_store.reallocate()
+    data_store.reallocate(id_manager)
 
     # Verify that for each original path, there's an instance with that path after reallocation
     for path, original_id in original_paths.items():
