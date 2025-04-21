@@ -1,7 +1,7 @@
 import json
 from d4k_sel.errors import Errors
 from d4k_sel import ErrorLocation
-
+from usdm3.base.id_manager import IdManager
 
 class DataStoreErrorLocation(ErrorLocation):
     def __init__(self, path: str, missing: str, extra: str):
@@ -40,6 +40,33 @@ class DataStore:
         self._check_study_id(self.data)
         self._decompose(self.data, None, "")
 
+    def reallocate(self):
+        if not self.data:
+            return False
+        class_names = list(self._klasses.keys())
+        id_manager = IdManager(class_names)
+        new_klasses = {}
+        new_ids = {}
+        new_path = {}
+        new_parent = {}
+        for klass in self._klasses:
+            new_klasses[klass] = {}
+        for klass, instances in self._klasses.items():
+            instance_ids = list(instances.keys())
+            for id in instance_ids:
+                instance = instances[id]
+                new_id = id_manager.build_id(klass)
+                instance["id"] = new_id
+                new_klasses[klass][new_id] = instance
+                new_ids[new_id] = instance
+                new_path[new_id] = self._path[id]
+                new_parent[new_id] = self._parent[id]
+        self._klasses = new_klasses
+        self._ids = new_ids
+        self._path = new_path
+        self._parent = new_parent   
+        return True
+    
     def instance_by_id(self, id: str) -> dict:
         if id not in self._ids:
             return None
