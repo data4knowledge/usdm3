@@ -1,7 +1,11 @@
 import pytest
 import json
 from pathlib import Path
-from usdm3.data_store.data_store import DataStore, DecompositionError, DataStoreErrorLocation
+from usdm3.data_store.data_store import (
+    DataStore,
+    DecompositionError,
+    DataStoreErrorLocation,
+)
 
 
 @pytest.fixture
@@ -37,10 +41,11 @@ def data_store_with_instance_type_errors():
 def test_data_store_error_location():
     instance = DataStoreErrorLocation("x.y.z", "missing", "extra")
     assert instance.to_dict() == {
-        'missing': 'missing',
-        'path': 'x.y.z',
+        "missing": "missing",
+        "path": "x.y.z",
     }
     assert instance.__str__() == "[x.y.z, missing 'missing' attribute, extra]"
+
 
 def test_instances_by_klass(data_store):
     """Test getting instances by class"""
@@ -118,7 +123,7 @@ def test_parent_by_klass_not_instance(tmp_path):
                                     "codeSystem": "http://www.cdisc.org",
                                     "codeSystemVersion": "2023-12-15",
                                     "decode": "Clinic",
-                                    "instanceType": "Code"
+                                    "instanceType": "Code",
                                 }
                             ],
                         }
@@ -147,12 +152,13 @@ def test_parent_by_klass_not_instance(tmp_path):
                 "codeSystem": "http://www.cdisc.org",
                 "codeSystemVersion": "2023-12-15",
                 "decode": "Clinic",
-                "instanceType": "Code"
+                "instanceType": "Code",
             }
         ],
     }
     result = data_store.parent_by_klass("Code-1", "Study")
     assert result is None
+
 
 def test_id_errors(tmp_path):
     """Test handling of missing IDs"""
@@ -247,6 +253,7 @@ def test_type_errors(tmp_path):
     assert "instanceType" in error_msg
     assert "$.Study.StudyVersion[0].Encounter[0]" in error_msg
 
+
 def test_parent_by_study_missing(tmp_path):
     """Test handling of missing instance type"""
     # Create test data with missing id in StudyDesign
@@ -269,7 +276,7 @@ def test_parent_by_study_missing(tmp_path):
                                     "codeSystem": "http://www.cdisc.org",
                                     "codeSystemVersion": "2023-12-15",
                                     "decode": "Clinic",
-                                    "instanceType": "Code"
+                                    "instanceType": "Code",
                                 }
                             ],
                         }
@@ -295,6 +302,7 @@ def test_parent_by_study_missing(tmp_path):
     assert "study" in error_msg
     assert "$" in error_msg
 
+
 def test_parent_by_study_id_missing(tmp_path):
     """Test handling of missing instance type"""
     # Create test data with missing id in StudyDesign
@@ -317,7 +325,7 @@ def test_parent_by_study_id_missing(tmp_path):
                                     "codeSystem": "http://www.cdisc.org",
                                     "codeSystemVersion": "2023-12-15",
                                     "decode": "Clinic",
-                                    "instanceType": "Code"
+                                    "instanceType": "Code",
                                 }
                             ],
                         }
@@ -357,17 +365,17 @@ def test_reallocate(data_store):
     # Store original IDs for comparison
     original_ids = list(data_store._ids.keys())
     original_id_count = len(original_ids)
-    
+
     # Call reallocate
     data_store.reallocate()
-    
+
     # Get new IDs
     new_ids = list(data_store._ids.keys())
-    
+
     # Verify we have the same number of IDs (the implementation might have a bug
     # where it doesn't properly delete old IDs, but we should still have the same count)
     assert len(new_ids) == original_id_count
-    
+
     # Verify all new IDs follow the expected pattern (class name followed by underscore and number)
     # Skip special IDs like "$root"
     for new_id in new_ids:
@@ -382,32 +390,34 @@ def test_reallocate_maintains_relationships(data_store):
     encounter_instances = data_store.instances_by_klass("Encounter")
     assert len(encounter_instances) > 0
     encounter_id = encounter_instances[0]["id"]
-    
+
     # Get the parent before reallocation
     original_parent = data_store.parent_by_klass(encounter_id, "StudyDesign")
     assert original_parent is not None
     original_parent_type = original_parent["instanceType"]
-    
+
     # Store the path for later comparison
     original_path = data_store.path_by_id(encounter_id)
     assert original_path is not None
-    
+
     # Reallocate IDs
     data_store.reallocate()
-    
+
     # Find the new encounter instances
     new_encounter_instances = data_store.instances_by_klass("Encounter")
     assert len(new_encounter_instances) > 0
-    
+
     # Find an instance with the same path as our original encounter
     matching_instance = None
     for instance in new_encounter_instances:
         if data_store.path_by_id(instance["id"]) == original_path:
             matching_instance = instance
             break
-    
-    assert matching_instance is not None, "Could not find an instance with the same path after reallocation"
-    
+
+    assert matching_instance is not None, (
+        "Could not find an instance with the same path after reallocation"
+    )
+
     # Verify the parent relationship is maintained
     new_parent = data_store.parent_by_klass(matching_instance["id"], "StudyDesign")
     assert new_parent is not None
@@ -422,10 +432,10 @@ def test_reallocate_maintains_paths(data_store):
         path = data_store.path_by_id(id)
         if path:
             original_paths[path] = id
-    
+
     # Reallocate IDs
     data_store.reallocate()
-    
+
     # Verify that for each original path, there's an instance with that path after reallocation
     for path, original_id in original_paths.items():
         # Find an instance with this path
@@ -434,5 +444,7 @@ def test_reallocate_maintains_paths(data_store):
             if data_store.path_by_id(new_id) == path:
                 found = True
                 break
-        
-        assert found, f"Path {path} for original ID {original_id} not found after reallocation"
+
+        assert found, (
+            f"Path {path} for original ID {original_id} not found after reallocation"
+        )

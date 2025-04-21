@@ -3,6 +3,7 @@ from d4k_sel.errors import Errors
 from d4k_sel import ErrorLocation
 from usdm3.base.id_manager import IdManager
 
+
 class DataStoreErrorLocation(ErrorLocation):
     def __init__(self, path: str, missing: str, extra: str):
         self.path = path
@@ -64,9 +65,9 @@ class DataStore:
         self._klasses = new_klasses
         self._ids = new_ids
         self._path = new_path
-        self._parent = new_parent   
+        self._parent = new_parent
         return True
-    
+
     def instance_by_id(self, id: str) -> dict:
         if id not in self._ids:
             return None
@@ -163,13 +164,11 @@ class DataStore:
     def _check_study_id(self, data):
         # Do not want a null study id though it is permitted
         if "study" not in data:
-            location = DataStoreErrorLocation(
-                "$", "study", ""
-            )
+            location = DataStoreErrorLocation("$", "study", "")
             raise DecompositionError(location)
         if "id" not in data["study"]:
-            location = DataStoreErrorLocation(
-                "$.Study", "id", ""
-            )
+            location = DataStoreErrorLocation("$.Study", "id", "")
             raise DecompositionError(location)
-        data["study"]["id"] = "$root.study.id" if data["study"]["id"] is None else data["study"]["id"]
+        data["study"]["id"] = (
+            "$root.study.id" if data["study"]["id"] is None else data["study"]["id"]
+        )
