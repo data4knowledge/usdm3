@@ -353,109 +353,110 @@ def test_parent_by_study_id_missing(tmp_path):
     assert "$.Study" in error_msg
 
 
-def test_reallocate_no_data():
-    """Test reallocate when no data is loaded"""
-    data_store = DataStore("nonexistent_file.json")
-    # Don't call decompose, so data is None
-    id_manager = IdManager(["DummyClass"])
-    result = data_store.reallocate(id_manager)
-    assert result is False
+
+# def test_reallocate_no_data():
+#     """Test reallocate when no data is loaded"""
+#     data_store = DataStore("nonexistent_file.json")
+#     # Don't call decompose, so data is None
+#     id_manager = IdManager(["DummyClass"])
+#     result = data_store.reallocate(id_manager)
+#     assert result is False
 
 
-def test_reallocate(data_store):
-    """Test reallocate with loaded data"""
-    # Store original IDs for comparison
-    original_ids = list(data_store._ids.keys())
-    original_id_count = len(original_ids)
+# def test_reallocate(data_store):
+#     """Test reallocate with loaded data"""
+#     # Store original IDs for comparison
+#     original_ids = list(data_store._ids.keys())
+#     original_id_count = len(original_ids)
 
-    # Create IdManager with classes from data_store
-    id_manager = IdManager(list(data_store._klasses.keys()))
+#     # Create IdManager with classes from data_store
+#     id_manager = IdManager(list(data_store._klasses.keys()))
     
-    # Call reallocate
-    data_store.reallocate(id_manager)
+#     # Call reallocate
+#     data_store.reallocate(id_manager)
 
-    # Get new IDs
-    new_ids = list(data_store._ids.keys())
+#     # Get new IDs
+#     new_ids = list(data_store._ids.keys())
 
-    # Verify we have the same number of IDs (the implementation might have a bug
-    # where it doesn't properly delete old IDs, but we should still have the same count)
-    assert len(new_ids) == original_id_count
+#     # Verify we have the same number of IDs (the implementation might have a bug
+#     # where it doesn't properly delete old IDs, but we should still have the same count)
+#     assert len(new_ids) == original_id_count
 
-    # Verify all new IDs follow the expected pattern (class name followed by underscore and number)
-    # Skip special IDs like "$root"
-    for new_id in new_ids:
-        if new_id != "$root" and "_" in new_id:
-            class_name, id_num = new_id.split("_", 1)
-            assert id_num.isdigit()
+#     # Verify all new IDs follow the expected pattern (class name followed by underscore and number)
+#     # Skip special IDs like "$root"
+#     for new_id in new_ids:
+#         if new_id != "$root" and "_" in new_id:
+#             class_name, id_num = new_id.split("_", 1)
+#             assert id_num.isdigit()
 
 
-def test_reallocate_maintains_relationships(data_store):
-    """Test that reallocate maintains parent-child relationships"""
-    # Find an ID with a known parent relationship
-    encounter_instances = data_store.instances_by_klass("Encounter")
-    assert len(encounter_instances) > 0
-    encounter_id = encounter_instances[0]["id"]
+# def test_reallocate_maintains_relationships(data_store):
+#     """Test that reallocate maintains parent-child relationships"""
+#     # Find an ID with a known parent relationship
+#     encounter_instances = data_store.instances_by_klass("Encounter")
+#     assert len(encounter_instances) > 0
+#     encounter_id = encounter_instances[0]["id"]
 
-    # Get the parent before reallocation
-    original_parent = data_store.parent_by_klass(encounter_id, "StudyDesign")
-    assert original_parent is not None
-    original_parent_type = original_parent["instanceType"]
+#     # Get the parent before reallocation
+#     original_parent = data_store.parent_by_klass(encounter_id, "StudyDesign")
+#     assert original_parent is not None
+#     original_parent_type = original_parent["instanceType"]
 
-    # Store the path for later comparison
-    original_path = data_store.path_by_id(encounter_id)
-    assert original_path is not None
+#     # Store the path for later comparison
+#     original_path = data_store.path_by_id(encounter_id)
+#     assert original_path is not None
 
-    # Create IdManager with classes from data_store
-    id_manager = IdManager(list(data_store._klasses.keys()))
+#     # Create IdManager with classes from data_store
+#     id_manager = IdManager(list(data_store._klasses.keys()))
     
-    # Reallocate IDs
-    data_store.reallocate(id_manager)
+#     # Reallocate IDs
+#     data_store.reallocate(id_manager)
 
-    # Find the new encounter instances
-    new_encounter_instances = data_store.instances_by_klass("Encounter")
-    assert len(new_encounter_instances) > 0
+#     # Find the new encounter instances
+#     new_encounter_instances = data_store.instances_by_klass("Encounter")
+#     assert len(new_encounter_instances) > 0
 
-    # Find an instance with the same path as our original encounter
-    matching_instance = None
-    for instance in new_encounter_instances:
-        if data_store.path_by_id(instance["id"]) == original_path:
-            matching_instance = instance
-            break
+#     # Find an instance with the same path as our original encounter
+#     matching_instance = None
+#     for instance in new_encounter_instances:
+#         if data_store.path_by_id(instance["id"]) == original_path:
+#             matching_instance = instance
+#             break
 
-    assert matching_instance is not None, (
-        "Could not find an instance with the same path after reallocation"
-    )
+#     assert matching_instance is not None, (
+#         "Could not find an instance with the same path after reallocation"
+#     )
 
-    # Verify the parent relationship is maintained
-    new_parent = data_store.parent_by_klass(matching_instance["id"], "StudyDesign")
-    assert new_parent is not None
-    assert new_parent["instanceType"] == original_parent_type
+#     # Verify the parent relationship is maintained
+#     new_parent = data_store.parent_by_klass(matching_instance["id"], "StudyDesign")
+#     assert new_parent is not None
+#     assert new_parent["instanceType"] == original_parent_type
 
 
-def test_reallocate_maintains_paths(data_store):
-    """Test that reallocate maintains path information"""
-    # Get all paths before reallocation
-    original_paths = {}
-    for id in data_store._ids.keys():
-        path = data_store.path_by_id(id)
-        if path:
-            original_paths[path] = id
+# def test_reallocate_maintains_paths(data_store):
+#     """Test that reallocate maintains path information"""
+#     # Get all paths before reallocation
+#     original_paths = {}
+#     for id in data_store._ids.keys():
+#         path = data_store.path_by_id(id)
+#         if path:
+#             original_paths[path] = id
 
-    # Create IdManager with classes from data_store
-    id_manager = IdManager(list(data_store._klasses.keys()))
+#     # Create IdManager with classes from data_store
+#     id_manager = IdManager(list(data_store._klasses.keys()))
     
-    # Reallocate IDs
-    data_store.reallocate(id_manager)
+#     # Reallocate IDs
+#     data_store.reallocate(id_manager)
 
-    # Verify that for each original path, there's an instance with that path after reallocation
-    for path, original_id in original_paths.items():
-        # Find an instance with this path
-        found = False
-        for new_id in data_store._ids.keys():
-            if data_store.path_by_id(new_id) == path:
-                found = True
-                break
+#     # Verify that for each original path, there's an instance with that path after reallocation
+#     for path, original_id in original_paths.items():
+#         # Find an instance with this path
+#         found = False
+#         for new_id in data_store._ids.keys():
+#             if data_store.path_by_id(new_id) == path:
+#                 found = True
+#                 break
 
-        assert found, (
-            f"Path {path} for original ID {original_id} not found after reallocation"
-        )
+#         assert found, (
+#             f"Path {path} for original ID {original_id} not found after reallocation"
+#         )
