@@ -9,6 +9,7 @@ from usdm3.api.study_identifier import StudyIdentifier
 from usdm3.api.organization import Organization
 from usdm3.base.api_instance import APIInstance
 from usdm3.base.id_manager import IdManager
+from usdm3.ct.cdisc.library import Library
 from usdm3.__version__ import __model_version__, __package_version__
 from uuid import uuid4
 
@@ -34,10 +35,13 @@ class Minimum:
 
         id_manager = IdManager(api_classes)
         api_instance = APIInstance(id_manager)
+        ct_library = Library()
         cdisc_code_system = "cdisc.org"
         cdisc_code_system_version = "2023-12-15"
 
         # Define the codes to be used in the study
+        cl = klass_and_attribute(self, klass, attribute) -> dict:
+        # StudyTitle, type
         title_type = api_instance.create(
             Code,
             {
@@ -47,6 +51,7 @@ class Minimum:
                 "decode": "Official Study Title",
             },
         )
+        # Organization, organizationType
         organization_type = api_instance.create(
             Code,
             {
@@ -56,6 +61,7 @@ class Minimum:
                 "decode": "Clinical Study Sponsor",
             },
         )
+        # StudyProtocolVersion, protocolStatus
         doc_status = api_instance.create(
             Code,
             {
