@@ -37,6 +37,7 @@ class LibraryAPI:
                 if raw.status_code == 200:
                     response = raw.json()
                     response.pop("_links", None)
+                    response["source"] = {"effective_date": version, "package": package}
                     return response
         raise self.APIError(
             f"failed to obtain code list from library for {c_code}, "
