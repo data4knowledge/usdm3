@@ -49,7 +49,7 @@ klass_attribute_mapping:
     studyPhase: C66737
   StudyTitle:
     type: C207419
-  StudyProtocolVersion:
+  StudyProtocolDocumentVersion:
     protocolStatus: C188723
   Organization:
     organizationType: C188724

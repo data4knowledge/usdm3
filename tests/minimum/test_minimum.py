@@ -1,9 +1,16 @@
+import os
+import pathlib
 from src.usdm3.minimum.minimum import Minimum
 from src.usdm3.__version__ import __package_version__
 
+def root_path():
+    base = pathlib.Path(__file__).parent.parent.parent.resolve()
+    return os.path.join(base, "src/usdm3")
 
 def test_init():
-    instance = Minimum.minimum("Test Study", "SPONSOR-1234", "1.0.0")
+    root = root_path()
+    #print(f"ROOT: {root}")
+    instance = Minimum.minimum(root, "Test Study", "SPONSOR-1234", "1.0.0")
     instance.study.id = "88888888-4444-4444-4444-121212121212"  # UUID is dynamic
     assert instance.model_dump() == {
         "id": "Wrapper_1",
@@ -25,7 +32,7 @@ def test_init():
                         "protocolStatus": {
                             "code": "C25425",
                             "codeSystem": "cdisc.org",
-                            "codeSystemVersion": "2023-12-15",
+                            "codeSystemVersion": "2024-09-27",
                             "decode": "Approved",
                             "id": "Code_3",
                             "instanceType": "Code",
@@ -64,7 +71,7 @@ def test_init():
                                 "organizationType": {
                                     "code": "C70793",
                                     "codeSystem": "cdisc.org",
-                                    "codeSystemVersion": "2023-12-15",
+                                    "codeSystemVersion": "2024-09-27",
                                     "decode": "Clinical Study Sponsor",
                                     "id": "Code_2",
                                     "instanceType": "Code",
@@ -82,7 +89,7 @@ def test_init():
                             "type": {
                                 "code": "C207616",
                                 "codeSystem": "cdisc.org",
-                                "codeSystemVersion": "2023-12-15",
+                                "codeSystemVersion": "2024-09-27",
                                 "decode": "Official Study Title",
                                 "id": "Code_1",
                                 "instanceType": "Code",

@@ -16,7 +16,7 @@ from uuid import uuid4
 
 class Minimum:
     @classmethod
-    def minimum(cls, title: str, identifier: str, version: str) -> "Wrapper":
+    def minimum(cls, root_path: str, title: str, identifier: str, version: str) -> "Wrapper":
         """
         Create a minimum study with the given title, identifier, and version.
 
@@ -35,39 +35,39 @@ class Minimum:
 
         id_manager = IdManager(api_classes)
         api_instance = APIInstance(id_manager)
-        ct_library = Library()
+        ct_library = Library(root_path)
+        ct_library.load()
         cdisc_code_system = "cdisc.org"
         cdisc_code_system_version = "2023-12-15"
 
         # Define the codes to be used in the study
-        cl = klass_and_attribute(self, klass, attribute) -> dict:
-        # StudyTitle, type
+        cl = ct_library.klass_and_attribute("StudyTitle", "type")
         title_type = api_instance.create(
             Code,
             {
                 "code": "C207616",
                 "codeSystem": cdisc_code_system,
-                "codeSystemVersion": cdisc_code_system_version,
+                "codeSystemVersion": cl["source"]["effective_date"],
                 "decode": "Official Study Title",
             },
         )
-        # Organization, organizationType
+        cl = ct_library.klass_and_attribute(Organization, "organizationType")
         organization_type = api_instance.create(
             Code,
             {
                 "code": "C70793",
                 "codeSystem": cdisc_code_system,
-                "codeSystemVersion": cdisc_code_system_version,
+                "codeSystemVersion": cl["source"]["effective_date"],
                 "decode": "Clinical Study Sponsor",
             },
         )
-        # StudyProtocolVersion, protocolStatus
+        cl = ct_library.klass_and_attribute(StudyProtocolDocumentVersion, "protocolStatus")
         doc_status = api_instance.create(
             Code,
             {
                 "code": "C25425",
                 "codeSystem": cdisc_code_system,
-                "codeSystemVersion": cdisc_code_system_version,
+                "codeSystemVersion": cl["source"]["effective_date"],
                 "decode": "Approved",
             },
         )

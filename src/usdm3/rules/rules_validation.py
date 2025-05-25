@@ -13,8 +13,11 @@ from usdm3.base.singleton import Singleton
 
 
 class RulesValidation3(metaclass=Singleton):
-    def __init__(self, root_path: str, package_name: str):
-        self.rules_validation = RulesValidationEngine(root_path, package_name)
+    
+    PACKAGE_NAME = "usdm3.rules.library"
+
+    def __init__(self, root_path: str):
+        self.rules_validation = RulesValidationEngine(root_path, self.PACKAGE_NAME)
 
     def validate(self, filename: str):
         return self.rules_validation.validate_rules(filename)
@@ -23,9 +26,8 @@ class RulesValidation3(metaclass=Singleton):
 class RulesValidationEngine:
     def __init__(self, root_path: str, package_name: str):
         self.root_path = root_path
-        #print(f"LIBRARY: {root_path}, {package_name}")
+        # print(f"LIBRARY: {root_path}, {package_name}")
         self.library_path = os.path.join(self.root_path, "rules/library")
-        self.ct_path = os.path.join(self.root_path, "ct/cdisc")
         # print(f"PATHS: {self.root_path}, {self.library_path}, {self.ct_path}")
         self.package_name = package_name
         self.rules: List[Type[RuleTemplate]] = []
@@ -34,7 +36,7 @@ class RulesValidationEngine:
     def validate_rules(self, filename: str) -> RulesValidationResults:
         data_store, e = self._data_store(filename)
         if data_store:
-            ct = CTLibrary(self.ct_path)
+            ct = CTLibrary(self.root_path)
             ct.load()
             config = {"data": data_store, "ct": ct}
             results = self._execute_rules(config)

@@ -19,6 +19,7 @@ class Config:
 
     def klass_and_attribute(self, klass, attribute) -> str:
         try:
+            klass = klass if isinstance(klass, str) else klass.__name__
             return self._by_klass_attribute[klass][attribute]
         except Exception:
             raise ValueError(

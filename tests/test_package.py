@@ -58,7 +58,7 @@ def _expected():
                         "protocolStatus": {
                             "code": "C25425",
                             "codeSystem": "cdisc.org",
-                            "codeSystemVersion": "2023-12-15",
+                            "codeSystemVersion": "2024-09-27",
                             "decode": "Approved",
                             "id": "Code_3",
                             "instanceType": "Code",
@@ -97,7 +97,7 @@ def _expected():
                                 "organizationType": {
                                     "code": "C70793",
                                     "codeSystem": "cdisc.org",
-                                    "codeSystemVersion": "2023-12-15",
+                                    "codeSystemVersion": "2024-09-27",
                                     "decode": "Clinical Study Sponsor",
                                     "id": "Code_2",
                                     "instanceType": "Code",
@@ -115,7 +115,7 @@ def _expected():
                             "type": {
                                 "code": "C207616",
                                 "codeSystem": "cdisc.org",
-                                "codeSystemVersion": "2023-12-15",
+                                "codeSystemVersion": "2024-09-27",
                                 "decode": "Official Study Title",
                                 "id": "Code_1",
                                 "instanceType": "Code",

@@ -68,8 +68,10 @@ def library(tmp_path):
       TestClass:
         testAttribute: "test-codelist"
     """
-    os.mkdir(tmp_path / "config")
-    config_file = tmp_path / "config" / filename
+    os.mkdir(tmp_path / "ct" )
+    os.mkdir(tmp_path / "ct" / "cdisc")
+    os.mkdir(tmp_path / "ct" / "cdisc" / "config")
+    config_file = tmp_path / "ct" / "cdisc" / "config" / filename
     config_file.write_text(config_content)
     return Library(tmp_path)
 
@@ -138,9 +140,7 @@ def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library)
     mock_cache.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
-    local_library = Library(
-        library.filepath
-    )  # Borrowing the file path from the ficture, bit naughty.
+    local_library = Library(library.root_path)  # Borrowing the file path from the fixture, bit naughty.
     local_library.load()
 
     # Verify API was not called
