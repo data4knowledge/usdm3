@@ -50,6 +50,13 @@ class Library:
         except Exception:
             return None
 
+    def unit(self, value):
+        try:
+            code_list = self._by_code_list["C71620"]
+            return self._get_item(code_list, value)
+        except Exception:
+            return None
+        
     def cl_by_term(self, term_code: str) -> dict:
         try:
             concept_ids = self._by_term[term_code]
@@ -57,6 +64,23 @@ class Library:
         except Exception:
             return None
 
+    def _get_item(self, code_list, value):
+        try:
+            for field in ["conceptId", "preferredTerm", "submissionValue"]:
+                result = next(
+                    (
+                        item
+                        for item in code_list["terms"]
+                        if item[field].upper() == value.upper()
+                    ),
+                    None,
+                )
+                if result:
+                    return result
+            return None
+        except Exception:
+            return None
+        
     def _get_ct(self) -> None:
         for item in self._config.required_code_lists():
             response = self._api.code_list(item)
