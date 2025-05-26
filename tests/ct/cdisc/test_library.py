@@ -218,3 +218,182 @@ def test_cl_by_term(mock_missing_cls, mock_config_cls):
     # Test invalid lookup
     result = library.cl_by_term("Cxxx")
     assert result is None
+
+
+@pytest.fixture
+def sample_units_codelist():
+    """Sample units codelist data structure for testing unit method"""
+    return {
+        "conceptId": "C71620",
+        "terms": [
+            {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"},
+            {"conceptId": "C28253", "submissionValue": "g", "preferredTerm": "Gram"},
+            {"conceptId": "C48570", "submissionValue": "mg", "preferredTerm": "Milligram"},
+            {"conceptId": "C25613", "submissionValue": "L", "preferredTerm": "Liter"},
+            {"conceptId": "C28254", "submissionValue": "mL", "preferredTerm": "Milliliter"},
+        ],
+    }
+
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_unit_valid_lookup_by_concept_id(mock_missing_cls, mock_config_cls, sample_units_codelist):
+    """Test unit method with valid concept ID lookup"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Setup test data - units codelist
+    library._by_code_list["C71620"] = sample_units_codelist
+
+    # Test valid lookup by concept ID
+    result = library.unit("C48155")
+    expected = {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"}
+    assert result == expected
+
+    # Test case insensitive lookup
+    result = library.unit("c48155")
+    assert result == expected
+
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_unit_valid_lookup_by_submission_value(mock_missing_cls, mock_config_cls, sample_units_codelist):
+    """Test unit method with valid submission value lookup"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Setup test data - units codelist
+    library._by_code_list["C71620"] = sample_units_codelist
+
+    # Test valid lookup by submission value
+    result = library.unit("kg")
+    expected = {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"}
+    assert result == expected
+
+    # Test case insensitive lookup
+    result = library.unit("KG")
+    assert result == expected
+
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_unit_valid_lookup_by_preferred_term(mock_missing_cls, mock_config_cls, sample_units_codelist):
+    """Test unit method with valid preferred term lookup"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Setup test data - units codelist
+    library._by_code_list["C71620"] = sample_units_codelist
+
+    # Test valid lookup by preferred term
+    result = library.unit("Kilogram")
+    expected = {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"}
+    assert result == expected
+
+    # Test case insensitive lookup
+    result = library.unit("kilogram")
+    assert result == expected
+
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_unit_invalid_lookup(mock_missing_cls, mock_config_cls, sample_units_codelist):
+    """Test unit method with invalid value"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Setup test data - units codelist
+    library._by_code_list["C71620"] = sample_units_codelist
+
+    # Test invalid lookup
+    result = library.unit("invalid_unit")
+    assert result is None
+
+    # Test with None value
+    result = library.unit(None)
+    assert result is None
+
+    # Test with empty string
+    result = library.unit("")
+    assert result is None
+
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_unit_missing_codelist(mock_missing_cls, mock_config_cls):
+    """Test unit method when units codelist is not available"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Don't setup the units codelist (C71620)
+    # This simulates the case where the units codelist is not loaded
+
+    # Test lookup when codelist is missing
+    result = library.unit("kg")
+    assert result is None
+
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_unit_malformed_codelist(mock_missing_cls, mock_config_cls):
+    """Test unit method with malformed codelist data"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Setup malformed codelist data (missing 'terms' key)
+    library._by_code_list["C71620"] = {"conceptId": "C71620"}
+
+    # Test lookup with malformed data
+    result = library.unit("kg")
+    assert result is None
+
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_unit_multiple_matches_returns_first(mock_missing_cls, mock_config_cls):
+    """Test unit method returns first match when multiple fields could match"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Setup test data with potential for multiple matches
+    # (conceptId takes precedence over submissionValue and preferredTerm)
+    library._by_code_list["C71620"] = {
+        "conceptId": "C71620",
+        "terms": [
+            {"conceptId": "TEST", "submissionValue": "other", "preferredTerm": "Other Term"},
+            {"conceptId": "other", "submissionValue": "TEST", "preferredTerm": "Test Term"},
+        ],
+    }
+
+    # Test that conceptId match takes precedence
+    result = library.unit("TEST")
+    expected = {"conceptId": "TEST", "submissionValue": "other", "preferredTerm": "Other Term"}
+    assert result == expected
