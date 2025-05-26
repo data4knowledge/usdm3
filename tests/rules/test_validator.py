@@ -15,7 +15,9 @@ def test_rules():
     assert results.count() == 4
     actual = results.to_dict()
     assert actual[3]["exception"].startswith("This is a test exception\n")
-    actual[3]["exception"] = "This is a test exception" # has extra text from the traceback
+    actual[3]["exception"] = (
+        "This is a test exception"  # has extra text from the traceback
+    )
     assert actual == [
         {
             "attribute": "",

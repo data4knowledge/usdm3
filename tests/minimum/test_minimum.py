@@ -3,13 +3,15 @@ import pathlib
 from src.usdm3.minimum.minimum import Minimum
 from src.usdm3.__version__ import __package_version__
 
+
 def root_path():
     base = pathlib.Path(__file__).parent.parent.parent.resolve()
     return os.path.join(base, "src/usdm3")
 
+
 def test_init():
     root = root_path()
-    #print(f"ROOT: {root}")
+    # print(f"ROOT: {root}")
     instance = Minimum.minimum(root, "Test Study", "SPONSOR-1234", "1.0.0")
     instance.study.id = "88888888-4444-4444-4444-121212121212"  # UUID is dynamic
     assert instance.model_dump() == {

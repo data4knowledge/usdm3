@@ -19,6 +19,7 @@ def test_initialization(rule):
     )
     assert rule._errors.count() == 0
 
+
 def test_validate_epoch_in_different_study_design(rule):
     data_store = Mock()
     data_store.instances_by_klass.side_effect = [
@@ -127,14 +128,8 @@ def test_validate_epoch_both_missing(rule):
         ],
     ]
     data_store.instance_by_id.side_effect = [
-        {
-            "id": " ep1",
-            "instanceType": "XXX"
-        },
-        {
-            "id": "ep2",
-            "instanceType": "YYY"
-        },
+        {"id": " ep1", "instanceType": "XXX"},
+        {"id": "ep2", "instanceType": "YYY"},
     ]
     data_store.parent_by_klass.side_effect = [None, None, None, None]
     data_store.path_by_id.side_effect = ["path/path1", "path/path2"]
@@ -165,6 +160,7 @@ def test_validate_epoch_both_missing(rule):
         "message": "ScheduledDecisionInstance and YYY missing parents",
     }
 
+
 def test_validate_epoch_first_missing(rule):
     data_store = Mock()
     data_store.instances_by_klass.side_effect = [
@@ -184,14 +180,8 @@ def test_validate_epoch_first_missing(rule):
         ],
     ]
     data_store.instance_by_id.side_effect = [
-        {
-            "id": " ep1",
-            "instanceType": "XXX"
-        },
-        {
-            "id": "ep2",
-            "instanceType": "YYY"
-        },
+        {"id": " ep1", "instanceType": "XXX"},
+        {"id": "ep2", "instanceType": "YYY"},
     ]
     data_store.parent_by_klass.side_effect = [
         None,
@@ -216,6 +206,7 @@ def test_validate_epoch_first_missing(rule):
         "message": "ScheduledActivityInstance missing parent",
     }
 
+
 def test_validate_epoch_second_missing(rule):
     data_store = Mock()
     data_store.instances_by_klass.side_effect = [
@@ -226,17 +217,11 @@ def test_validate_epoch_second_missing(rule):
                 "instanceType": "ScheduledActivityInstance",
             },
         ],
-        []
+        [],
     ]
     data_store.instance_by_id.side_effect = [
-        {
-            "id": " ep1",
-            "instanceType": "XXX"
-        },
-        {
-            "id": "ep2",
-            "instanceType": "YYY"
-        },
+        {"id": " ep1", "instanceType": "XXX"},
+        {"id": "ep2", "instanceType": "YYY"},
     ]
     data_store.parent_by_klass.side_effect = [
         {"id": "sd2"},
@@ -260,4 +245,3 @@ def test_validate_epoch_second_missing(rule):
         },
         "message": "XXX missing parent",
     }
-

@@ -25,7 +25,7 @@ setuptools.setup(
         "simple-error-log",
         "jsonschema",
         "python-dotenv",
-        "requests"
+        "requests",
     ],
     packages=setuptools.find_packages(where="src"),
     package_dir={"": "src"},

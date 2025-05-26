@@ -1,16 +1,22 @@
+import os
+import pathlib
 from usdm3.ct.cdisc.missing.missing import Missing
 
+def root_path():
+    base = pathlib.Path(__file__).parent.parent.parent.parent.parent.resolve()
+    print(f"BASE: {base}")
+    return os.path.join(base, "src/usdm3")
 
 def test_missing_initialization():
     """Test that Missing class can be initialized and loads YAML file"""
-    missing = Missing()
+    missing = Missing(os.path.join(root_path(), "ct/cdisc/missing"))
     assert hasattr(missing, "_missing_ct")
     assert isinstance(missing._missing_ct, list)
 
 
 def test_code_lists_iteration():
     """Test that code_lists method yields all entries from the YAML file"""
-    missing = Missing()
+    missing = Missing(os.path.join(root_path(), "ct/cdisc/missing"))
     code_lists = list(missing.code_lists())
     assert len(code_lists) > 0
     for code_list in code_lists:

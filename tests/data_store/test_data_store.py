@@ -1,7 +1,11 @@
 import pytest
 import json
 from pathlib import Path
-from usdm3.data_store.data_store import DataStore, DecompositionError, DataStoreErrorLocation
+from usdm3.data_store.data_store import (
+    DataStore,
+    DecompositionError,
+    DataStoreErrorLocation,
+)
 
 
 @pytest.fixture
@@ -37,10 +41,11 @@ def data_store_with_instance_type_errors():
 def test_data_store_error_location():
     instance = DataStoreErrorLocation("x.y.z", "missing", "extra")
     assert instance.to_dict() == {
-        'missing': 'missing',
-        'path': 'x.y.z',
+        "missing": "missing",
+        "path": "x.y.z",
     }
     assert instance.__str__() == "[x.y.z, missing 'missing' attribute, extra]"
+
 
 def test_instances_by_klass(data_store):
     """Test getting instances by class"""
@@ -118,7 +123,7 @@ def test_parent_by_klass_not_instance(tmp_path):
                                     "codeSystem": "http://www.cdisc.org",
                                     "codeSystemVersion": "2023-12-15",
                                     "decode": "Clinic",
-                                    "instanceType": "Code"
+                                    "instanceType": "Code",
                                 }
                             ],
                         }
@@ -147,12 +152,13 @@ def test_parent_by_klass_not_instance(tmp_path):
                 "codeSystem": "http://www.cdisc.org",
                 "codeSystemVersion": "2023-12-15",
                 "decode": "Clinic",
-                "instanceType": "Code"
+                "instanceType": "Code",
             }
         ],
     }
     result = data_store.parent_by_klass("Code-1", "Study")
     assert result is None
+
 
 def test_id_errors(tmp_path):
     """Test handling of missing IDs"""
@@ -247,6 +253,7 @@ def test_type_errors(tmp_path):
     assert "instanceType" in error_msg
     assert "$.Study.StudyVersion[0].Encounter[0]" in error_msg
 
+
 def test_parent_by_study_missing(tmp_path):
     """Test handling of missing instance type"""
     # Create test data with missing id in StudyDesign
@@ -269,7 +276,7 @@ def test_parent_by_study_missing(tmp_path):
                                     "codeSystem": "http://www.cdisc.org",
                                     "codeSystemVersion": "2023-12-15",
                                     "decode": "Clinic",
-                                    "instanceType": "Code"
+                                    "instanceType": "Code",
                                 }
                             ],
                         }
@@ -295,6 +302,7 @@ def test_parent_by_study_missing(tmp_path):
     assert "study" in error_msg
     assert "$" in error_msg
 
+
 def test_parent_by_study_id_missing(tmp_path):
     """Test handling of missing instance type"""
     # Create test data with missing id in StudyDesign
@@ -317,7 +325,7 @@ def test_parent_by_study_id_missing(tmp_path):
                                     "codeSystem": "http://www.cdisc.org",
                                     "codeSystemVersion": "2023-12-15",
                                     "decode": "Clinic",
-                                    "instanceType": "Code"
+                                    "instanceType": "Code",
                                 }
                             ],
                         }

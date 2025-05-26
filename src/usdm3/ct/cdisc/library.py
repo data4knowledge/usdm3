@@ -13,16 +13,19 @@ class Library:
     including code lists and their associated terms. It can load data from a local
     cache file or fetch it from the CDISC API when needed.
     """
+    BASE_PATH = "ct/cdisc"
 
     def __init__(self, root_path: str):
         self.root_path = root_path
         self._config = Config(
-            os.path.join(self.root_path, "ct/cdisc/config")
+            os.path.join(self.root_path, self.BASE_PATH, "config")
         )  # Configuration for required code lists and mappings
-        self._missing = Missing()  # Handler for missing/additional code lists
+        self._missing = Missing(
+            os.path.join(self.root_path, self.BASE_PATH, "missing")
+        )  # Handler for missing/additional code lists
         self._api = LibraryAPI()  # Interface to CDISC Library API
         self._cache = LibraryCache(
-            os.path.join(self.root_path, "ct/cdisc/library_cache")
+            os.path.join(self.root_path, self.BASE_PATH, "library_cache")
         )  # Cache file handler
 
         # Data structures to store and index controlled terminology
@@ -45,6 +48,15 @@ class Library:
             concept_id = self._config.klass_and_attribute(klass, attribute)
             return self._by_code_list[concept_id]
         except Exception:
+            return None
+
+    def cl_by_term(self, term_code: str) -> dict:
+        try:
+            concept_ids = self._by_term[term_code]
+            print(f"CONCEPT: {concept_ids}")
+            return self._by_code_list[concept_ids[0]]
+        except Exception as e:
+            print(f"EXCEPTION: {e}")
             return None
 
     def _get_ct(self) -> None:

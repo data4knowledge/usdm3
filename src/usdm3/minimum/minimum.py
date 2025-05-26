@@ -16,7 +16,9 @@ from uuid import uuid4
 
 class Minimum:
     @classmethod
-    def minimum(cls, root_path: str, title: str, identifier: str, version: str) -> "Wrapper":
+    def minimum(
+        cls, root_path: str, title: str, identifier: str, version: str
+    ) -> "Wrapper":
         """
         Create a minimum study with the given title, identifier, and version.
 
@@ -38,7 +40,6 @@ class Minimum:
         ct_library = Library(root_path)
         ct_library.load()
         cdisc_code_system = "cdisc.org"
-        cdisc_code_system_version = "2023-12-15"
 
         # Define the codes to be used in the study
         cl = ct_library.klass_and_attribute("StudyTitle", "type")
@@ -61,7 +62,9 @@ class Minimum:
                 "decode": "Clinical Study Sponsor",
             },
         )
-        cl = ct_library.klass_and_attribute(StudyProtocolDocumentVersion, "protocolStatus")
+        cl = ct_library.klass_and_attribute(
+            StudyProtocolDocumentVersion, "protocolStatus"
+        )
         doc_status = api_instance.create(
             Code,
             {

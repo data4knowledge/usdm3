@@ -68,11 +68,14 @@ def library(tmp_path):
       TestClass:
         testAttribute: "test-codelist"
     """
-    os.mkdir(tmp_path / "ct" )
+    os.mkdir(tmp_path / "ct")
     os.mkdir(tmp_path / "ct" / "cdisc")
     os.mkdir(tmp_path / "ct" / "cdisc" / "config")
+    os.mkdir(tmp_path / "ct" / "cdisc" / "missing")
     config_file = tmp_path / "ct" / "cdisc" / "config" / filename
     config_file.write_text(config_content)
+    missing_file = tmp_path / "ct" / "cdisc" / "missing" / "missing_ct.yaml"
+    missing_file.write_text("[]")
     return Library(tmp_path)
 
 
@@ -91,7 +94,9 @@ def test_library_initialization(library):
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
 @patch("usdm3.ct.cdisc.library.LibraryCache")
 @patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
 def test_load_from_api(
+    mock_missing_cls,
     mock_config_cls,
     mock_cache_cls,
     mock_api_cls,
@@ -109,6 +114,10 @@ def test_load_from_api(
 
     mock_config = mock_config_cls.return_value
     mock_config.required_code_lists.return_value = ["C123"]
+
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
 
     # Create library and load data
     library = Library("xxx")
@@ -140,7 +149,9 @@ def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library)
     mock_cache.read.return_value = {"C123": sample_codelist}
 
     # Create library and load data
-    local_library = Library(library.root_path)  # Borrowing the file path from the fixture, bit naughty.
+    local_library = Library(
+        library.root_path
+    )  # Borrowing the file path from the fixture, bit naughty.
     local_library.load()
 
     # Verify API was not called
@@ -156,15 +167,17 @@ def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library)
     assert "VAL1" in local_library._by_submission
     assert "Term 1" in local_library._by_pt
 
-
 @patch("usdm3.ct.cdisc.library.Config")
-def test_klass_and_attribute(mock_config_cls):
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_klass_and_attribute(mock_config_cls, mock_missing_cls):
     """Test klass_and_attribute method"""
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    # Setup mock config
     mock_config = mock_config_cls.return_value
+
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
 
     # Setup test data
     test_data = {"test": "data"}

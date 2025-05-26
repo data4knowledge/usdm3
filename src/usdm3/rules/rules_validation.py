@@ -13,7 +13,6 @@ from usdm3.base.singleton import Singleton
 
 
 class RulesValidation3(metaclass=Singleton):
-    
     PACKAGE_NAME = "usdm3.rules.library"
 
     def __init__(self, root_path: str):
