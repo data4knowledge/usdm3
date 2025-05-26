@@ -193,3 +193,28 @@ def test_klass_and_attribute(mock_missing_cls, mock_config_cls):
     mock_config.klass_and_attribute.side_effect = Exception("Not found")
     result = library.klass_and_attribute("InvalidClass", "invalidAttr")
     assert result is None
+
+@patch("usdm3.ct.cdisc.library.Config")
+@patch("usdm3.ct.cdisc.library.Missing")
+def test_cl_by_term(mock_missing_cls, mock_config_cls):
+    """Test klass_and_attribute method"""
+    # Create library instance with all dependencies mocked
+    library = Library("xxx")
+
+    mock_config = mock_config_cls.return_value
+
+    mock_missing = mock_missing_cls.return_value
+    mock_missing.code_lists.return_value = {}
+
+    # Setup test data
+    test_data = {"test": "data"}
+    library._by_term["C123"] = ["C456"]
+    library._by_code_list["C456"] = test_data
+
+    # Test valid lookup
+    result = library.cl_by_term("C123")
+    assert result == test_data
+
+    # Test invalid lookup
+    result = library.cl_by_term("Cxxx")
+    assert result is None
