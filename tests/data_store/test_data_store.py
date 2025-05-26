@@ -298,7 +298,7 @@ def test_parent_by_study_missing(tmp_path):
 
     # Verify error message contains expected information
     error_msg = str(exc_info.value)
-    print(f"ERRROR: {error_msg}")
+    #print(f"ERRROR: {error_msg}")
     assert "study" in error_msg
     assert "$" in error_msg
 
@@ -347,6 +347,6 @@ def test_parent_by_study_id_missing(tmp_path):
 
     # Verify error message contains expected information
     error_msg = str(exc_info.value)
-    print(f"ERRROR: {error_msg}")
+    #print(f"ERRROR: {error_msg}")
     assert "id" in error_msg
     assert "$.Study" in error_msg

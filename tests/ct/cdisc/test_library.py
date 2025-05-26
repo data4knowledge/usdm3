@@ -169,7 +169,7 @@ def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library)
 
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
-def test_klass_and_attribute(mock_config_cls, mock_missing_cls):
+def test_klass_and_attribute(mock_missing_cls, mock_config_cls):
     """Test klass_and_attribute method"""
     # Create library instance with all dependencies mocked
     library = Library("xxx")

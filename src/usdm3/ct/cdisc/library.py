@@ -53,10 +53,8 @@ class Library:
     def cl_by_term(self, term_code: str) -> dict:
         try:
             concept_ids = self._by_term[term_code]
-            print(f"CONCEPT: {concept_ids}")
             return self._by_code_list[concept_ids[0]]
-        except Exception as e:
-            print(f"EXCEPTION: {e}")
+        except Exception:
             return None
 
     def _get_ct(self) -> None:
