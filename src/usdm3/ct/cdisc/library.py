@@ -50,12 +50,15 @@ class Library:
         except Exception:
             return None
 
-    def unit(self, value):
+    def unit(self, value) -> dict:
         try:
             code_list = self._by_code_list["C71620"]
             return self._get_item(code_list, value)
         except Exception:
             return None
+
+    def unit_code_list(self) -> dict:
+        return self._by_code_list["C71620"]
         
     def cl_by_term(self, term_code: str) -> dict:
         try:
