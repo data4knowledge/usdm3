@@ -12,7 +12,7 @@ from usdm3.data_store.data_store import (
 def data_store():
     """Create DataStore instance with test data"""
 
-    test_file = Path(__file__).parent / "usdm1.json"
+    test_file = Path(__file__).parent / "usdm2.json"
     data_store = DataStore(test_file)
     data_store.decompose()
     return data_store
@@ -22,7 +22,7 @@ def data_store():
 def data_store_with_id_errors():
     """Create DataStore instance with test data"""
 
-    test_file = Path(__file__).parent / "usdm2.json"
+    test_file = Path(__file__).parent / "usdm1.json"
     data_store = DataStore(test_file)
     data_store.decompose()
     return data_store
@@ -38,13 +38,19 @@ def data_store_with_instance_type_errors():
     return data_store
 
 
+def test_data_store_errors(data_store_with_id_errors):
+    """Test getting instances by class"""
+    assert data_store_with_id_errors.errors.count() == 7
+
+
 def test_data_store_error_location():
     instance = DataStoreErrorLocation("x.y.z", "missing", "extra")
     assert instance.to_dict() == {
-        "missing": "missing",
+        "klass": "missing",
+        "attribute": "extra",
         "path": "x.y.z",
     }
-    assert instance.__str__() == "[x.y.z, missing 'missing' attribute, extra]"
+    assert instance.__str__() == "[missing', 'extra' @ 'x.y.z']"
 
 
 def test_instances_by_klass(data_store):

@@ -466,6 +466,7 @@
                 "instanceType": "Encounter"
               },
               {
+                "id": "Encounter_5",
                 "name": "E5",
                 "label": "Week 4",
                 "description": "Day 28",
@@ -12799,7 +12800,7 @@
             "id": "StudyDefinitionDocumentVersion_1",
             "version": "2",
             "status": {
-              "id": "Code_8",
+              "id": "Code_8_1",
               "code": "C25508",
               "codeSystem": "http://www.cdisc.org",
               "codeSystemVersion": "2023-12-15",
@@ -12808,12 +12809,12 @@
             },
             "dateValues": [
               {
-                "id": "GovernanceDate_2",
+                "id": "GovernanceDate_2_1",
                 "name": "P_APPROVE",
                 "label": "Protocol Approval",
                 "description": "Protocol document approval date",
                 "type": {
-                  "id": "Code_11",
+                  "id": "Code_11_1",
                   "code": "C99903x1",
                   "codeSystem": "http://www.cdisc.org",
                   "codeSystemVersion": "2023-12-15",
@@ -12823,9 +12824,9 @@
                 "dateValue": "2006-07-01",
                 "geographicScopes": [
                   {
-                    "id": "GeographicScope_2",
+                    "id": "GeographicScope_2_1",
                     "type": {
-                      "id": "Code_13",
+                      "id": "Code_13_1",
                       "code": "C41129",
                       "codeSystem": "http://www.cdisc.org",
                       "codeSystemVersion": "2023-12-15",
@@ -12833,9 +12834,9 @@
                       "instanceType": "Code"
                     },
                     "code": {
-                      "id": "AliasCode_2",
+                      "id": "AliasCode_2_1",
                       "standardCode": {
-                        "id": "Code_12",
+                        "id": "Code_12_1",
                         "code": "150",
                         "codeSystem": "ISO 3166 1 alpha3",
                         "codeSystemVersion": "2020-08",

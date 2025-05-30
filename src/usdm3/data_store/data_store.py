@@ -4,26 +4,24 @@ from d4k_sel import ErrorLocation
 
 
 class DataStoreErrorLocation(ErrorLocation):
-    def __init__(self, path: str, missing: str, extra: str):
+    def __init__(self, path: str, klass: str, attribute: str):
         self.path = path
-        self.missing = missing
-        self.extra = extra
+        self.klass = klass
+        self.attribute = attribute
 
     def to_dict(self):
-        return {"path": self.path, "missing": self.missing}
+        return {"path": self.path, "klass": self.klass, "attribute": self.attribute}
 
     def __str__(self):
-        extra = f", {self.extra}" if self.extra else ""
-        return f"[{self.path}, missing '{self.missing}' attribute{extra}]"
-
+        return f"[{self.klass}', '{self.attribute}' @ '{self.path}']"
 
 class DecompositionError(Exception):
-    def __init__(self, error: DataStoreErrorLocation):
+    def __init__(self, error: DataStoreErrorLocation, message: str):
         self.error = error
+        self.message = message
 
     def __str__(self):
-        return f"error decomposing the '.json' file, missing {self.error.missing} at {self.error.path}"
-
+        return f"error decomposing the '.json' file, {self.message}, at {self.error}"
 
 class DataStore:
     def __init__(self, filename: str):
@@ -33,7 +31,7 @@ class DataStore:
         self._path = {}
         self.filename = filename
         self.data = None
-        self.errors = Errors
+        self.errors = Errors()
 
     def decompose(self):
         self.data = self._load_data()
@@ -85,6 +83,9 @@ class DataStore:
         path = self._update_path(path, data, instance_index)
         if klass not in self._klasses:
             self._klasses[klass] = {}
+        if id in self._ids:
+            location = DataStoreErrorLocation(path, klass, "id")
+            self.errors.add("Duplicate id '{id}' detected", location)
         self._klasses[klass][id] = data
         self._ids[id] = data
         self._path[id] = path
@@ -103,10 +104,10 @@ class DataStore:
     def _check_id_klass(self, parent: dict, data: dict, path: str) -> None:
         id, error = self._check_id(parent, data, path)
         if error:
-            raise DecompositionError(error)
+            raise DecompositionError(error, "missing id attribute")
         klass, error = self._check_instance_type(parent, data, path)
         if error:
-            raise DecompositionError(error)
+            raise DecompositionError(error, "missing instanceType attribute")
         return id, klass
 
     def _check_id(self, parent: dict, data: dict, path: str) -> None:
@@ -115,9 +116,7 @@ class DataStore:
                 return data["id"], None
             else:
                 klass = data["instanceType"] if "instanceType" in data else ""
-                return None, DataStoreErrorLocation(
-                    path, "id", f"with instanceType '{klass}'"
-                )
+                return None, DataStoreErrorLocation(path, klass, "id")
         else:
             return "$root", None
 
@@ -127,9 +126,7 @@ class DataStore:
                 return data["instanceType"], None
             else:
                 id = data["id"] if "id" in data else ""
-                return None, DataStoreErrorLocation(
-                    path, "instanceType", f"with id '{id}'"
-                )
+                return None, DataStoreErrorLocation(path, f"missing instanceType for id '{id}'", "instanceType")
         else:
             return "Wrapper", None
 
@@ -137,10 +134,10 @@ class DataStore:
         # Do not want a null study id though it is permitted
         if "study" not in data:
             location = DataStoreErrorLocation("$", "study", "")
-            raise DecompositionError(location)
+            raise DecompositionError(location, "missing study attribute")
         if "id" not in data["study"]:
-            location = DataStoreErrorLocation("$.Study", "id", "")
-            raise DecompositionError(location)
+            location = DataStoreErrorLocation("$.Study", "study", "id")
+            raise DecompositionError(location, "missing id attribute")
         data["study"]["id"] = (
             "$root.study.id" if data["study"]["id"] is None else data["study"]["id"]
         )
