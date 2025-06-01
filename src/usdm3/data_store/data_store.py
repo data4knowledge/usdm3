@@ -15,6 +15,7 @@ class DataStoreErrorLocation(ErrorLocation):
     def __str__(self):
         return f"[{self.klass}', '{self.attribute}' @ '{self.path}']"
 
+
 class DecompositionError(Exception):
     def __init__(self, error: DataStoreErrorLocation, message: str):
         self.error = error
@@ -22,6 +23,7 @@ class DecompositionError(Exception):
 
     def __str__(self):
         return f"error decomposing the '.json' file, {self.message}, at {self.error}"
+
 
 class DataStore:
     def __init__(self, filename: str):
@@ -126,7 +128,9 @@ class DataStore:
                 return data["instanceType"], None
             else:
                 id = data["id"] if "id" in data else ""
-                return None, DataStoreErrorLocation(path, f"missing instanceType for id '{id}'", "instanceType")
+                return None, DataStoreErrorLocation(
+                    path, f"missing instanceType for id '{id}'", "instanceType"
+                )
         else:
             return "Wrapper", None
 

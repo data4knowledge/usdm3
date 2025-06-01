@@ -13,6 +13,7 @@ class Library:
     including code lists and their associated terms. It can load data from a local
     cache file or fetch it from the CDISC API when needed.
     """
+
     BASE_PATH = "ct/cdisc"
 
     def __init__(self, root_path: str):
@@ -59,7 +60,7 @@ class Library:
 
     def unit_code_list(self) -> dict:
         return self._by_code_list["C71620"]
-        
+
     def cl_by_term(self, term_code: str) -> dict:
         try:
             concept_ids = self._by_term[term_code]
@@ -83,7 +84,7 @@ class Library:
             return None
         except Exception:
             return None
-        
+
     def _get_ct(self) -> None:
         for item in self._config.required_code_lists():
             response = self._api.code_list(item)

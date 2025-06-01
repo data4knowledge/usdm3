@@ -118,7 +118,6 @@ def test_load_from_api(
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 
-
     # Create library and load data
     library = Library("xxx")
     library.load()
@@ -167,6 +166,7 @@ def test_load_from_cache(mock_cache_cls, mock_api_cls, sample_codelist, library)
     assert "VAL1" in local_library._by_submission
     assert "Term 1" in local_library._by_pt
 
+
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
 def test_klass_and_attribute(mock_missing_cls, mock_config_cls):
@@ -193,6 +193,7 @@ def test_klass_and_attribute(mock_missing_cls, mock_config_cls):
     mock_config.klass_and_attribute.side_effect = Exception("Not found")
     result = library.klass_and_attribute("InvalidClass", "invalidAttr")
     assert result is None
+
 
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
@@ -226,18 +227,32 @@ def sample_units_codelist():
     return {
         "conceptId": "C71620",
         "terms": [
-            {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"},
+            {
+                "conceptId": "C48155",
+                "submissionValue": "kg",
+                "preferredTerm": "Kilogram",
+            },
             {"conceptId": "C28253", "submissionValue": "g", "preferredTerm": "Gram"},
-            {"conceptId": "C48570", "submissionValue": "mg", "preferredTerm": "Milligram"},
+            {
+                "conceptId": "C48570",
+                "submissionValue": "mg",
+                "preferredTerm": "Milligram",
+            },
             {"conceptId": "C25613", "submissionValue": "L", "preferredTerm": "Liter"},
-            {"conceptId": "C28254", "submissionValue": "mL", "preferredTerm": "Milliliter"},
+            {
+                "conceptId": "C28254",
+                "submissionValue": "mL",
+                "preferredTerm": "Milliliter",
+            },
         ],
     }
 
 
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
-def test_unit_valid_lookup_by_concept_id(mock_missing_cls, mock_config_cls, sample_units_codelist):
+def test_unit_valid_lookup_by_concept_id(
+    mock_missing_cls, mock_config_cls, sample_units_codelist
+):
     """Test unit method with valid concept ID lookup"""
     # Create library instance with all dependencies mocked
     library = Library("xxx")
@@ -251,7 +266,11 @@ def test_unit_valid_lookup_by_concept_id(mock_missing_cls, mock_config_cls, samp
 
     # Test valid lookup by concept ID
     result = library.unit("C48155")
-    expected = {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"}
+    expected = {
+        "conceptId": "C48155",
+        "submissionValue": "kg",
+        "preferredTerm": "Kilogram",
+    }
     assert result == expected
 
     # Test case insensitive lookup
@@ -261,7 +280,9 @@ def test_unit_valid_lookup_by_concept_id(mock_missing_cls, mock_config_cls, samp
 
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
-def test_unit_valid_lookup_by_submission_value(mock_missing_cls, mock_config_cls, sample_units_codelist):
+def test_unit_valid_lookup_by_submission_value(
+    mock_missing_cls, mock_config_cls, sample_units_codelist
+):
     """Test unit method with valid submission value lookup"""
     # Create library instance with all dependencies mocked
     library = Library("xxx")
@@ -275,7 +296,11 @@ def test_unit_valid_lookup_by_submission_value(mock_missing_cls, mock_config_cls
 
     # Test valid lookup by submission value
     result = library.unit("kg")
-    expected = {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"}
+    expected = {
+        "conceptId": "C48155",
+        "submissionValue": "kg",
+        "preferredTerm": "Kilogram",
+    }
     assert result == expected
 
     # Test case insensitive lookup
@@ -285,7 +310,9 @@ def test_unit_valid_lookup_by_submission_value(mock_missing_cls, mock_config_cls
 
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
-def test_unit_valid_lookup_by_preferred_term(mock_missing_cls, mock_config_cls, sample_units_codelist):
+def test_unit_valid_lookup_by_preferred_term(
+    mock_missing_cls, mock_config_cls, sample_units_codelist
+):
     """Test unit method with valid preferred term lookup"""
     # Create library instance with all dependencies mocked
     library = Library("xxx")
@@ -299,7 +326,11 @@ def test_unit_valid_lookup_by_preferred_term(mock_missing_cls, mock_config_cls, 
 
     # Test valid lookup by preferred term
     result = library.unit("Kilogram")
-    expected = {"conceptId": "C48155", "submissionValue": "kg", "preferredTerm": "Kilogram"}
+    expected = {
+        "conceptId": "C48155",
+        "submissionValue": "kg",
+        "preferredTerm": "Kilogram",
+    }
     assert result == expected
 
     # Test case insensitive lookup
@@ -388,12 +419,24 @@ def test_unit_multiple_matches_returns_first(mock_missing_cls, mock_config_cls):
     library._by_code_list["C71620"] = {
         "conceptId": "C71620",
         "terms": [
-            {"conceptId": "TEST", "submissionValue": "other", "preferredTerm": "Other Term"},
-            {"conceptId": "other", "submissionValue": "TEST", "preferredTerm": "Test Term"},
+            {
+                "conceptId": "TEST",
+                "submissionValue": "other",
+                "preferredTerm": "Other Term",
+            },
+            {
+                "conceptId": "other",
+                "submissionValue": "TEST",
+                "preferredTerm": "Test Term",
+            },
         ],
     }
 
     # Test that conceptId match takes precedence
     result = library.unit("TEST")
-    expected = {"conceptId": "TEST", "submissionValue": "other", "preferredTerm": "Other Term"}
+    expected = {
+        "conceptId": "TEST",
+        "submissionValue": "other",
+        "preferredTerm": "Other Term",
+    }
     assert result == expected

@@ -2,10 +2,12 @@ import os
 import pathlib
 from usdm3.ct.cdisc.missing.missing import Missing
 
+
 def root_path():
     base = pathlib.Path(__file__).parent.parent.parent.parent.parent.resolve()
-    #print(f"BASE: {base}")
+    # print(f"BASE: {base}")
     return os.path.join(base, "src/usdm3")
+
 
 def test_missing_initialization():
     """Test that Missing class can be initialized and loads YAML file"""
