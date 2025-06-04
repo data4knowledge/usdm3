@@ -31,9 +31,9 @@ setuptools.setup(
     package_dir={"": "src"},
     package_data={
         "usdm3": [
-            "ct/cdisc/missing/missing_ct.yaml",
             "ct/cdisc/library_cache/library_cache.yaml",
             "ct/cdisc/config/ct_config.yaml",
+            "ct/cdisc/missing/missing_ct.yaml",
             "rules/library/schema/usdm_v3.json",
         ]
     },
