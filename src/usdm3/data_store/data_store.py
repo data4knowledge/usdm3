@@ -1,6 +1,6 @@
 import json
-from d4k_sel.errors import Errors
-from d4k_sel import ErrorLocation
+from simple_error_log.errors import Errors
+from simple_error_log import ErrorLocation
 
 
 class DataStoreErrorLocation(ErrorLocation):
@@ -87,7 +87,7 @@ class DataStore:
             self._klasses[klass] = {}
         if id in self._ids:
             location = DataStoreErrorLocation(path, klass, "id")
-            self.errors.add("Duplicate id '{id}' detected", location)
+            self.errors.add("Duplicate id '{id}' detected", location, "DUP_ID")
         self._klasses[klass][id] = data
         self._ids[id] = data
         self._path[id] = path

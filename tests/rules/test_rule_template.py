@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_template import RuleTemplate
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -28,7 +29,7 @@ def test_return_errors(rule):
     assert rule.errors().count() == 0
     rule._add_failure("TEST MESSAGE", "TEST CLASS", "TEST ATTRIBUTE", "TEST PATH")
     assert rule.errors().count() == 1
-    assert rule.errors()._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "TEST ATTRIBUTE",
@@ -38,13 +39,15 @@ def test_return_errors(rule):
             "rule_text": "TEST RULE",
         },
         "message": "TEST MESSAGE",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
 def test_add_failure(rule):
     rule._add_failure("TEST MESSAGE", "TEST CLASS", "TEST ATTRIBUTE", "TEST PATH")
     assert rule.errors().count() == 1
-    assert rule.errors()._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "TEST ATTRIBUTE",
@@ -54,6 +57,8 @@ def test_add_failure(rule):
             "rule_text": "TEST RULE",
         },
         "message": "TEST MESSAGE",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -104,7 +109,7 @@ def test_ct_check_invalid(rule):
     assert rule._ct_check(config, "klass", "attribute") is False
     assert rule.errors().count() == 3
     assert rule._result() is False
-    assert rule.errors()._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "attribute",
@@ -114,8 +119,10 @@ def test_ct_check_invalid(rule):
             "rule_text": "TEST RULE",
         },
         "message": "Invalid code 'C12347', the code is not in the codelist",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule.errors()._items[1].to_dict() == {
+    assert error_timestamp(rule._errors, 1) == {
         "level": "Error",
         "location": {
             "attribute": "attribute",
@@ -125,8 +132,10 @@ def test_ct_check_invalid(rule):
             "rule_text": "TEST RULE",
         },
         "message": "Invalid decode 'Decode 3', the decode is not in the codelist",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule.errors()._items[2].to_dict() == {
+    assert error_timestamp(rule._errors, 2) == {
         "level": "Error",
         "location": {
             "attribute": "attribute",
@@ -136,6 +145,8 @@ def test_ct_check_invalid(rule):
             "rule_text": "TEST RULE",
         },
         "message": "Invalid code and decode 'C12348' and 'Decode 3', neither the code and decode are in the codelist",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -164,7 +175,7 @@ def test_ct_check_invalid_list(rule):
     assert rule._ct_check(config, "klass", "attribute") is False
     assert rule.errors().count() == 3
     assert rule._result() is False
-    assert rule.errors()._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "attribute",
@@ -174,8 +185,10 @@ def test_ct_check_invalid_list(rule):
             "rule_text": "TEST RULE",
         },
         "message": "Invalid code 'C12347', the code is not in the codelist",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule.errors()._items[1].to_dict() == {
+    assert error_timestamp(rule._errors, 1) == {
         "level": "Error",
         "location": {
             "attribute": "attribute",
@@ -185,8 +198,10 @@ def test_ct_check_invalid_list(rule):
             "rule_text": "TEST RULE",
         },
         "message": "Invalid decode 'Decode 3', the decode is not in the codelist",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule.errors()._items[2].to_dict() == {
+    assert error_timestamp(rule._errors, 2) == {
         "level": "Error",
         "location": {
             "attribute": "attribute",
@@ -196,6 +211,8 @@ def test_ct_check_invalid_list(rule):
             "rule_text": "TEST RULE",
         },
         "message": "Invalid code and decode 'C12348' and 'Decode 3', neither the code and decode are in the codelist",
+        "type": "TEST0001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 

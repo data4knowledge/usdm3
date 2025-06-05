@@ -10,7 +10,7 @@ from usdm3.api.organization import Organization
 from usdm3.base.api_instance import APIInstance
 from usdm3.base.id_manager import IdManager
 from usdm3.ct.cdisc.library import Library
-from usdm3.__version__ import __model_version__, __package_version__
+from usdm3.__info__ import __model_version__, __package_version__
 from uuid import uuid4
 
 

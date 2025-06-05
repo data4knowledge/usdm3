@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00011 import RuleDDF00011
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -47,6 +48,7 @@ def test_validate_invalid_timing(rule):
             # Missing relativeFromScheduledInstance
         }
     ]
+    data_store.path_by_id.return_value = "path/address1"
 
     config = {"data": data_store}
 
@@ -56,7 +58,19 @@ def test_validate_invalid_timing(rule):
     # Check error details
     errors = rule.errors()
     assert errors.count() == 1
-    assert errors.dump(0) == []
+    assert error_timestamp(rule._errors) == {
+        "level": "Error",
+        "location": {
+            "attribute": "relativeFromScheduledInstanceId",
+            "klass": "Timing",
+            "path": "path/address1",
+            "rule": "DDF00011",
+            "rule_text": 'Anchor timings (e.g. type is "Fixed Reference") must be related to a scheduled activity instance via a relativeFromScheduledInstance relationship.',
+        },
+        "message": "Missing relativeFromScheduledInstance",
+        "type": "DDF00011",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+    }
     data_store.instances_by_klass.assert_called_once_with("Timing")
 
 
@@ -98,7 +112,7 @@ def test_validate_multiple_timings(rule):
         },
         {"id": "timing3", "type": {"decode": "Other Type"}},
     ]
-
+    data_store.path_by_id.return_value = "path/address1"
     config = {"data": data_store}
 
     # Validate
@@ -107,7 +121,21 @@ def test_validate_multiple_timings(rule):
     # Check error details
     errors = rule.errors()
     assert errors.count() == 1
-    assert errors.dump(0) == []
+    assert error_timestamp(rule._errors) == {
+        "level": "Error",
+        "location": {
+            "attribute": "relativeFromScheduledInstanceId",
+            "klass": "Timing",
+            "path": "path/address1",
+            "rule": "DDF00011",
+            "rule_text": 'Anchor timings (e.g. type is "Fixed Reference") must be related '
+            "to a scheduled activity instance via a "
+            "relativeFromScheduledInstance relationship.",
+        },
+        "message": "Missing relativeFromScheduledInstance",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "DDF00011",
+    }
 
     data_store.instances_by_klass.assert_called_once_with("Timing")
 

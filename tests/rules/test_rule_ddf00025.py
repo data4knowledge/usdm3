@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00025 import RuleDDF00025
 from usdm3.rules.library.rule_template import RuleTemplate
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -104,7 +105,7 @@ def test_validate_invalid_timing(rule):
 
     assert rule.validate(config) is False
     assert rule._errors.count() == 4
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "location": {
             "klass": "Timing",
             "attribute": "windowLower",
@@ -115,8 +116,10 @@ def test_validate_invalid_timing(rule):
         },
         "message": "Window lower defined for anchor timing",
         "level": "Error",
+        "type": "DDF00025",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule._errors._items[1].to_dict() == {
+    assert error_timestamp(rule._errors, 1) == {
         "location": {
             "klass": "Timing",
             "attribute": "windowUpper",
@@ -127,8 +130,10 @@ def test_validate_invalid_timing(rule):
         },
         "message": "Window upper defined for anchor timing",
         "level": "Error",
+        "type": "DDF00025",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule._errors._items[2].to_dict() == {
+    assert error_timestamp(rule._errors, 2) == {
         "location": {
             "klass": "Timing",
             "attribute": "windowLower",
@@ -139,8 +144,10 @@ def test_validate_invalid_timing(rule):
         },
         "message": "Window lower defined for anchor timing",
         "level": "Error",
+        "type": "DDF00025",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule._errors._items[3].to_dict() == {
+    assert error_timestamp(rule._errors, 3) == {
         "location": {
             "klass": "Timing",
             "attribute": "windowUpper",
@@ -151,4 +158,6 @@ def test_validate_invalid_timing(rule):
         },
         "message": "Window upper defined for anchor timing",
         "level": "Error",
+        "type": "DDF00025",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }

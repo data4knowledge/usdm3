@@ -1,7 +1,8 @@
 import pytest
-from d4k_sel.errors import Errors
+from simple_error_log.errors import Errors
 from usdm3.rules.rules_validation_results import RulesValidationResults
 from usdm3.rules.library.rule_template import ValidationLocation
+from tests.helpers.rule_error import dict_timestamp
 
 
 @pytest.fixture
@@ -37,24 +38,24 @@ def test_add_failure(validation_results):
         path="test_path",
     )
     errors = Errors()
-    errors.add("Test error", location, Errors.ERROR)
+    errors.add("Test error", location, "somthing type", Errors.ERROR)
 
     validation_results.add_failure("test_rule", errors)
-
-    assert validation_results.to_dict() == [
-        {
-            "exception": None,
-            "level": "Error",
-            "attribute": "test_attribute",
-            "klass": "test_klass",
-            "path": "test_path",
-            "rule": "test_rule",
-            "rule_text": "test_rule_text",
-            "message": "Test error",
-            "rule_id": "test_rule",
-            "status": "Failure",
-        },
-    ]
+    actual = validation_results.to_dict()
+    assert dict_timestamp(actual[0]) == {
+        "exception": None,
+        "level": "Error",
+        "attribute": "test_attribute",
+        "klass": "test_klass",
+        "path": "test_path",
+        "rule": "test_rule",
+        "rule_text": "test_rule_text",
+        "message": "Test error",
+        "rule_id": "test_rule",
+        "status": "Failure",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "somthing type",
+    }
 
 
 def test_add_exception(validation_results):
@@ -148,20 +149,19 @@ def test_to_dict_empty(validation_results):
 def test_to_dict_with_success(validation_results):
     """Test to_dict method with successful result"""
     validation_results.add_success("test_rule")
-    assert validation_results.to_dict() == [
-        {
-            "exception": None,
-            "level": "",
-            "message": "",
-            "attribute": "",
-            "klass": "",
-            "path": "",
-            "rule": "",
-            "rule_text": "",
-            "rule_id": "test_rule",
-            "status": "Success",
-        },
-    ]
+    actual = validation_results.to_dict()
+    assert dict_timestamp(actual[0]) == {
+        "exception": None,
+        "level": "",
+        "message": "",
+        "attribute": "",
+        "klass": "",
+        "path": "",
+        "rule": "",
+        "rule_text": "",
+        "rule_id": "test_rule",
+        "status": "Success",
+    }
 
 
 def test_to_dict_with_multiple_errors(validation_results):
@@ -174,36 +174,39 @@ def test_to_dict_with_multiple_errors(validation_results):
         path="test_path",
     )
     errors = Errors()
-    errors.add("Error 1", location, Errors.ERROR)
-    errors.add("Error 2", location, Errors.ERROR)
+    errors.add("Error 1", location, "xxx", Errors.ERROR)
+    errors.add("Error 2", location, "zzz", Errors.ERROR)
 
     validation_results.add_failure("test_rule", errors)
-    assert validation_results.to_dict() == [
-        {
-            "exception": None,
-            "level": "Error",
-            "attribute": "test_attribute",
-            "klass": "test_klass",
-            "path": "test_path",
-            "rule": "test_rule",
-            "rule_text": "test_rule_text",
-            "message": "Error 1",
-            "rule_id": "test_rule",
-            "status": "Failure",
-        },
-        {
-            "exception": None,
-            "level": "Error",
-            "attribute": "test_attribute",
-            "klass": "test_klass",
-            "path": "test_path",
-            "rule": "test_rule",
-            "rule_text": "test_rule_text",
-            "message": "Error 2",
-            "rule_id": "test_rule",
-            "status": "Failure",
-        },
-    ]
+    actual = validation_results.to_dict()
+    assert dict_timestamp(actual[0]) == {
+        "exception": None,
+        "level": "Error",
+        "attribute": "test_attribute",
+        "klass": "test_klass",
+        "path": "test_path",
+        "rule": "test_rule",
+        "rule_text": "test_rule_text",
+        "message": "Error 1",
+        "rule_id": "test_rule",
+        "status": "Failure",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "xxx",
+    }
+    assert dict_timestamp(actual[1]) == {
+        "exception": None,
+        "level": "Error",
+        "attribute": "test_attribute",
+        "klass": "test_klass",
+        "path": "test_path",
+        "rule": "test_rule",
+        "rule_text": "test_rule_text",
+        "message": "Error 2",
+        "rule_id": "test_rule",
+        "status": "Failure",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "zzz",
+    }
 
 
 def test_to_dict_mixed_results(validation_results):
@@ -218,59 +221,62 @@ def test_to_dict_mixed_results(validation_results):
         path="test_path",
     )
     errors = Errors()
-    errors.add("Error 1", location, Errors.ERROR)
-    errors.add("Error 2", location, Errors.ERROR)
+    errors.add("Error 1", location, "XXX", Errors.ERROR)
+    errors.add("Error 2", location, "YYY", Errors.ERROR)
     validation_results.add_failure("rule2", errors)
 
     validation_results.add_exception("rule3", Exception("test exception"))
 
-    assert validation_results.to_dict() == [
-        {
-            "exception": None,
-            "level": "",
-            "message": "",
-            "attribute": "",
-            "klass": "",
-            "path": "",
-            "rule": "",
-            "rule_text": "",
-            "rule_id": "rule1",
-            "status": "Success",
-        },
-        {
-            "exception": None,
-            "level": "Error",
-            "attribute": "test_attribute",
-            "klass": "test_klass",
-            "path": "test_path",
-            "rule": "rule2",
-            "rule_text": "test_rule_text",
-            "message": "Error 1",
-            "rule_id": "rule2",
-            "status": "Failure",
-        },
-        {
-            "exception": None,
-            "level": "Error",
-            "attribute": "test_attribute",
-            "klass": "test_klass",
-            "path": "test_path",
-            "rule": "rule2",
-            "rule_text": "test_rule_text",
-            "message": "Error 2",
-            "rule_id": "rule2",
-            "status": "Failure",
-        },
-        {
-            "exception": "test exception",
-            "level": "",
-            "message": "",
-            "attribute": "",
-            "klass": "",
-            "path": "",
-            "rule": "",
-            "rule_text": "",
-            "rule_id": "rule3",
-            "status": "Exception",
-        },
-    ]
+    actual = validation_results.to_dict()
+    assert dict_timestamp(actual[0]) == {
+        "exception": None,
+        "level": "",
+        "message": "",
+        "attribute": "",
+        "klass": "",
+        "path": "",
+        "rule": "",
+        "rule_text": "",
+        "rule_id": "rule1",
+        "status": "Success",
+    }
+    assert dict_timestamp(actual[1]) == {
+        "exception": None,
+        "level": "Error",
+        "attribute": "test_attribute",
+        "klass": "test_klass",
+        "path": "test_path",
+        "rule": "rule2",
+        "rule_text": "test_rule_text",
+        "message": "Error 1",
+        "rule_id": "rule2",
+        "status": "Failure",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "XXX",
+    }
+    assert dict_timestamp(actual[2]) == {
+        "exception": None,
+        "level": "Error",
+        "attribute": "test_attribute",
+        "klass": "test_klass",
+        "path": "test_path",
+        "rule": "rule2",
+        "rule_text": "test_rule_text",
+        "message": "Error 2",
+        "rule_id": "rule2",
+        "status": "Failure",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "YYY",
+    }
+    assert dict_timestamp(actual[3]) == {
+        "exception": "test exception",
+        "level": "",
+        "message": "",
+        "attribute": "",
+        "klass": "",
+        "path": "",
+        "rule": "",
+        "rule_text": "",
+        "rule_id": "rule3",
+        "status": "Exception",
+    }

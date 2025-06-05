@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00106 import RuleDDF00106
 from usdm3.rules.library.rule_template import RuleTemplate
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -55,7 +56,7 @@ def test_validate_encounter_in_different_study_design(rule):
     config = {"data": data_store}
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "encounterId",
@@ -65,6 +66,8 @@ def test_validate_encounter_in_different_study_design(rule):
             "rule_text": "A scheduled activity instance must only reference an encounter that is defined within the same study design as the scheduled activity instance.",
         },
         "message": "Encounter defined in a different study design",
+        "type": "DDF00106",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -117,7 +120,7 @@ def test_validate_encounter_both_missing(rule):
     config = {"data": data_store}
     assert rule.validate(config) is False
     assert rule._errors.count() == 2
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "encounterId",
@@ -127,8 +130,10 @@ def test_validate_encounter_both_missing(rule):
             "rule_text": "A scheduled activity instance must only reference an encounter that is defined within the same study design as the scheduled activity instance.",
         },
         "message": "ScheduledActivityInstance and XXX missing parents",
+        "type": "DDF00106",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule._errors._items[1].to_dict() == {
+    assert error_timestamp(rule._errors, 1) == {
         "level": "Error",
         "location": {
             "attribute": "encounterId",
@@ -138,6 +143,8 @@ def test_validate_encounter_both_missing(rule):
             "rule_text": "A scheduled activity instance must only reference an encounter that is defined within the same study design as the scheduled activity instance.",
         },
         "message": "ScheduledActivityInstance and YYY missing parents",
+        "type": "DDF00106",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -174,7 +181,7 @@ def test_validate_encounter_first_missing(rule):
     config = {"data": data_store}
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "encounterId",
@@ -184,6 +191,8 @@ def test_validate_encounter_first_missing(rule):
             "rule_text": "A scheduled activity instance must only reference an encounter that is defined within the same study design as the scheduled activity instance.",
         },
         "message": "ScheduledActivityInstance missing parent",
+        "type": "DDF00106",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -213,7 +222,7 @@ def test_validate_epoch_second_missing(rule):
     config = {"data": data_store}
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "encounterId",
@@ -223,4 +232,6 @@ def test_validate_epoch_second_missing(rule):
             "rule_text": "A scheduled activity instance must only reference an encounter that is defined within the same study design as the scheduled activity instance.",
         },
         "message": "XXX missing parent",
+        "type": "DDF00106",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }

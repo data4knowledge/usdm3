@@ -1,4 +1,4 @@
-from d4k_sel.errors import Errors
+from simple_error_log.errors import Errors
 from usdm3.rules.library.rule_template import ValidationLocation
 
 

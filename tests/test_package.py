@@ -1,7 +1,7 @@
 import json
 from src.usdm3 import USDM3
 from tests.rules.helpers import clear_rules_library
-from src.usdm3.__version__ import __package_version__
+from usdm3.__info__ import __package_version__
 
 
 def test_validate(tmp_path):

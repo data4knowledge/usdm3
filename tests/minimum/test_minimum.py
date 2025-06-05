@@ -1,7 +1,7 @@
 import os
 import pathlib
 from src.usdm3.minimum.minimum import Minimum
-from src.usdm3.__version__ import __package_version__
+from usdm3.__info__ import __package_version__
 
 
 def root_path():

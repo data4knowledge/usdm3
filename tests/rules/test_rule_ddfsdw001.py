@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddfsdw001 import RuleDDFSDW001
 from usdm3.rules.library.rule_template import RuleTemplate
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -40,7 +41,7 @@ def test_validate_missing_code_system_version(rule):
     config = {"data": data_store}
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "usdmVersion",
@@ -50,4 +51,6 @@ def test_validate_missing_code_system_version(rule):
             "rule_text": "The version in the wrapper should be set to 3.0.0",
         },
         "message": "Invalid version detected, not set to 3.0.0",
+        "type": "DDFSDW001",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }

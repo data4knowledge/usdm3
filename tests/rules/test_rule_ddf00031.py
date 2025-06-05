@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00031 import RuleDDF00031
 from usdm3.rules.library.rule_template import RuleTemplate
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -54,7 +55,7 @@ def test_validate_invalid_both_references(rule):
 
     assert rule.validate(config) is False
     assert rule._errors.count() == 2
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "relativeToScheduledInstanceId",
@@ -67,8 +68,10 @@ def test_validate_invalid_both_references(rule):
             "not be equal to each other).",
         },
         "message": "Missing relativeToScheduledInstanceId",
+        "type": "DDF00031",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
-    assert rule._errors._items[1].to_dict() == {
+    assert error_timestamp(rule._errors, 1) == {
         "level": "Error",
         "location": {
             "attribute": "relativeFromScheduledInstanceId",
@@ -81,6 +84,8 @@ def test_validate_invalid_both_references(rule):
             "not be equal to each other).",
         },
         "message": "Missing relativeFromScheduledInstanceId",
+        "type": "DDF00031",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -100,7 +105,7 @@ def test_validate_invalid_from_references(rule):
 
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "relativeFromScheduledInstanceId",
@@ -113,6 +118,8 @@ def test_validate_invalid_from_references(rule):
             "not be equal to each other).",
         },
         "message": "Missing relativeFromScheduledInstanceId",
+        "type": "DDF00031",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -132,7 +139,7 @@ def test_validate_invalid_to_references(rule):
 
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "relativeFromScheduledInstanceId",
@@ -145,6 +152,8 @@ def test_validate_invalid_to_references(rule):
             "not be equal to each other).",
         },
         "message": "Missing relativeFromScheduledInstanceId",
+        "type": "DDF00031",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 

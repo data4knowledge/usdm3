@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00045 import RuleDDF00045
 from usdm3.rules.library.rule_template import RuleTemplate
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -70,7 +71,7 @@ def test_validate_invalid(rule):
 
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Warning",
         "location": {
             "attribute": "",
@@ -80,4 +81,6 @@ def test_validate_invalid(rule):
             "rule_text": "At least one attribute must be specified for an address.",
         },
         "message": "No attributes specified for address",
+        "type": "DDF00045",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }

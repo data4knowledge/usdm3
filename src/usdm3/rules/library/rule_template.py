@@ -1,5 +1,5 @@
-from d4k_sel.error_location import ErrorLocation
-from d4k_sel.errors import Errors
+from simple_error_log.error_location import ErrorLocation
+from simple_error_log.errors import Errors
 from usdm3.ct.cdisc.library import Library as CTLibrary
 
 
@@ -57,7 +57,7 @@ class RuleTemplate:
         location = ValidationLocation(
             self._rule, self._rule_text, klass, attribute, path
         )
-        self._errors.add(message, location, self._level)
+        self._errors.add(message, location, self._rule, self._level)
 
     def _result(self) -> bool:
         return self._errors.count() == 0

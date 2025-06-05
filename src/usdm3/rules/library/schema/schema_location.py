@@ -1,4 +1,4 @@
-from d4k_sel import ErrorLocation
+from simple_error_log import ErrorLocation
 
 
 class SchemaErrorLocation(ErrorLocation):

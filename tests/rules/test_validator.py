@@ -1,5 +1,6 @@
 import pathlib
 from src.usdm3.rules.rules_validation import RulesValidationEngine
+from tests.helpers.rule_error import dict_timestamp
 
 
 def library_path(path: str):
@@ -18,53 +19,53 @@ def test_rules():
     actual[3]["exception"] = (
         "This is a test exception"  # has extra text from the traceback
     )
-    assert actual == [
-        {
-            "attribute": "",
-            "exception": None,
-            "klass": "",
-            "level": "",
-            "message": "",
-            "path": "",
-            "rule": "",
-            "rule_id": "TEST_RULE_1",
-            "rule_text": "",
-            "status": "Success",
-        },
-        {
-            "attribute": "attribute",
-            "exception": None,
-            "klass": "klass",
-            "level": "Error",
-            "message": "blah blah blah",
-            "path": "id",
-            "rule": "TEST_RULE_2",
-            "rule_id": "TEST_RULE_2",
-            "rule_text": "blah blah blah",
-            "status": "Failure",
-        },
-        {
-            "attribute": "",
-            "exception": None,
-            "klass": "",
-            "level": "",
-            "message": "",
-            "path": "",
-            "rule": "",
-            "rule_id": "TEST_RULE_3",
-            "rule_text": "",
-            "status": "Not Implemented",
-        },
-        {
-            "attribute": "",
-            "exception": "This is a test exception",
-            "klass": "",
-            "level": "",
-            "message": "",
-            "path": "",
-            "rule": "",
-            "rule_id": "TEST_RULE_4",
-            "rule_text": "",
-            "status": "Exception",
-        },
-    ]
+    assert dict_timestamp(actual[0]) == {
+        "attribute": "",
+        "exception": None,
+        "klass": "",
+        "level": "",
+        "message": "",
+        "path": "",
+        "rule": "",
+        "rule_id": "TEST_RULE_1",
+        "rule_text": "",
+        "status": "Success",
+    }
+    assert dict_timestamp(actual[1]) == {
+        "attribute": "attribute",
+        "exception": None,
+        "klass": "klass",
+        "level": "Error",
+        "message": "blah blah blah",
+        "path": "id",
+        "rule": "TEST_RULE_2",
+        "rule_id": "TEST_RULE_2",
+        "rule_text": "blah blah blah",
+        "status": "Failure",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "TEST_RULE_2",
+    }
+    assert dict_timestamp(actual[2]) == {
+        "attribute": "",
+        "exception": None,
+        "klass": "",
+        "level": "",
+        "message": "",
+        "path": "",
+        "rule": "",
+        "rule_id": "TEST_RULE_3",
+        "rule_text": "",
+        "status": "Not Implemented",
+    }
+    assert dict_timestamp(actual[3]) == {
+        "attribute": "",
+        "exception": "This is a test exception",
+        "klass": "",
+        "level": "",
+        "message": "",
+        "path": "",
+        "rule": "",
+        "rule_id": "TEST_RULE_4",
+        "rule_text": "",
+        "status": "Exception",
+    }

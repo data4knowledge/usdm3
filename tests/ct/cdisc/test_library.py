@@ -202,7 +202,7 @@ def test_cl_by_term(mock_missing_cls, mock_config_cls):
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
 
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
@@ -257,7 +257,7 @@ def test_unit_valid_lookup_by_concept_id(
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 
@@ -287,7 +287,7 @@ def test_unit_valid_lookup_by_submission_value(
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 
@@ -317,7 +317,7 @@ def test_unit_valid_lookup_by_preferred_term(
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 
@@ -345,7 +345,7 @@ def test_unit_invalid_lookup(mock_missing_cls, mock_config_cls, sample_units_cod
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 
@@ -372,7 +372,7 @@ def test_unit_missing_codelist(mock_missing_cls, mock_config_cls):
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 
@@ -391,7 +391,7 @@ def test_unit_malformed_codelist(mock_missing_cls, mock_config_cls):
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 
@@ -410,7 +410,7 @@ def test_unit_multiple_matches_returns_first(mock_missing_cls, mock_config_cls):
     # Create library instance with all dependencies mocked
     library = Library("xxx")
 
-    mock_config = mock_config_cls.return_value
+    #mock_config = mock_config_cls.return_value
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = {}
 

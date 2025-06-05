@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import Mock
 from usdm3.rules.library.rule_ddf00108 import RuleDDF00108
 from usdm3.rules.library.rule_template import RuleTemplate
+from tests.helpers.rule_error import error_timestamp
 
 
 @pytest.fixture
@@ -48,7 +49,7 @@ def test_validate_no_exits(rule):
     config = {"data": data_store}
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "exits",
@@ -58,6 +59,8 @@ def test_validate_no_exits(rule):
             "rule_text": "There must be at least one exit defined for each timeline (i.e., at least one instance of StudyTimelineExit linked via the 'exits' relationship).",
         },
         "message": "No exits defined for timeline",
+        "type": "DDF00108",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }
 
 
@@ -73,7 +76,7 @@ def test_validate_missing_exits(rule):
     config = {"data": data_store}
     assert rule.validate(config) is False
     assert rule._errors.count() == 1
-    assert rule._errors._items[0].to_dict() == {
+    assert error_timestamp(rule._errors) == {
         "level": "Error",
         "location": {
             "attribute": "exits",
@@ -83,4 +86,6 @@ def test_validate_missing_exits(rule):
             "rule_text": "There must be at least one exit defined for each timeline (i.e., at least one instance of StudyTimelineExit linked via the 'exits' relationship).",
         },
         "message": "Missing exits",
+        "type": "DDF00108",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
     }

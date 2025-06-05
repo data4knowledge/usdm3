@@ -1,5 +1,5 @@
 from .rule_template import RuleTemplate
-from usdm3.__version__ import __model_version__ as model_version
+from usdm3.__info__ import __model_version__ as model_version
 
 
 class RuleDDFSDW001(RuleTemplate):
