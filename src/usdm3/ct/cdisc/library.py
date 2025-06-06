@@ -18,7 +18,7 @@ class Library:
 
     def __init__(self, root_path: str):
         self.system = "http://www.cdisc.org"
-        self.version = "2023-12-15" # Default version.
+        self.version = "2023-12-15"  # Default version.
         self.root_path = root_path
 
         self._config = Config(
