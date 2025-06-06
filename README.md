@@ -7,4 +7,4 @@ Library for USDM Version 3
 Build steps for deployment to pypi.org
 
 - Build with `python3 -m build --sdist --wheel`
-- Upload to pypi.org using `twine upload dist/* `
+- Upload to pypi.org using `twine upload dist/*`
