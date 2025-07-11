@@ -73,13 +73,13 @@ class Library:
 
     def submission(self, value, cl=None):
         if value in list(self._by_submission.keys()):
-            return self._find_in_collection(self, self._by_submission[value],"submissionValue", value, cl)
+            return self._find_in_collection(self._by_submission[value],"submissionValue", value, cl)
         else:
             return None
 
     def preferred_term(self, value, cl=None):
         if value in list(self._by_pt.keys()):
-            return self._find_in_collection(self, self._by_pt[value], "preferredTerm", value, cl)
+            return self._find_in_collection(self._by_pt[value], "preferredTerm", value, cl)
         else:
             return None
 

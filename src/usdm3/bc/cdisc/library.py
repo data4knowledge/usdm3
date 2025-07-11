@@ -12,7 +12,7 @@ class Library:
         self.root_path = root_path
         self._api = LibraryAPI(ct_library)  # Interface to CDISC Library API
         self._cache = LibraryCache(
-            os.path.join(self.root_path, self.BASE_PATH, "library_cache.yaml")
+            os.path.join(self.root_path, self.BASE_PATH, "library_cache")
         )  # Cache file handler
         self._bcs = {}
         self._bc_index = {}
@@ -43,7 +43,7 @@ class Library:
     def _create_bc_index(self) -> None:
         for name, item in self._bcs.items():
             self._bc_index[name] = name
-            for synonym in item.synonyms:
+            for synonym in item["synonyms"]:
                 self._bc_index[synonym.upper()] = name
 
     def _get_bc_data(self, name: str) -> dict:

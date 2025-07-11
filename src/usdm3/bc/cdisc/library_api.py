@@ -35,7 +35,7 @@ class LibraryAPI:
     
     @property 
     def valid(self) -> bool:
-        return self._errors.count()
+        return self._errors.error_count()
     
     def _get_package_metadata(self):
         urls = {
@@ -87,8 +87,13 @@ class LibraryAPI:
             return {}
 
     def _get_sdtm_bcs(self):
+        print(f"\n\nSDTM: {len(self._package_items["sdtm"].keys())}")
+        count = 0
         for name, item in self._package_items["sdtm"].items():
-            print(".", end='', flush=True)
+            count += 1
+            if count > 5:
+                break
+            print(f"[{count}]", end='', flush=True) if count % 10 == 0 else print(".", end='', flush=True)
             self._errors.info(f"Processing SDTM BC '{name}' ...")
             sdtm, generic = self._get_from_url_all(name, item)
             if sdtm:
@@ -108,9 +113,14 @@ class LibraryAPI:
                         self._errors.error(f"Missing reference when popping {href}")
 
     def _get_generic_bcs(self) -> dict:
+        print(f"\n\nGeneric: {len(self._package_items["generic"].keys())}")
+        count = 0
         for name, item in self._package_items["generic"].items():
+            count += 1
+            if count > 5:
+                break
+            print(f"[{count}]", end='', flush=True) if count % 10 == 0 else print(".", end='', flush=True)
             self._errors.info(f"Processing Generic BC '{name}' ...")
-            print(".", end='', flush=True)
             if self._process_genric_bc(name):
                 response = self._get_from_url(item["href"])
                 bc = self._generic_bc_as_usdm(response)
