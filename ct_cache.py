@@ -9,5 +9,4 @@ if __name__ == "__main__":
     load_dotenv(".development_env")
     library = Library(root)
     library.load()
-    # api = LibraryAPI()
-    # api.refresh_new()
+
