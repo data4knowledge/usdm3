@@ -91,8 +91,8 @@ class LibraryAPI:
         count = 0
         for name, item in self._package_items["sdtm"].items():
             count += 1
-            if count > 5:
-                break
+            # if count > 5:
+            #     break
             print(f"[{count}]", end='', flush=True) if count % 10 == 0 else print(".", end='', flush=True)
             self._errors.info(f"Processing SDTM BC '{name}' ...")
             sdtm, generic = self._get_from_url_all(name, item)
@@ -117,8 +117,8 @@ class LibraryAPI:
         count = 0
         for name, item in self._package_items["generic"].items():
             count += 1
-            if count > 5:
-                break
+            # if count > 5:
+            #     break
             print(f"[{count}]", end='', flush=True) if count % 10 == 0 else print(".", end='', flush=True)
             self._errors.info(f"Processing Generic BC '{name}' ...")
             if self._process_genric_bc(name):
