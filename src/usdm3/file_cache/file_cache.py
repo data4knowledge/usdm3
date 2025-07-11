@@ -16,7 +16,7 @@ class FileCache:
                 with open(self._full_filepath(), "w") as f:
                     yaml.dump(data, f, indent=2, sort_keys=True)
         except Exception as e:
-            raise Exception(f"failed to save CDSIC CT file, {str(e)}")
+            raise Exception(f"Failed to save file '{self._full_filepath()}', {str(e)}")
 
     def read(self) -> dict:
         try:
@@ -24,15 +24,15 @@ class FileCache:
                 with open(self._full_filepath()) as f:
                     return yaml.safe_load(f)
             else:
-                raise Exception("Failed to read CDSIC CT file, does not exist")
+                raise Exception(f"Failed to read file '{self._full_filepath()}', does not exist, {str(e)}")
         except Exception as e:
-            raise Exception(f"failed to read CDSIC CT file, {str(e)}")
+            raise Exception(f"Failed to read file '{self._full_filepath()}', {str(e)}")
 
     def delete(self) -> None:
         try:
             os.remove(self._full_filepath())
         except Exception as e:
-            raise Exception(f"failed to delete CDSIC CT file, {str(e)}")
+            raise Exception(f"Failed to delete file '{self._full_filepath()}', {str(e)}")
 
     def _file_exists(self) -> bool:
         return os.path.isfile(self._full_filepath())

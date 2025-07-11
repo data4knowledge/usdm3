@@ -1,8 +1,8 @@
 ---
 packages: 
-- ddf
-- sdtm
-- protocol
+- ddfct
+- sdtmct
+- protocolct
 code_lists:
 - C71620
 - C99077 

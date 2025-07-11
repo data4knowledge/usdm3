@@ -1,18 +1,17 @@
 import os
 import requests
 from simple_error_log.errors import Errors
+from usdm3.ct.cdisc.library import Library as CtLibrary
 
 class LibraryAPI:
     API_ROOT = "https://api.library.cdisc.org/api/cosmos/v2"
 
     def __init__(
         self,
-        ct_system: str,
-        ct_version: str
+        ct_library: CtLibrary,
     ):
         self._errors = Errors()
-        self._ct_version = ct_version
-        self._ct_system = ct_system
+        self._ct_library = ct_library
         self._api_key = os.getenv("CDISC_API_KEY")
         if not self._api_key:
             self._errors.error("Empty CDISC API key")
@@ -119,7 +118,7 @@ class LibraryAPI:
                     for item in response["dataElementConcepts"]:
                         property = self._generic_bc_property_as_usdm(item)
                         if property:
-                            bc.properties.append(property)
+                            bc['properties'].append(property)
                 self._bcs_raw[name] = bc
 
     def _generic_bc_as_usdm(self, api_bc) -> dict:
@@ -138,7 +137,9 @@ class LibraryAPI:
         responses = []
         if "exampleSet" in property:
             for example in property["exampleSet"]:
-                term = self._ct_library.preferred_term(example)
+                print(f"EXAMPLE CODE: {property}")
+                #term = self._ct_library.preferred_term(example)
+                term = None
                 if term != None:
                     code = self._code_object(term["conceptId"], term["preferredTerm"])
                     responses.append(self._response_code_object(code))
@@ -388,8 +389,8 @@ class LibraryAPI:
         return {
             "id": "tbd",
             "code": code,
-            "codeSystem": self._ct_system,
-            "codeSystemVersion": self._ct_version,
+            "codeSystem": self._ct_library.system,
+            "codeSystemVersion": self._ct_library.version,
             "decode": decode,
             "instanceType": "Code"
         }

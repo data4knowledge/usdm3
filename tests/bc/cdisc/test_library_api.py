@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock, patch
-from usdm3.ct.cdisc.library_api import LibraryAPI
+from src.usdm3.ct.cdisc.library_api import LibraryAPI
 
 
 @pytest.fixture

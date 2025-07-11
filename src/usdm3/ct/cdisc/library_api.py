@@ -2,17 +2,12 @@ import os
 import re
 import requests
 
-
 class LibraryAPI:
     API_ROOT = "https://api.library.cdisc.org/api"
 
-    class APIError(Exception):
-        """Custom exception for API-related errors"""
-
-        pass
-
-    def __init__(self) -> None:
+    def __init__(self, packages: list) -> None:
         self._packages = None
+        self._package_list = packages
         self._headers = {
             "Content-Type": "application/json",
             "api-key": os.environ.get("CDISC_API_KEY"),
@@ -21,13 +16,9 @@ class LibraryAPI:
     def refresh(self) -> None:
         self._packages = self._get_packages()
 
-    def code_list(self, c_code: str) -> dict:
-        use_list = ["ddfct", "sdtmct", "protocolct"]
-        for package in use_list:
-            try:
-                version = self._packages[package][-1]["effective"]
-            except Exception:
-                version = None
+    def code_list(self, c_code: str) -> dict | None:
+        for package in self._package_list:
+            version = self._package_version(package)
             if version:
                 package_full_name = f"{package}-{version}"
                 api_url = self._url(
@@ -39,12 +30,43 @@ class LibraryAPI:
                     response.pop("_links", None)
                     response["source"] = {"effective_date": version, "package": package}
                     return response
-        raise self.APIError(
-            f"failed to obtain code list from library for {c_code}, "
-            f"response: {raw.status_code} {raw.text}"
-        )
+        return None
 
-    def _get_packages(self) -> dict:
+    def all_code_lists(self) -> list:
+        results = []
+        for package in self._package_list:
+            version = self._package_version(package)
+            print(f"VERSION: {package}, {version}")
+            if version:
+                package_full_name = f"{package}-{version}"
+                api_url = self._url(
+                    f"/mdr/ct/packages/{package_full_name}/codelists"
+                )
+                raw = requests.get(api_url, headers=self._headers)
+                if raw.status_code == 200:
+                    response = raw.json()
+                    result = {"effective_date": version, "package": package, "code_lists": []}
+                    for item in response['_links']['codelists']:
+                        href = item['href']
+                        result["code_lists"].append(href.split("/")[-1])
+                results.append(result)    
+        return results
+
+    def package_code_list(self, package: str, version: str, c_code: str) -> dict:
+        package_full_name = f"{package}-{version}"
+        api_url = self._url(
+            f"/mdr/ct/packages/{package_full_name}/codelists/{c_code}"
+        )
+        raw = requests.get(api_url, headers=self._headers)
+        if raw.status_code == 200:
+            response = raw.json()
+            response.pop("_links", None)
+            response["source"] = {"effective_date": version, "package": package}
+            return response
+        else:
+            return None
+        
+    def _get_packages(self) -> dict | None:
         packages = {}
         api_url = self._url("/mdr/ct/packages")
         raw = requests.get(api_url, headers=self._headers)
@@ -61,9 +83,7 @@ class LibraryAPI:
                     )
             return packages
         else:
-            raise self.APIError(
-                f"failed to get packages, response: {raw.status_code} {raw.text}"
-            )
+            return None
 
     def _extract_ct_name(self, url: str) -> str:
         match = re.search(r"([a-zA-Z]+)-\d{4}-\d{2}-\d{2}$", url)
@@ -78,5 +98,10 @@ class LibraryAPI:
         return None
 
     def _url(self, relative_url: str) -> str:
-        # print(f"{self.API_ROOT} + {relative_url}")
         return f"{self.API_ROOT}{relative_url}"
+
+    def _package_version(self, package: str) -> str | None:
+        try:
+            return self._packages[package][-1]["effective"]
+        except Exception:
+            return None

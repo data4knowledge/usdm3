@@ -27,7 +27,7 @@ class Library:
         self._missing = Missing(
             os.path.join(self.root_path, self.BASE_PATH, "missing")
         )  # Handler for missing/additional code lists
-        self._api = LibraryAPI()  # Interface to CDISC Library API
+        self._api = LibraryAPI(self._config.required_packages())  # Interface to CDISC Library API
         self._cache = LibraryCache(
             os.path.join(self.root_path, self.BASE_PATH, "library_cache")
         )  # Cache file handler
@@ -43,7 +43,7 @@ class Library:
             self._load_ct()  # Load from cache file
         else:
             self._api.refresh()  # Ensure API connection is fresh
-            self._get_ct()  # Fetch from API
+            self._get_all_ct()  # Fetch from API
             self._cache.save(self._by_code_list)  # Cache the results
         self._add_missing_ct()  # Add any additional required terminology
 
@@ -71,6 +71,45 @@ class Library:
         except Exception:
             return None
 
+    def submission(self, value, cl=None):
+        if value in list(self._by_submission.keys()):
+            return self._find_in_collection(self, self._by_submission[value],"submissionValue", value, cl)
+        else:
+            return None
+
+    def preferred_term(self, value, cl=None):
+        if value in list(self._by_pt.keys()):
+            return self._find_in_collection(self, self._by_pt[value], "preferredTerm", value, cl)
+        else:
+            return None
+
+    def _find_in_collection(self, concepts: list, key: str, value: str, cl: str=None):
+        if len(concepts) == 0:
+            return None
+        elif len(concepts) == 1:
+            code_list = self._by_code_list[concepts[0]]
+            return next(
+                (
+                    item
+                    for item in code_list["terms"]
+                    if item[key] == value
+                ),
+                None,
+            )
+        else:
+            if cl and cl in concepts:
+                code_list = self._by_code_list[cl]
+                return next(
+                    (
+                        item
+                        for item in code_list["terms"]
+                        if item[key] == value
+                    ),
+                    None,
+                )
+            else:
+                return None
+
     def _get_item(self, code_list, value):
         try:
             for field in ["conceptId", "preferredTerm", "submissionValue"]:
@@ -88,7 +127,7 @@ class Library:
         except Exception:
             return None
 
-    def _get_ct(self) -> None:
+    def _get_required_ct(self) -> None:
         for item in self._config.required_code_lists():
             response = self._api.code_list(item)
             self._by_code_list[response["conceptId"]] = response
@@ -103,6 +142,26 @@ class Library:
                 self._check_in_and_add(
                     self._by_pt, item["preferredTerm"], response["conceptId"]
                 )
+
+    def _get_all_ct(self) -> None:
+        for package in self._api.all_code_lists():
+            length = len(package['code_lists'])
+            print(f"\n\nPackage: {package}: {length}\n")
+            for index, code_list in enumerate(package['code_lists']):
+                response = self._api.package_code_list(package["package"], package["effective_date"], code_list)
+                print(f"[{index}]", end='', flush=True) if index % 10 == 0 else print("#", end='', flush=True)
+                self._by_code_list[response["conceptId"]] = response
+                for item in response["terms"]:
+                    # Index each term by its various identifiers
+                    self._check_in_and_add(
+                        self._by_term, item["conceptId"], response["conceptId"]
+                    )
+                    self._check_in_and_add(
+                        self._by_submission, item["submissionValue"], response["conceptId"]
+                    )
+                    self._check_in_and_add(
+                        self._by_pt, item["preferredTerm"], response["conceptId"]
+                    )
 
     def _load_ct(self) -> None:
         self._by_code_list = self._cache.read()
