@@ -108,9 +108,9 @@ class LibraryAPI:
                 if generic:
                     href = generic["_links"]["self"]["href"]
                     if href in self._map:
-                        self._map.pop(generic["_links"]["self"]["href"])
+                        self._map.pop(href)
                     else:
-                        self._errors.error(f"Missing reference when popping {href}")
+                        self._errors.info(f"Missing reference when popping {href}")
 
     def _get_generic_bcs(self) -> dict:
         print(f"\n\nGeneric: {len(self._package_items["generic"].keys())}")
@@ -176,22 +176,22 @@ class LibraryAPI:
                                 role_variable["assignedTerm"]["value"],
                             )
                         else:
-                            self._errors.error(
-                                f"Failed to set BC concept 1, {sdtm['shortName']}"
+                            self._errors.warning(
+                                f"Failed to set BC concept, assigned term path, {sdtm['shortName']}"
                             )
                             concept_code = self._code_object(
                                 "No Concept Code",
                                 role_variable["assignedTerm"]["value"],
                             )
                     else:
-                        self._errors.error(
-                            f"Failed to set BC concept 2, {sdtm['shortName']}"
+                        self._errors.warning(
+                            f"Failed to set BC concept, no assigned term path, {sdtm['shortName']}"
                         )
                         concept_code = self._code_object(
                             generic["conceptId"], generic["shortName"]
                         )
                 else:
-                    self._errors.error(f"Failed to set BC concept {sdtm['shortName']}")
+                    self._errors.warning(f"Failed to set BC concept, no role variable, {sdtm['shortName']}")
                     concept_code = self._code_object(
                         generic["conceptId"], generic["shortName"]
                     )
@@ -234,8 +234,8 @@ class LibraryAPI:
                                 sdtm_property["name"],
                             )
                         else:
-                            self._errors.error(
-                                f"Failed to set property concept 1, {sdtm_property}"
+                            self._errors.warning(
+                                f"Failed to set property concept, DEC path, {sdtm_property}"
                             )
                             concept_code = self._code_object(
                                 sdtm_property["dataElementConceptId"],
@@ -249,7 +249,7 @@ class LibraryAPI:
                         )
                     else:
                         self._errors.error(
-                            f"Failed to set property concept 2, {sdtm_property}"
+                            f"Failed to set property concept, non DEC path, {sdtm_property}"
                         )
                         concept_code = self._code_object(
                             "No Concept Code", sdtm_property["name"]
@@ -279,7 +279,7 @@ class LibraryAPI:
                             else:
                                 cl = f", code list {sdtm_property['codelist']['conceptId'] if 'codelist' in sdtm_property else '<not defined>'}"
                                 self._errors.error(
-                                    f"Failed to find submission or preferred term '{value}' {cl}"
+                                    f"Failed to find submission or preferred term '{value}' {cl}\nProperty:\n{sdtm_property}"
                                 )
                 for code in codes:
                     response_code = self._response_code_object(code)
@@ -363,15 +363,23 @@ class LibraryAPI:
         return True
 
     def _get_role_variable(self, data):
-        return next(
-            (item for item in data["variables"] if item["role"] == "Topic"), None
-        )
+        try:
+            return next(
+                (item for item in data["variables"] if item["role"] == "Topic"), None
+            )
+        except Exception:
+            self._errors.warning(f"Failed to find role in {data}")
+            return None
 
     def _get_dec_match(self, data, id):
-        return next(
-            (item for item in data["dataElementConcepts"] if item["conceptId"] == id),
-            None,
-        )
+        try:
+            return next(
+                (item for item in data["dataElementConcepts"] if item["conceptId"] == id),
+                None,
+            )
+        except Exception:
+            self._errors.warning(f"Failed to find DEC in {data} for '{id}'")
+            return None
 
     def _get_from_url_all(self, name, details) -> dict:
         try:

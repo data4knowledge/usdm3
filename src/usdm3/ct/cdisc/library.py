@@ -92,7 +92,7 @@ class Library:
                 (
                     item
                     for item in code_list["terms"]
-                    if item[key] == value
+                    if item[key].upper() == value.upper()
                 ),
                 None,
             )
@@ -103,7 +103,7 @@ class Library:
                     (
                         item
                         for item in code_list["terms"]
-                        if item[key] == value
+                        if item[key].upper() == value.upper()
                     ),
                     None,
                 )
