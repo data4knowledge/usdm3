@@ -2,12 +2,7 @@ import os
 import requests
 from simple_error_log.errors import Errors
 
-class APIError(Exception):
-    """Custom exception for API-related errors"""
-
-    pass
-
-class BCLibraryAPI:
+class LibraryAPI:
     API_ROOT = "https://api.library.cdisc.org/api/cosmos/v2"
 
     def __init__(
@@ -15,7 +10,7 @@ class BCLibraryAPI:
         ct_system: str,
         ct_version: str
     ):
-        self._errors = Errors
+        self._errors = Errors()
         self._ct_version = ct_version
         self._ct_system = ct_system
         self._api_key = os.getenv("CDISC_API_KEY")
@@ -25,10 +20,10 @@ class BCLibraryAPI:
         self._package_metadata = {}
         self._package_items = {}
         self._bc_responses = {}
-        self._bcs = {}
         self._bcs_raw = {}
+        self._map = {}
 
-    def refresh(self):    
+    def refresh(self): 
         self._get_package_metadata()
         self._get_package_items()
         self._get_sdtm_bcs()
@@ -39,6 +34,10 @@ class BCLibraryAPI:
     def errors(self) -> Errors:
         return self._errors
     
+    @property 
+    def valid(self) -> bool:
+        return self._errors.count()
+    
     def _get_package_metadata(self):
         urls = {
             "generic": "/mdr/bc/packages",
@@ -47,8 +46,10 @@ class BCLibraryAPI:
         for url_type, url in urls.items():
             try:
                 api_url = self._url(url)
+                self._errors.info(f"Processing package metadata for '{api_url}'")
                 raw = requests.get(api_url, headers=self._headers)
                 response = raw.json()
+                print("#", end='', flush=True)
                 self._package_metadata[url_type] = response["_links"]["packages"]
             except Exception as e:
                 self._errors.exception(
@@ -68,8 +69,10 @@ class BCLibraryAPI:
                 "generic": "biomedicalConcepts",
             }
             api_url = self._url(package["href"]) if "href" in package else "not set"
+            self._errors.info(f"Processing package for '{api_url}'")
             raw = requests.get(api_url, headers=self._headers)
             response = raw.json()
+            print("#", end='', flush=True)
             for item in response["_links"][response_field[package_type]]:
                 key = item["title"].upper()
                 if package_type == "sdtm":
@@ -85,8 +88,9 @@ class BCLibraryAPI:
             return {}
 
     def _get_sdtm_bcs(self):
-        # self._bcs, self._bcs_raw =
         for name, item in self._package_items["sdtm"].items():
+            print(".", end='', flush=True)
+            self._errors.info(f"Processing SDTM BC '{name}' ...")
             sdtm, generic = self._get_from_url_all(name, item)
             if sdtm:
                 bc = self._sdtm_bc_as_usdm(sdtm, generic)
@@ -95,9 +99,8 @@ class BCLibraryAPI:
                         for item in sdtm["variables"]:
                             property = self._sdtm_bc_property_as_usdm(item, generic)
                             if property:
-                                bc.properties.append(property)
-                    self._bcs_raw[name] = bc.model_dump()
-                    self._bcs[name] = bc
+                                bc['properties'].append(property)
+                    self._bcs_raw[name] = bc
                 if generic:
                     href = generic["_links"]["self"]["href"]
                     if href in self._map:
@@ -107,22 +110,20 @@ class BCLibraryAPI:
 
     def _get_generic_bcs(self) -> dict:
         for name, item in self._package_items["generic"].items():
-            self._errors_and_logging.info(f"GENERIC BC item '{name}'")
+            self._errors.info(f"Processing Generic BC '{name}' ...")
             print(".", end='', flush=True)
             if self._process_genric_bc(name):
                 response = self._get_from_url(item["href"])
-                print("#", end='', flush=True)
                 bc = self._generic_bc_as_usdm(response)
                 if "dataElementConcepts" in response:
                     for item in response["dataElementConcepts"]:
                         property = self._generic_bc_property_as_usdm(item)
                         if property:
                             bc.properties.append(property)
-                self._bcs_raw[name] = bc.model_dump()
-                self._bcs[name] = bc
+                self._bcs_raw[name] = bc
 
     def _generic_bc_as_usdm(self, api_bc) -> dict:
-        concept_code = self._cdisc_code(api_bc["conceptId"], api_bc["shortName"])
+        concept_code = self._code_object(api_bc["conceptId"], api_bc["shortName"])
         synonyms = api_bc["synonyms"] if "synonyms" in api_bc else []
         return self._biomedical_concept_object(
             api_bc["shortName"],
@@ -133,15 +134,14 @@ class BCLibraryAPI:
         )
 
     def _generic_bc_property_as_usdm(self, property) -> dict:
-        concept_code = self._cdisc_code(property["conceptId"], property["shortName"])
+        concept_code = self._code_object(property["conceptId"], property["shortName"])
         responses = []
         if "exampleSet" in property:
             for example in property["exampleSet"]:
                 term = self._ct_library.preferred_term(example)
                 if term != None:
-                    code = self._cdisc_code(term["conceptId"], term["preferredTerm"])
-                    code.id = "tbd"
-                    responses.append(ResponseCode(id="tbd", name=f"RC_{code.code}", label="", isEnabled=True, code=code))
+                    code = self._code_object(term["conceptId"], term["preferredTerm"])
+                    responses.append(self._response_code_object(code))
         return self._biomedical_concept_property_object(
             property["shortName"],
             property["shortName"],
@@ -150,7 +150,7 @@ class BCLibraryAPI:
             concept_code,
         )
 
-    def _sdtm_bc_as_usdm(self, sdtm, generic) -> BiomedicalConcept:
+    def _sdtm_bc_as_usdm(self, sdtm, generic) -> dict:
         try:
             if self._process_sdtm_bc(sdtm["shortName"]):
                 role_variable = self._get_role_variable(sdtm)
@@ -160,28 +160,28 @@ class BCLibraryAPI:
                             "conceptId" in role_variable["assignedTerm"]
                             and "value" in role_variable["assignedTerm"]
                         ):
-                            concept_code = self._cdisc_code(
+                            concept_code = self._code_object(
                                 role_variable["assignedTerm"]["conceptId"],
                                 role_variable["assignedTerm"]["value"],
                             )
                         else:
-                            self._errors_and_logging.error(
+                            self._errors.error(
                                 f"Failed to set BC concept 1, {sdtm['shortName']}"
                             )
-                            concept_code = self._cdisc_code(
+                            concept_code = self._code_object(
                                 "No Concept Code",
                                 role_variable["assignedTerm"]["value"],
                             )
                     else:
-                        self._errors_and_logging.error(
+                        self._errors.error(
                             f"Failed to set BC concept 2, {sdtm['shortName']}"
                         )
-                        concept_code = self._cdisc_code(
+                        concept_code = self._code_object(
                             generic["conceptId"], generic["shortName"]
                         )
                 else:
-                    self._errors_and_logging.error(f"Failed to set BC concept {sdtm['shortName']}")
-                    concept_code = self._cdisc_code(
+                    self._errors.error(f"Failed to set BC concept {sdtm['shortName']}")
+                    concept_code = self._code_object(
                         generic["conceptId"], generic["shortName"]
                     )
                 synonyms = generic["synonyms"] if "synonyms" in generic else []
@@ -196,9 +196,7 @@ class BCLibraryAPI:
             else:
                 return None
         except Exception as e:
-            self._errors.exception(
-                f"Failed to build BC {sdtm['shortName']}", e
-            )
+            self._errors.exception(f"Failed to build BC '{sdtm['shortName']}'", e)
             return None
 
     def _sdtm_bc_property_as_usdm(
@@ -228,21 +226,21 @@ class BCLibraryAPI:
                             self._errors.error(
                                 f"Failed to set property concept 1, {sdtm_property}"
                             )
-                            concept_code = self._cdisc_code(
+                            concept_code = self._code_object(
                                 sdtm_property["dataElementConceptId"],
                                 sdtm_property["name"],
                             )
                 else:
                     if "assignedTerm" in sdtm_property:
-                        concept_code = self._cdisc_code(
+                        concept_code = self._code_object(
                             sdtm_property["assignedTerm"]["conceptId"],
                             sdtm_property["assignedTerm"]["value"],
                         )
                     else:
-                        self._errors_and_logging.error(
+                        self._errors.error(
                             f"Failed to set property concept 2, {sdtm_property}"
                         )
-                        concept_code = self._cdisc_code(
+                        concept_code = self._code_object(
                             "No Concept Code", sdtm_property["name"]
                         )
                 responses = []
@@ -366,21 +364,19 @@ class BCLibraryAPI:
 
     def _get_from_url_all(self, name, details) -> dict:
         try:
-            self._errors_and_logging.debug(f"DETAILS: {details}")
             sdtm_response = self._get_from_url(details["href"])
             generic = sdtm_response["_links"]["parentBiomedicalConcept"]
             generic_response = self._get_from_url(generic["href"])
             return sdtm_response, generic_response
         except Exception as e:
-            self._exception(
-                f"Exception '{e}', failed to retrieve CDISC BC metadata for {name} from '{details['href']}'",
+            self._errors.exception(
+                f"Failed to retrieve CDISC BC metadata for {name} from '{details['href']}'",
                 e,
             )
             return None, None
 
     def _get_from_url(self, url):
         api_url = self._url(url)
-        self._errors_and_logging.info("CDISC BC Library: %s" % api_url)
         raw = requests.get(api_url, headers=self._headers)
         result = raw.json()
         return result
