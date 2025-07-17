@@ -101816,6 +101816,243 @@ TARGET RESPONSE (RANO):
   - TRGRESP
   - Target Response
   - Response in Target Lesion
+TARGET RESPONSE (RECIST 1.1):
+  code:
+    id: tbd
+    instanceType: AliasCode
+    standardCode:
+      code: C94534
+      codeSystem: http://www.cdisc.org
+      codeSystemVersion: '2023-12-15'
+      decode: TRGRESP
+      id: tbd
+      instanceType: Code
+    standardCodeAliases: []
+  id: tbd
+  instanceType: BiomedicalConcept
+  label: Target Response (RECIST 1.1)
+  name: Target Response (RECIST 1.1)
+  properties:
+  - code:
+      id: tbd
+      instanceType: AliasCode
+      standardCode:
+        code: C94534
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: TRGRESP
+        id: tbd
+        instanceType: Code
+      standardCodeAliases: []
+    datatype: ''
+    id: tbd
+    instanceType: BiomedicalConceptProperty
+    isEnabled: true
+    isRequired: true
+    label: RSTESTCD
+    name: RSTESTCD
+    responseCodes: []
+  - code:
+      id: tbd
+      instanceType: AliasCode
+      standardCode:
+        code: C70856
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Observation Result
+        id: tbd
+        instanceType: Code
+      standardCodeAliases: []
+    datatype: text
+    id: tbd
+    instanceType: BiomedicalConceptProperty
+    isEnabled: true
+    isRequired: true
+    label: RSORRES
+    name: RSORRES
+    responseCodes:
+    - code:
+        code: C4870
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Complete Remission
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C4870
+    - code:
+        code: C62222
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Unevaluable
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C62222
+    - code:
+        code: C35571
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Progressive Disease
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C35571
+    - code:
+        code: C18058
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Partial Remission
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C18058
+    - code:
+        code: C18213
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Stable Disease
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C18213
+  - code:
+      id: tbd
+      instanceType: AliasCode
+      standardCode:
+        code: C51824
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Evaluator
+        id: tbd
+        instanceType: Code
+      standardCodeAliases: []
+    datatype: ''
+    id: tbd
+    instanceType: BiomedicalConceptProperty
+    isEnabled: true
+    isRequired: true
+    label: RSEVAL
+    name: RSEVAL
+    responseCodes:
+    - code:
+        code: C25936
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Investigator
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C25936
+    - code:
+        code: C78720
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Independent Rater
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C78720
+  - code:
+      id: tbd
+      instanceType: AliasCode
+      standardCode:
+        code: C117043
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Evaluator Identifier
+        id: tbd
+        instanceType: Code
+      standardCodeAliases: []
+    datatype: ''
+    id: tbd
+    instanceType: BiomedicalConceptProperty
+    isEnabled: true
+    isRequired: true
+    label: RSEVALID
+    name: RSEVALID
+    responseCodes:
+    - code:
+        code: C94530
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Radiologist 1
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C94530
+    - code:
+        code: C94531
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Radiologist 2
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C94531
+    - code:
+        code: C187890
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Radiologist 3
+        id: tbd
+        instanceType: Code
+      id: tbd
+      instanceType: ResponseCode
+      isEnabled: true
+      label: ''
+      name: RC_C187890
+  - code:
+      id: tbd
+      instanceType: AliasCode
+      standardCode:
+        code: C82515
+        codeSystem: http://www.cdisc.org
+        codeSystemVersion: '2023-12-15'
+        decode: Collection Date Time
+        id: tbd
+        instanceType: Code
+      standardCodeAliases: []
+    datatype: ''
+    id: tbd
+    instanceType: BiomedicalConceptProperty
+    isEnabled: true
+    isRequired: true
+    label: RSDTC
+    name: RSDTC
+    responseCodes: []
+  reference: /mdr/specializations/sdtm/packages/2024-06-27/datasetspecializations/TRGRESP
+  synonyms:
+  - TRGRESP
+  - Target Response
+  - Response in Target Lesion
 TEMPERATURE:
   code:
     id: tbd
