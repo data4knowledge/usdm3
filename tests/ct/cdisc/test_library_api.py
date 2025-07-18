@@ -6,7 +6,7 @@ from usdm3.ct.cdisc.library_api import LibraryAPI
 @pytest.fixture
 def api():
     """Fixture to create a LibraryAPI instance"""
-    return LibraryAPI()
+    return LibraryAPI(["ddfct", "sdtmct"])
 
 
 @pytest.fixture
@@ -65,11 +65,8 @@ def test_code_list_error(mock_get, api):
     mock_get.return_value = mock_response
 
     api._packages = {"sdtmct": [{"effective": "2024-01-01"}]}
-    with pytest.raises(LibraryAPI.APIError) as exc_info:
-        api.code_list("invalid-id")
-    assert "failed to obtain code list from library for invalid-id" in str(
-        exc_info.value
-    )
+    result = api.code_list("invalid-id")
+    assert result is None
 
 
 @patch("requests.get")
@@ -97,6 +94,5 @@ def test_packages_malformed_response(mock_get, api):
     mock_response.text = "Unauthorized"
     mock_get.return_value = mock_response
 
-    with pytest.raises(Exception) as exc_info:
-        list(api.refresh())
-    assert "failed to get packages" in str(exc_info.value)
+    result = api.refresh()
+    assert result is None

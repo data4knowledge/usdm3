@@ -110,7 +110,8 @@ def test_load_from_api(
 
     mock_api = mock_api_cls.return_value
     mock_api.refresh.return_value = None
-    mock_api.code_list.return_value = sample_codelist
+    mock_api.all_code_lists.return_value = [{"effective_date": "2024-11-11", "package": "sdtmct", "code_lists": ["C123"]}]
+    mock_api.package_code_list.return_value = sample_codelist
 
     mock_config = mock_config_cls.return_value
     mock_config.required_code_lists.return_value = ["C123"]
@@ -124,7 +125,8 @@ def test_load_from_api(
 
     # Verify API was called
     mock_api.refresh.assert_called_once()
-    mock_api.code_list.assert_called_once_with("C123")
+    mock_api.all_code_lists.assert_called_once()
+    mock_api.package_code_list.assert_called_once_with("sdtmct", "2024-11-11", "C123")
 
     # Verify data was cached
     mock_cache.save.assert_called_once()
