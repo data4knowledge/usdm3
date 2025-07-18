@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 
 if __name__ == "__main__":
     root = os.path.join(Path(__file__).parent.resolve(), "src/usdm3")
-    print(f"ROOT: {root}")
     load_dotenv(".development_env")
     ct = CtLibrary(root)
     ct.load()
     bc = BcLibrary(root, ct)
+    bc._cache.delete()
     bc.load()
     print(f"BC Library Valid: {bc._api.valid}")
     print(f"BC Library Errors: {bc._api.errors.dump()}")
