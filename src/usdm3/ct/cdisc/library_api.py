@@ -49,7 +49,7 @@ class LibraryAPI:
                     for item in response['_links']['codelists']:
                         href = item['href']
                         result["code_lists"].append(href.split("/")[-1])
-                results.append(result)    
+                    results.append(result)    
         return results
 
     def package_code_list(self, package: str, version: str, c_code: str) -> dict:
