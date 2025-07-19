@@ -10,7 +10,8 @@ def set_test():
     return original_value
 
 def clear_test(original_value):
-    os.environ['CDISC_API_KEY'] = original_value
+    if original_value:
+        os.environ['CDISC_API_KEY'] = original_value
     # print(f"API KEY: {os.environ.get("CDISC_API_KEY")}")
     load_dotenv(".development_env")
 
