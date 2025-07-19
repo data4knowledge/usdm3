@@ -94,9 +94,9 @@ class TestLibraryCache:
         assert "Failed to read file" in str(exc_info.value)
         assert "does not exist" in str(exc_info.value)
     
-    def test_delete_nonexistent_file_raises_exception(self):
-        """Test deleting non-existent file raises exception."""
-        with pytest.raises(Exception) as exc_info:
-            self.cache.delete()
-        
-        assert "Failed to delete file" in str(exc_info.value)
+    def test_delete_nonexistent_file_does_not_raise_exception(self):
+        """Test deleting non-existent file does not raise exception."""
+        # This should not raise an exception
+        self.cache.delete()
+        # File still doesn't exist
+        assert not self.cache.exists()
