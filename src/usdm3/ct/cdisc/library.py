@@ -135,6 +135,7 @@ class Library:
 
     def _get_usdm_ct(self) -> None:
         for item in self._config.required_code_lists():
+            print(f"[{item}] ", end='', flush=True)
             response = self._api.code_list(item)
             self._by_code_list[response["conceptId"]] = response
             for item in response["terms"]:

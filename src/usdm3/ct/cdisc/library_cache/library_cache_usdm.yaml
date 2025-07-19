@@ -2015,6 +2015,7 @@ C66728:
     definition: Not known, not observed, not recorded, or refused. (NCI)
     preferredTerm: Unknown
     submissionValue: UNKNOWN
+    synonyms:
     - U
     - UNK
     - Unknown

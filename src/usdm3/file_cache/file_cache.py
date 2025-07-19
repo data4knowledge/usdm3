@@ -32,7 +32,7 @@ class FileCache:
         try:
             os.remove(self._full_filepath())
         except Exception as e:
-            raise Exception(f"Failed to delete file '{self._full_filepath()}', {str(e)}")
+            pass
 
     def _file_exists(self) -> bool:
         return os.path.isfile(self._full_filepath())
