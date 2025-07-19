@@ -15,11 +15,14 @@ class Library:
     """
 
     BASE_PATH = "ct/cdisc"
+    USDM = "usdm"
+    ALL = "all"
 
-    def __init__(self, root_path: str):
+    def __init__(self, root_path: str, type: str=USDM):
         self.system = "http://www.cdisc.org"
         self.version = "2023-12-15"  # Default version.
         self.root_path = root_path
+        self._type = type.lower() if type.lower() in [self.USDM, self.ALL] else self.USDM
 
         self._config = Config(
             os.path.join(self.root_path, self.BASE_PATH, "config")
@@ -29,7 +32,7 @@ class Library:
         )  # Handler for missing/additional code lists
         self._api = LibraryAPI(self._config.required_packages())  # Interface to CDISC Library API
         self._cache = LibraryCache(
-            os.path.join(self.root_path, self.BASE_PATH, "library_cache")
+            os.path.join(self.root_path, self.BASE_PATH, "library_cache"), f"library_cache_{self._type}.yaml"
         )  # Cache file handler
 
         # Data structures to store and index controlled terminology
@@ -43,7 +46,7 @@ class Library:
             self._load_ct()  # Load from cache file
         else:
             self._api.refresh()  # Ensure API connection is fresh
-            self._get_all_ct()  # Fetch from API
+            self._get_usdm_ct() if self._usdm() else  self._get_all_ct() # Fetch from API
             self._cache.save(self._by_code_list)  # Cache the results
         self._add_missing_ct()  # Add any additional required terminology
 
@@ -82,6 +85,9 @@ class Library:
             return self._find_in_collection(self._by_pt[value], "preferredTerm", value, cl)
         else:
             return None
+
+    def _usdm(self) -> bool:
+        return self._type == self.USDM
 
     def _find_in_collection(self, concepts: list, key: str, value: str, cl: str=None):
         if len(concepts) == 0:
@@ -127,7 +133,7 @@ class Library:
         except Exception:
             return None
 
-    def _get_required_ct(self) -> None:
+    def _get_usdm_ct(self) -> None:
         for item in self._config.required_code_lists():
             response = self._api.code_list(item)
             self._by_code_list[response["conceptId"]] = response

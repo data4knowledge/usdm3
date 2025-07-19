@@ -12,7 +12,7 @@ class Library:
         self.root_path = root_path
         self._api = LibraryAPI(ct_library)  # Interface to CDISC Library API
         self._cache = LibraryCache(
-            os.path.join(self.root_path, self.BASE_PATH, "library_cache")
+            os.path.join(self.root_path, self.BASE_PATH, "library_cache"), "library_cache.yaml"
         )  # Cache file handler
         self._bcs = {}
         self._bc_index = {}

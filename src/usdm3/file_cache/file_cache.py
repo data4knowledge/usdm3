@@ -24,7 +24,7 @@ class FileCache:
                 with open(self._full_filepath()) as f:
                     return yaml.safe_load(f)
             else:
-                raise Exception(f"Failed to read file '{self._full_filepath()}', does not exist, {str(e)}")
+                raise Exception(f"Failed to read file '{self._full_filepath()}', does not exist")
         except Exception as e:
             raise Exception(f"Failed to read file '{self._full_filepath()}', {str(e)}")
 

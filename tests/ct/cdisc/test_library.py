@@ -120,7 +120,7 @@ def test_load_from_api(
     mock_missing.code_lists.return_value = {}
 
     # Create library and load data
-    library = Library("xxx")
+    library = Library("xxx", "all")
     library.load()
 
     # Verify API was called

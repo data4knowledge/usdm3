@@ -3,7 +3,7 @@ import yaml
 
 
 class LibraryCache:
-    def __init__(self, filepath: str, filename: str = "library_cache.yaml"):
+    def __init__(self, filepath: str, filename: str):
         self.filename = filename
         self.filepath = filepath
 
@@ -38,4 +38,5 @@ class LibraryCache:
         return os.path.isfile(self._full_filepath())
 
     def _full_filepath(self) -> str:
+        print(f"FULL PATH: {os.path.join(self.filepath, self.filename)}")
         return os.path.join(self.filepath, self.filename)
