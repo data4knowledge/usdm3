@@ -24,6 +24,7 @@ def test_code_lists_iteration():
     for code_list in code_lists:
         assert isinstance(code_list, dict)
         assert "conceptId" in code_list
+        assert "source" in code_list
         assert "terms" in code_list
         for term in code_list["terms"]:
             assert "preferredTerm" in term
