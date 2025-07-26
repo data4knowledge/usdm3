@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 from usdm3.ct.cdisc.library import Library as CtLibrary
 from usdm3.bc.cdisc.library import Library as BcLibrary
-from usdm3.file_cache.file_cache import FileCache
 
 from dotenv import load_dotenv
 

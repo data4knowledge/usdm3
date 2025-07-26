@@ -3,6 +3,7 @@ import requests
 from simple_error_log.errors import Errors
 from usdm3.ct.cdisc.library import Library as CtLibrary
 
+
 class LibraryAPI:
     API_ROOT = "https://api.library.cdisc.org/api/cosmos/v2"
 
@@ -22,7 +23,7 @@ class LibraryAPI:
         self._bcs_raw = {}
         self._map = {}
 
-    def refresh(self): 
+    def refresh(self):
         self._get_package_metadata()
         self._get_package_items()
         self._get_sdtm_bcs()
@@ -32,11 +33,11 @@ class LibraryAPI:
     @property
     def errors(self) -> Errors:
         return self._errors
-    
-    @property 
+
+    @property
     def valid(self) -> bool:
         return self._errors.error_count()
-    
+
     def _get_package_metadata(self):
         urls = {
             "generic": "/mdr/bc/packages",
@@ -48,7 +49,7 @@ class LibraryAPI:
                 self._errors.info(f"Processing package metadata for '{api_url}'")
                 raw = requests.get(api_url, headers=self._headers)
                 response = raw.json()
-                print("#", end='', flush=True)
+                print("#", end="", flush=True)
                 self._package_metadata[url_type] = response["_links"]["packages"]
             except Exception as e:
                 self._errors.exception(
@@ -71,13 +72,13 @@ class LibraryAPI:
             self._errors.info(f"Processing package for '{api_url}'")
             raw = requests.get(api_url, headers=self._headers)
             response = raw.json()
-            print("#", end='', flush=True)
+            print("#", end="", flush=True)
             for item in response["_links"][response_field[package_type]]:
                 key = item["title"].upper()
                 if package_type == "sdtm":
                     self._package_items[package_type][key] = item
                     # map[item['href']] = key
-                elif package_type == "generic" and not key in self._package_items:
+                elif package_type == "generic" and key not in self._package_items:
                     self._package_items[package_type][key] = item
                     self._map[item["href"]] = key
         except Exception as e:
@@ -87,13 +88,15 @@ class LibraryAPI:
             return {}
 
     def _get_sdtm_bcs(self):
-        print(f"\n\nSDTM: {len(self._package_items["sdtm"].keys())}")
+        print(f"\n\nSDTM: {len(self._package_items['sdtm'].keys())}")
         count = 0
         for name, item in self._package_items["sdtm"].items():
             count += 1
             # if count > 5:
             #     break
-            print(f"[{count}]", end='', flush=True) if count % 10 == 0 else print(".", end='', flush=True)
+            print(f"[{count}]", end="", flush=True) if count % 10 == 0 else print(
+                ".", end="", flush=True
+            )
             self._errors.info(f"Processing SDTM BC '{name}' ...")
             sdtm, generic = self._get_from_url_all(name, item)
             if sdtm:
@@ -103,7 +106,7 @@ class LibraryAPI:
                         for item in sdtm["variables"]:
                             property = self._sdtm_bc_property_as_usdm(item, generic)
                             if property:
-                                bc['properties'].append(property)
+                                bc["properties"].append(property)
                     self._bcs_raw[name] = bc
                 if generic:
                     href = generic["_links"]["self"]["href"]
@@ -113,13 +116,15 @@ class LibraryAPI:
                         self._errors.info(f"Missing reference when popping {href}")
 
     def _get_generic_bcs(self) -> dict:
-        print(f"\n\nGeneric: {len(self._package_items["generic"].keys())}")
+        print(f"\n\nGeneric: {len(self._package_items['generic'].keys())}")
         count = 0
         for name, item in self._package_items["generic"].items():
             count += 1
             # if count > 5:
             #     break
-            print(f"[{count}]", end='', flush=True) if count % 10 == 0 else print(".", end='', flush=True)
+            print(f"[{count}]", end="", flush=True) if count % 10 == 0 else print(
+                ".", end="", flush=True
+            )
             self._errors.info(f"Processing Generic BC '{name}' ...")
             if self._process_genric_bc(name):
                 response = self._get_from_url(item["href"])
@@ -128,7 +133,7 @@ class LibraryAPI:
                     for item in response["dataElementConcepts"]:
                         property = self._generic_bc_property_as_usdm(item)
                         if property:
-                            bc['properties'].append(property)
+                            bc["properties"].append(property)
                 self._bcs_raw[name] = bc
 
     def _generic_bc_as_usdm(self, api_bc) -> dict:
@@ -147,10 +152,9 @@ class LibraryAPI:
         responses = []
         if "exampleSet" in property:
             for example in property["exampleSet"]:
-                print(f"EXAMPLE CODE: {property}")
-                #term = self._ct_library.preferred_term(example)
+                # term = self._ct_library.preferred_term(example)
                 term = None
-                if term != None:
+                if term is not None:
                     code = self._code_object(term["conceptId"], term["preferredTerm"])
                     responses.append(self._response_code_object(code))
         return self._biomedical_concept_property_object(
@@ -191,7 +195,9 @@ class LibraryAPI:
                             generic["conceptId"], generic["shortName"]
                         )
                 else:
-                    self._errors.warning(f"Failed to set BC concept, no role variable, {sdtm['shortName']}")
+                    self._errors.warning(
+                        f"Failed to set BC concept, no role variable, {sdtm['shortName']}"
+                    )
                     concept_code = self._code_object(
                         generic["conceptId"], generic["shortName"]
                     )
@@ -210,9 +216,7 @@ class LibraryAPI:
             self._errors.exception(f"Failed to build BC '{sdtm['shortName']}'", e)
             return None
 
-    def _sdtm_bc_property_as_usdm(
-        self, sdtm_property, generic
-    ) -> dict:
+    def _sdtm_bc_property_as_usdm(self, sdtm_property, generic) -> dict:
         try:
             if self._process_property(sdtm_property["name"]):
                 if "dataElementConceptId" in sdtm_property:
@@ -297,11 +301,8 @@ class LibraryAPI:
             else:
                 return None
         except Exception as e:
-            self._errors.exception(
-                f"Failed to build property {sdtm_property}", e
-            )
+            self._errors.exception(f"Failed to build property {sdtm_property}", e)
             return None
-
 
     def _process_sdtm_bc(self, name):
         if name in [
@@ -374,7 +375,11 @@ class LibraryAPI:
     def _get_dec_match(self, data, id):
         try:
             return next(
-                (item for item in data["dataElementConcepts"] if item["conceptId"] == id),
+                (
+                    item
+                    for item in data["dataElementConcepts"]
+                    if item["conceptId"] == id
+                ),
                 None,
             )
         except Exception:
@@ -410,25 +415,29 @@ class LibraryAPI:
             "codeSystem": self._ct_library.system,
             "codeSystemVersion": self._ct_library.version,
             "decode": decode,
-            "instanceType": "Code"
+            "instanceType": "Code",
         }
 
     def _alias_code_object(self, standard_code, aliases):
-        return {
-            "id": "tbd",
-            "standardCode": standard_code,
-            "standardCodeAliases": aliases,
-            "instanceType": "AliasCode"
-        } if standard_code else None
+        return (
+            {
+                "id": "tbd",
+                "standardCode": standard_code,
+                "standardCodeAliases": aliases,
+                "instanceType": "AliasCode",
+            }
+            if standard_code
+            else None
+        )
 
     def _response_code_object(self, code: dict):
         return {
             "id": "tbd",
-            "name": f"RC_{code["code"]}", 
-            "label": "", 
-            "isEnabled": True, 
+            "name": f"RC_{code['code']}",
+            "label": "",
+            "isEnabled": True,
             "code": code,
-            "instanceType": "ResponseCode"
+            "instanceType": "ResponseCode",
         }
 
     def _biomedical_concept_property_object(
@@ -444,7 +453,7 @@ class LibraryAPI:
             "datatype": datatype,
             "responseCodes": responses,
             "code": alias_code,
-            "instanceType": "BiomedicalConceptProperty"
+            "instanceType": "BiomedicalConceptProperty",
         }
 
     def _biomedical_concept_object(
@@ -459,6 +468,5 @@ class LibraryAPI:
             "reference": reference,
             "properties": [],
             "code": alias_code,
-            "instanceType": "BiomedicalConcept"
+            "instanceType": "BiomedicalConcept",
         }
-

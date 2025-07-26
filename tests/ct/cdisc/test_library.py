@@ -110,7 +110,9 @@ def test_load_from_api(
 
     mock_api = mock_api_cls.return_value
     mock_api.refresh.return_value = None
-    mock_api.all_code_lists.return_value = [{"effective_date": "2024-11-11", "package": "sdtmct", "code_lists": ["C123"]}]
+    mock_api.all_code_lists.return_value = [
+        {"effective_date": "2024-11-11", "package": "sdtmct", "code_lists": ["C123"]}
+    ]
     mock_api.package_code_list.return_value = sample_codelist
 
     mock_config = mock_config_cls.return_value
@@ -466,7 +468,7 @@ def test_usdm_method(mock_missing_cls, mock_config_cls):
     """Test _usdm method"""
     library_usdm = Library("/test/path", "USDM")
     assert library_usdm._usdm() is True
-    
+
     library_all = Library("/test/path", "ALL")
     assert library_all._usdm() is False
 
@@ -476,38 +478,43 @@ def test_usdm_method(mock_missing_cls, mock_config_cls):
 def test_submission_method(mock_missing_cls, mock_config_cls):
     """Test submission method"""
     library = Library("/test/path")
-    
+
     # Setup test data
-    library._by_submission = {
-        "TEST_VAL": ["C123"],
-        "MULTI_VAL": ["C123", "C456"]
-    }
+    library._by_submission = {"TEST_VAL": ["C123"], "MULTI_VAL": ["C123", "C456"]}
     library._by_code_list = {
         "C123": {
             "terms": [
-                {"submissionValue": "TEST_VAL", "preferredTerm": "Test Term", "conceptId": "T1"}
+                {
+                    "submissionValue": "TEST_VAL",
+                    "preferredTerm": "Test Term",
+                    "conceptId": "T1",
+                }
             ]
         },
         "C456": {
             "terms": [
-                {"submissionValue": "MULTI_VAL", "preferredTerm": "Multi Term", "conceptId": "T2"}
+                {
+                    "submissionValue": "MULTI_VAL",
+                    "preferredTerm": "Multi Term",
+                    "conceptId": "T2",
+                }
             ]
-        }
+        },
     }
-    
+
     # Test single match
     result = library.submission("TEST_VAL")
     assert result["submissionValue"] == "TEST_VAL"
-    
+
     # Test multiple matches without cl parameter
     result = library.submission("MULTI_VAL")
     assert result is None
-    
+
     # Test multiple matches with cl parameter
     result = library.submission("MULTI_VAL", "C456")
     assert result["submissionValue"] == "MULTI_VAL"
     assert result["conceptId"] == "T2"
-    
+
     # Test non-existent value
     result = library.submission("NON_EXISTENT")
     assert result is None
@@ -518,38 +525,43 @@ def test_submission_method(mock_missing_cls, mock_config_cls):
 def test_preferred_term_method(mock_missing_cls, mock_config_cls):
     """Test preferred_term method"""
     library = Library("/test/path")
-    
+
     # Setup test data
-    library._by_pt = {
-        "Test Term": ["C123"],
-        "Multi Term": ["C123", "C456"]
-    }
+    library._by_pt = {"Test Term": ["C123"], "Multi Term": ["C123", "C456"]}
     library._by_code_list = {
         "C123": {
             "terms": [
-                {"submissionValue": "TEST_VAL", "preferredTerm": "Test Term", "conceptId": "T1"}
+                {
+                    "submissionValue": "TEST_VAL",
+                    "preferredTerm": "Test Term",
+                    "conceptId": "T1",
+                }
             ]
         },
         "C456": {
             "terms": [
-                {"submissionValue": "MULTI_VAL", "preferredTerm": "Multi Term", "conceptId": "T2"}
+                {
+                    "submissionValue": "MULTI_VAL",
+                    "preferredTerm": "Multi Term",
+                    "conceptId": "T2",
+                }
             ]
-        }
+        },
     }
-    
+
     # Test single match
     result = library.preferred_term("Test Term")
     assert result["preferredTerm"] == "Test Term"
-    
+
     # Test multiple matches without cl parameter
     result = library.preferred_term("Multi Term")
     assert result is None
-    
+
     # Test multiple matches with cl parameter
     result = library.preferred_term("Multi Term", "C456")
     assert result["preferredTerm"] == "Multi Term"
     assert result["conceptId"] == "T2"
-    
+
     # Test non-existent value
     result = library.preferred_term("Non Existent")
     assert result is None
@@ -560,7 +572,7 @@ def test_preferred_term_method(mock_missing_cls, mock_config_cls):
 def test_find_in_collection_empty_concepts(mock_missing_cls, mock_config_cls):
     """Test _find_in_collection with empty concepts list"""
     library = Library("/test/path")
-    
+
     result = library._find_in_collection([], "submissionValue", "TEST", None)
     assert result is None
 
@@ -570,18 +582,24 @@ def test_find_in_collection_empty_concepts(mock_missing_cls, mock_config_cls):
 def test_find_in_collection_multiple_concepts_no_cl(mock_missing_cls, mock_config_cls):
     """Test _find_in_collection with multiple concepts but no cl parameter"""
     library = Library("/test/path")
-    
-    result = library._find_in_collection(["C123", "C456"], "submissionValue", "TEST", None)
+
+    result = library._find_in_collection(
+        ["C123", "C456"], "submissionValue", "TEST", None
+    )
     assert result is None
 
 
 @patch("usdm3.ct.cdisc.library.Config")
 @patch("usdm3.ct.cdisc.library.Missing")
-def test_find_in_collection_multiple_concepts_invalid_cl(mock_missing_cls, mock_config_cls):
+def test_find_in_collection_multiple_concepts_invalid_cl(
+    mock_missing_cls, mock_config_cls
+):
     """Test _find_in_collection with multiple concepts but invalid cl parameter"""
     library = Library("/test/path")
-    
-    result = library._find_in_collection(["C123", "C456"], "submissionValue", "TEST", "C789")
+
+    result = library._find_in_collection(
+        ["C123", "C456"], "submissionValue", "TEST", "C789"
+    )
     assert result is None
 
 
@@ -590,11 +608,11 @@ def test_find_in_collection_multiple_concepts_invalid_cl(mock_missing_cls, mock_
 def test_unit_code_list_method(mock_missing_cls, mock_config_cls):
     """Test unit_code_list method"""
     library = Library("/test/path")
-    
+
     # Setup test data
     test_codelist = {"conceptId": "C71620", "terms": []}
     library._by_code_list["C71620"] = test_codelist
-    
+
     result = library.unit_code_list()
     assert result == test_codelist
 
@@ -604,10 +622,10 @@ def test_unit_code_list_method(mock_missing_cls, mock_config_cls):
 def test_klass_and_attribute_exception(mock_missing_cls, mock_config_cls):
     """Test klass_and_attribute method with exception"""
     library = Library("/test/path")
-    
+
     mock_config = mock_config_cls.return_value
     mock_config.klass_and_attribute.side_effect = Exception("Test exception")
-    
+
     result = library.klass_and_attribute("TestClass", "testAttr")
     assert result is None
 
@@ -617,10 +635,10 @@ def test_klass_and_attribute_exception(mock_missing_cls, mock_config_cls):
 def test_cl_by_term_exception(mock_missing_cls, mock_config_cls):
     """Test cl_by_term method with exception"""
     library = Library("/test/path")
-    
+
     # Setup to cause KeyError
     library._by_term = {}
-    
+
     result = library.cl_by_term("NON_EXISTENT")
     assert result is None
 
@@ -629,39 +647,41 @@ def test_cl_by_term_exception(mock_missing_cls, mock_config_cls):
 @patch("usdm3.ct.cdisc.library.Missing")
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
 @patch("usdm3.ct.cdisc.library.LibraryCache")
-def test_load_all_ct_path(mock_cache_cls, mock_api_cls, mock_missing_cls, mock_config_cls):
+def test_load_all_ct_path(
+    mock_cache_cls, mock_api_cls, mock_missing_cls, mock_config_cls
+):
     """Test load method with ALL type to cover _get_all_ct path"""
     # Setup mocks
     mock_config = mock_config_cls.return_value
     mock_config.required_packages.return_value = ["sdtmct"]
-    
+
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = []
-    
+
     mock_api = mock_api_cls.return_value
     mock_api.all_code_lists.return_value = [
         {
             "package": "sdtmct",
             "effective_date": "2024-01-01",
-            "code_lists": ["C123", "C456"]
+            "code_lists": ["C123", "C456"],
         }
     ]
     mock_api.package_code_list.return_value = {
         "conceptId": "C123",
         "terms": [
             {"conceptId": "T1", "submissionValue": "VAL1", "preferredTerm": "Term 1"}
-        ]
+        ],
     }
-    
+
     mock_cache = mock_cache_cls.return_value
     mock_cache.exists.return_value = False
-    
+
     # Create library with ALL type
     library = Library("/test/path", "ALL")
-    
-    with patch('builtins.print'):
+
+    with patch("builtins.print"):
         library.load()
-    
+
     # Verify API methods were called
     mock_api.refresh.assert_called_once()
     mock_api.all_code_lists.assert_called_once()
@@ -673,48 +693,58 @@ def test_load_all_ct_path(mock_cache_cls, mock_api_cls, mock_missing_cls, mock_c
 @patch("usdm3.ct.cdisc.library.Missing")
 @patch("usdm3.ct.cdisc.library.LibraryAPI")
 @patch("usdm3.ct.cdisc.library.LibraryCache")
-def test_get_usdm_ct_path(mock_cache_cls, mock_api_cls, mock_missing_cls, mock_config_cls):
+def test_get_usdm_ct_path(
+    mock_cache_cls, mock_api_cls, mock_missing_cls, mock_config_cls
+):
     """Test load method with USDM type to cover _get_usdm_ct path"""
     # Setup mocks
     mock_config = mock_config_cls.return_value
     mock_config.required_packages.return_value = ["sdtmct"]
     mock_config.required_code_lists.return_value = ["C123", "C456"]
-    
+
     mock_missing = mock_missing_cls.return_value
     mock_missing.code_lists.return_value = []
-    
+
     mock_api = mock_api_cls.return_value
     mock_api.code_list.side_effect = [
         {
             "conceptId": "C123",
             "terms": [
-                {"conceptId": "T1", "submissionValue": "VAL1", "preferredTerm": "Term 1"}
-            ]
+                {
+                    "conceptId": "T1",
+                    "submissionValue": "VAL1",
+                    "preferredTerm": "Term 1",
+                }
+            ],
         },
         {
-            "conceptId": "C456", 
+            "conceptId": "C456",
             "terms": [
-                {"conceptId": "T2", "submissionValue": "VAL2", "preferredTerm": "Term 2"}
-            ]
-        }
+                {
+                    "conceptId": "T2",
+                    "submissionValue": "VAL2",
+                    "preferredTerm": "Term 2",
+                }
+            ],
+        },
     ]
-    
+
     mock_cache = mock_cache_cls.return_value
     mock_cache.exists.return_value = False
-    
+
     # Create library with USDM type (default)
     library = Library("/test/path", "USDM")
-    
-    with patch('builtins.print'):
+
+    with patch("builtins.print"):
         library.load()
-    
+
     # Verify API methods were called for USDM path
     mock_api.refresh.assert_called_once()
     assert mock_api.code_list.call_count == 2  # Called for each required code list
     mock_api.code_list.assert_any_call("C123")
     mock_api.code_list.assert_any_call("C456")
     mock_cache.save.assert_called_once()
-    
+
     # Verify data was indexed correctly
     assert "C123" in library._by_code_list
     assert "C456" in library._by_code_list

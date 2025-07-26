@@ -2,6 +2,7 @@ import os
 import re
 import requests
 
+
 class LibraryAPI:
     API_ROOT = "https://api.library.cdisc.org/api"
 
@@ -36,27 +37,26 @@ class LibraryAPI:
         results = []
         for package in self._package_list:
             version = self._package_version(package)
-            print(f"VERSION: {package}, {version}")
             if version:
                 package_full_name = f"{package}-{version}"
-                api_url = self._url(
-                    f"/mdr/ct/packages/{package_full_name}/codelists"
-                )
+                api_url = self._url(f"/mdr/ct/packages/{package_full_name}/codelists")
                 raw = requests.get(api_url, headers=self._headers)
                 if raw.status_code == 200:
                     response = raw.json()
-                    result = {"effective_date": version, "package": package, "code_lists": []}
-                    for item in response['_links']['codelists']:
-                        href = item['href']
+                    result = {
+                        "effective_date": version,
+                        "package": package,
+                        "code_lists": [],
+                    }
+                    for item in response["_links"]["codelists"]:
+                        href = item["href"]
                         result["code_lists"].append(href.split("/")[-1])
-                    results.append(result)    
+                    results.append(result)
         return results
 
     def package_code_list(self, package: str, version: str, c_code: str) -> dict:
         package_full_name = f"{package}-{version}"
-        api_url = self._url(
-            f"/mdr/ct/packages/{package_full_name}/codelists/{c_code}"
-        )
+        api_url = self._url(f"/mdr/ct/packages/{package_full_name}/codelists/{c_code}")
         raw = requests.get(api_url, headers=self._headers)
         if raw.status_code == 200:
             response = raw.json()
@@ -65,7 +65,7 @@ class LibraryAPI:
             return response
         else:
             return None
-        
+
     def _get_packages(self) -> dict | None:
         packages = {}
         api_url = self._url("/mdr/ct/packages")

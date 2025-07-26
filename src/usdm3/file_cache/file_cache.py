@@ -24,14 +24,16 @@ class FileCache:
                 with open(self._full_filepath()) as f:
                     return yaml.safe_load(f)
             else:
-                raise Exception(f"Failed to read file '{self._full_filepath()}', does not exist")
+                raise Exception(
+                    f"Failed to read file '{self._full_filepath()}', does not exist"
+                )
         except Exception as e:
             raise Exception(f"Failed to read file '{self._full_filepath()}', {str(e)}")
 
     def delete(self) -> None:
         try:
             os.remove(self._full_filepath())
-        except Exception as e:
+        except Exception:
             pass
 
     def _file_exists(self) -> bool:

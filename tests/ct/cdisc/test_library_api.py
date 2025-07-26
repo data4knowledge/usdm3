@@ -7,7 +7,7 @@ from usdm3.ct.cdisc.library_api import LibraryAPI
 @pytest.fixture
 def api():
     """Fixture to create a LibraryAPI instance"""
-    with patch.dict(os.environ, {'CDISC_API_KEY': 'test_api_key'}):
+    with patch.dict(os.environ, {"CDISC_API_KEY": "test_api_key"}):
         return LibraryAPI(["ddfct", "sdtmct"])
 
 
@@ -22,7 +22,7 @@ def mock_response():
 
 def test_initialization():
     """Test LibraryAPI initialization"""
-    with patch.dict(os.environ, {'CDISC_API_KEY': 'test_key'}):
+    with patch.dict(os.environ, {"CDISC_API_KEY": "test_key"}):
         api = LibraryAPI(["sdtmct", "ddfct"])
         assert api._package_list == ["sdtmct", "ddfct"]
         assert api._packages is None
@@ -61,9 +61,9 @@ def test_code_list_success(mock_get, api):
     mock_response = Mock()
     mock_response.status_code = 200
     mock_response.json.return_value = {
-        "conceptId": "C123", 
+        "conceptId": "C123",
         "terms": [{"term": "test"}],
-        "_links": {"self": {"href": "/test"}}
+        "_links": {"self": {"href": "/test"}},
     }
     mock_get.return_value = mock_response
     api._packages = {"ddfct": [{"effective": "2024-01-01"}]}
@@ -90,26 +90,26 @@ def test_code_list_not_found_first_package(mock_get, api):
     # First call returns 404, second call returns 200
     mock_response_404 = Mock()
     mock_response_404.status_code = 404
-    
+
     mock_response_200 = Mock()
     mock_response_200.status_code = 200
     mock_response_200.json.return_value = {
-        "conceptId": "C123", 
+        "conceptId": "C123",
         "terms": [{"term": "test"}],
-        "_links": {"self": {"href": "/test"}}
+        "_links": {"self": {"href": "/test"}},
     }
-    
+
     mock_get.side_effect = [mock_response_404, mock_response_200]
     api._packages = {
         "ddfct": [{"effective": "2024-01-01"}],
-        "sdtmct": [{"effective": "2024-01-01"}]
+        "sdtmct": [{"effective": "2024-01-01"}],
     }
 
     result = api.code_list("C123")
 
     # Verify both requests were made
     assert mock_get.call_count == 2
-    
+
     # Verify response processing from second package
     assert result["conceptId"] == "C123"
     assert result["source"]["package"] == "sdtmct"
@@ -124,9 +124,9 @@ def test_code_list_all_packages_fail(mock_get, api):
 
     api._packages = {
         "ddfct": [{"effective": "2024-01-01"}],
-        "sdtmct": [{"effective": "2024-01-01"}]
+        "sdtmct": [{"effective": "2024-01-01"}],
     }
-    
+
     result = api.code_list("invalid-id")
     assert result is None
 
@@ -134,8 +134,10 @@ def test_code_list_all_packages_fail(mock_get, api):
 @patch("requests.get")
 def test_code_list_no_package_version(mock_get, api):
     """Test code_list method when package version is None"""
-    api._packages = {"ddfct": []}  # Empty list will cause _package_version to return None
-    
+    api._packages = {
+        "ddfct": []
+    }  # Empty list will cause _package_version to return None
+
     result = api.code_list("C123")
     assert result is None
     mock_get.assert_not_called()
@@ -150,19 +152,16 @@ def test_all_code_lists_success(mock_get, api):
         "_links": {
             "codelists": [
                 {"href": "/mdr/ct/packages/ddfct-2024-01-01/codelists/C12345"},
-                {"href": "/mdr/ct/packages/ddfct-2024-01-01/codelists/C67890"}
+                {"href": "/mdr/ct/packages/ddfct-2024-01-01/codelists/C67890"},
             ]
         }
     }
     mock_get.return_value = mock_response
     api._packages = {"ddfct": [{"effective": "2024-01-01"}]}
 
-    with patch('builtins.print') as mock_print:
+    with patch("builtins.print") as mock_print:
         result = api.all_code_lists()
 
-    # Verify print was called with correct format
-    mock_print.assert_any_call("VERSION: ddfct, 2024-01-01")
-    
     # Verify result structure
     assert len(result) == 1
     assert result[0]["effective_date"] == "2024-01-01"
@@ -173,14 +172,13 @@ def test_all_code_lists_success(mock_get, api):
 @patch("requests.get")
 def test_all_code_lists_no_version(mock_get, api):
     """Test all_code_lists method when package has no version"""
-    api._packages = {"ddfct": []}  # Empty list will cause _package_version to return None
-    
-    with patch('builtins.print') as mock_print:
+    api._packages = {
+        "ddfct": []
+    }  # Empty list will cause _package_version to return None
+
+    with patch("builtins.print") as mock_print:
         result = api.all_code_lists()
 
-    # Verify print was called with None version
-    mock_print.assert_any_call("VERSION: ddfct, None")
-    
     # Verify no requests were made and empty result
     mock_get.assert_not_called()
     assert result == []
@@ -194,7 +192,7 @@ def test_all_code_lists_request_fails(mock_get, api):
     mock_get.return_value = mock_response
     api._packages = {"ddfct": [{"effective": "2024-01-01"}]}
 
-    with patch('builtins.print'):
+    with patch("builtins.print"):
         result = api.all_code_lists()
 
     # When request fails, no result is appended to results list
@@ -208,9 +206,9 @@ def test_package_code_list_success(mock_get, api):
     mock_response = Mock()
     mock_response.status_code = 200
     mock_response.json.return_value = {
-        "conceptId": "C123", 
+        "conceptId": "C123",
         "terms": [{"term": "test"}],
-        "_links": {"self": {"href": "/test"}}
+        "_links": {"self": {"href": "/test"}},
     }
     mock_get.return_value = mock_response
 
@@ -250,12 +248,12 @@ def test_refresh_success(mock_get, api):
             "packages": [
                 {
                     "href": "/mdr/ct/packages/sdtmct-2024-01-01",
-                    "title": "SDTM Controlled Terminology Effective 2024-01-01"
+                    "title": "SDTM Controlled Terminology Effective 2024-01-01",
                 },
                 {
-                    "href": "/mdr/ct/packages/ddfct-2024-01-01", 
-                    "title": "Define-XML Controlled Terminology Effective 2024-01-01"
-                }
+                    "href": "/mdr/ct/packages/ddfct-2024-01-01",
+                    "title": "Define-XML Controlled Terminology Effective 2024-01-01",
+                },
             ]
         }
     }
@@ -268,7 +266,7 @@ def test_refresh_success(mock_get, api):
         "https://api.library.cdisc.org/api/mdr/ct/packages",
         headers=api._headers,
     )
-    
+
     # Verify packages were parsed correctly
     assert "sdtmct" in api._packages
     assert "ddfct" in api._packages
@@ -290,11 +288,11 @@ def test_refresh_failure(mock_get, api):
 def test_extract_ct_name():
     """Test _extract_ct_name method"""
     api = LibraryAPI([])
-    
+
     # Valid URLs
     assert api._extract_ct_name("/mdr/ct/packages/sdtmct-2024-01-01") == "sdtmct"
     assert api._extract_ct_name("/mdr/ct/packages/ddfct-2023-12-15") == "ddfct"
-    
+
     # Invalid URLs
     assert api._extract_ct_name("/invalid/url") is None
     assert api._extract_ct_name("") is None
@@ -304,11 +302,19 @@ def test_extract_ct_name():
 def test_extract_effective_date():
     """Test _extract_effective_date method"""
     api = LibraryAPI([])
-    
+
     # Valid titles
-    assert api._extract_effective_date("SDTM Controlled Terminology Effective 2024-01-01") == "2024-01-01"
-    assert api._extract_effective_date("Define-XML Controlled Terminology Effective 2023-12-15") == "2023-12-15"
-    
+    assert (
+        api._extract_effective_date("SDTM Controlled Terminology Effective 2024-01-01")
+        == "2024-01-01"
+    )
+    assert (
+        api._extract_effective_date(
+            "Define-XML Controlled Terminology Effective 2023-12-15"
+        )
+        == "2023-12-15"
+    )
+
     # Invalid titles
     assert api._extract_effective_date("Invalid title") is None
     assert api._extract_effective_date("") is None
@@ -318,25 +324,25 @@ def test_extract_effective_date():
 def test_package_version():
     """Test _package_version method"""
     api = LibraryAPI([])
-    
+
     # Test with valid packages
     api._packages = {
         "sdtmct": [
             {"effective": "2023-01-01", "url": "/test1"},
-            {"effective": "2024-01-01", "url": "/test2"}
+            {"effective": "2024-01-01", "url": "/test2"},
         ]
     }
-    
+
     # Should return the last (most recent) version
     assert api._package_version("sdtmct") == "2024-01-01"
-    
+
     # Test with non-existent package
     assert api._package_version("nonexistent") is None
-    
+
     # Test with None packages
     api._packages = None
     assert api._package_version("sdtmct") is None
-    
+
     # Test with empty package list
     api._packages = {"sdtmct": []}
     assert api._package_version("sdtmct") is None
@@ -352,16 +358,16 @@ def test_get_packages_success(mock_get, api):
             "packages": [
                 {
                     "href": "/mdr/ct/packages/sdtmct-2024-01-01",
-                    "title": "SDTM Controlled Terminology Effective 2024-01-01"
+                    "title": "SDTM Controlled Terminology Effective 2024-01-01",
                 },
                 {
                     "href": "/mdr/ct/packages/sdtmct-2023-01-01",
-                    "title": "SDTM Controlled Terminology Effective 2023-01-01"
+                    "title": "SDTM Controlled Terminology Effective 2023-01-01",
                 },
                 {
                     "href": "/invalid/format",  # This should be ignored
-                    "title": "Invalid Title"
-                }
+                    "title": "Invalid Title",
+                },
             ]
         }
     }

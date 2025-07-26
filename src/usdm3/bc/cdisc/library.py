@@ -3,6 +3,7 @@ from usdm3.bc.cdisc.library_api import LibraryAPI
 from usdm3.bc.cdisc.library_cache.library_cache import LibraryCache
 from usdm3.ct.cdisc.library import Library as CtLibrary
 
+
 class Library:
     API_ROOT = "https://api.library.cdisc.org/api/cosmos/v2"
     BASE_PATH = "bc/cdisc"
@@ -12,7 +13,8 @@ class Library:
         self.root_path = root_path
         self._api = LibraryAPI(ct_library)  # Interface to CDISC Library API
         self._cache = LibraryCache(
-            os.path.join(self.root_path, self.BASE_PATH, "library_cache"), "library_cache.yaml"
+            os.path.join(self.root_path, self.BASE_PATH, "library_cache"),
+            "library_cache.yaml",
         )  # Cache file handler
         self._bcs = {}
         self._bc_index = {}
@@ -48,4 +50,3 @@ class Library:
 
     def _get_bc_data(self, name: str) -> dict:
         return self._bcs[self._bc_index[name.upper()]]
-

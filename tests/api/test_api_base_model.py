@@ -53,13 +53,14 @@ def test_to_json_direct():
 
 def test_serialize_as_json_enum():
     """Test _serialize_as_json function with enum to cover line 11."""
+
     class TestEnum(enum.Enum):
         VALUE1 = "test_value"
         VALUE2 = "another_value"
-    
+
     result = _serialize_as_json(TestEnum.VALUE1)
     assert result == "test_value"
-    
+
     result = _serialize_as_json(TestEnum.VALUE2)
     assert result == "another_value"
 
@@ -80,11 +81,12 @@ def test_serialize_as_json_uuid():
 
 def test_serialize_as_json_object():
     """Test _serialize_as_json function with regular object."""
+
     class TestObj:
         def __init__(self):
             self.attr1 = "value1"
             self.attr2 = "value2"
-    
+
     test_obj = TestObj()
     result = _serialize_as_json(test_obj)
     assert result == {"attr1": "value1", "attr2": "value2"}

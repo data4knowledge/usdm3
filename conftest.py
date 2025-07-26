@@ -2,17 +2,17 @@ import os
 import pytest
 from dotenv import load_dotenv
 
+
 def set_test():
-    original_value = os.environ.get('CDISC_API_KEY')
-    os.environ['CDISC_API_KEY'] = 'api_key'
+    original_value = os.environ.get("CDISC_API_KEY")
+    os.environ["CDISC_API_KEY"] = "api_key"
     load_dotenv(".test_env")
-    # print(f"API KEY: {os.environ.get("CDISC_API_KEY")}")
     return original_value
+
 
 def clear_test(original_value):
     if original_value:
-        os.environ['CDISC_API_KEY'] = original_value
-    # print(f"API KEY: {os.environ.get("CDISC_API_KEY")}")
+        os.environ["CDISC_API_KEY"] = original_value
     load_dotenv(".development_env")
 
 
