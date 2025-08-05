@@ -1,4 +1,5 @@
 from simple_error_log.errors import Errors
+from simple_error_log.error import Error
 from usdm3.rules.library.rule_template import ValidationLocation
 
 
@@ -74,11 +75,8 @@ class RulesValidationResults:
                         "status": item["status"],
                         "exception": item["exception"],
                     }
-                    row.update(
-                        self._flatten_error(
-                            {"message": "", "level": "", "location": location.to_dict()}
-                        )
-                    )
+                    error = Error("", location)
+                    row.update(self._flatten_error(error.to_dict()))
                     rows.append(row)
             rows.sort(key=lambda x: x["rule_id"])
             return rows
