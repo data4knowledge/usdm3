@@ -5,7 +5,6 @@ from usdm3.rules.library.rule_template import ValidationLocation
 class RulesValidationResults:
     def __init__(self):
         self._items = {}
-        self.location_keys = ["rule", "rule_text", "klass", "attribute", "path"]
 
     def add_success(self, rule: str):
         self._items[rule] = {
@@ -85,10 +84,10 @@ class RulesValidationResults:
             return rows
 
     def _flatten_error(self, error: dict) -> dict:
-        for key in self.location_keys:
+        for key in ValidationLocation.headers():
             error[key] = ""
         for key, value in error["location"].items():
-            if key in self.location_keys:
+            if key in ValidationLocation.headers():
                 error[key] = value
         error.pop("location")
         return error
