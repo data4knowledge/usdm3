@@ -22,5 +22,5 @@ class APIInstance:
             return klass(**params)
         except Exception as e:
             raise self.APIInstanceError(
-                f"failed to create {klass_name} instance, exception: {str(e)}"
+                f"failed to create {klass_name} instance, exception: {e}"
             )
