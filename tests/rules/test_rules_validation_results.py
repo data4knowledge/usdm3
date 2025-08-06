@@ -152,7 +152,7 @@ def test_to_dict_with_success(validation_results):
     actual = validation_results.to_dict()
     assert dict_timestamp(actual[0]) == {
         "exception": None,
-        "level": "",
+        "level": "Error",
         "message": "",
         "attribute": "",
         "klass": "",
@@ -161,6 +161,8 @@ def test_to_dict_with_success(validation_results):
         "rule_text": "",
         "rule_id": "test_rule",
         "status": "Success",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "test_rule",
     }
 
 
@@ -230,7 +232,7 @@ def test_to_dict_mixed_results(validation_results):
     actual = validation_results.to_dict()
     assert dict_timestamp(actual[0]) == {
         "exception": None,
-        "level": "",
+        "level": "Error",
         "message": "",
         "attribute": "",
         "klass": "",
@@ -239,6 +241,8 @@ def test_to_dict_mixed_results(validation_results):
         "rule_text": "",
         "rule_id": "rule1",
         "status": "Success",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "rule1",
     }
     assert dict_timestamp(actual[1]) == {
         "exception": None,
@@ -270,7 +274,7 @@ def test_to_dict_mixed_results(validation_results):
     }
     assert dict_timestamp(actual[3]) == {
         "exception": "test exception",
-        "level": "",
+        "level": "Error",
         "message": "",
         "attribute": "",
         "klass": "",
@@ -279,4 +283,6 @@ def test_to_dict_mixed_results(validation_results):
         "rule_text": "",
         "rule_id": "rule3",
         "status": "Exception",
+        "timestamp": "YYYY-MM-DD HH:MM:SS.nnnnnn",
+        "type": "rule3",
     }

@@ -75,7 +75,7 @@ class RulesValidationResults:
                         "status": item["status"],
                         "exception": item["exception"],
                     }
-                    error = Error("", location)
+                    error = Error("", location, rule)
                     row.update(self._flatten_error(error.to_dict()))
                     rows.append(row)
             rows.sort(key=lambda x: x["rule_id"])
