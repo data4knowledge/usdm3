@@ -72,7 +72,7 @@ def test_validate_valid(rule):
         {
             "id": "code10",
             "codeSystem": "http://www.example.com",
-            "codeSystemVersion": "2024-09-27",
+            "codeSystemVersion": "2025-03-28",
         },
     ]
 
