@@ -159,7 +159,7 @@ def test_all_code_lists_success(mock_get, api):
     mock_get.return_value = mock_response
     api._packages = {"ddfct": [{"effective": "2024-01-01"}]}
 
-    with patch("builtins.print") as mock_print:
+    with patch("builtins.print") as _:
         result = api.all_code_lists()
 
     # Verify result structure
@@ -176,7 +176,7 @@ def test_all_code_lists_no_version(mock_get, api):
         "ddfct": []
     }  # Empty list will cause _package_version to return None
 
-    with patch("builtins.print") as mock_print:
+    with patch("builtins.print") as _:
         result = api.all_code_lists()
 
     # Verify no requests were made and empty result

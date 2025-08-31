@@ -62,14 +62,17 @@ class Library:
         except Exception:
             return None
 
-    def klass_and_attribute_value(self, klass: str, attribute: str, value: str) -> tuple[dict, str]:
+    def klass_and_attribute_value(
+        self, klass: str, attribute: str, value: str
+    ) -> tuple[dict, str]:
         try:
             concept_id = self._config.klass_and_attribute(klass, attribute)
             code_list = self._by_code_list[concept_id]
-            return self._get_item(code_list, value), code_list["source"]["effective_date"]
+            return self._get_item(code_list, value), code_list["source"][
+                "effective_date"
+            ]
         except Exception:
             return None, None
-
 
     def unit(self, value: str) -> dict:
         try:
