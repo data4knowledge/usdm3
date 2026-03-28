@@ -4,20 +4,20 @@ from uuid import UUID
 from usdm3.api.api_base_model import ApiBaseModel, _serialize_as_json
 
 
-class TestOne(ApiBaseModel):
+class SampleOne(ApiBaseModel):
     x: str
     y: str
 
 
-class TestTwo(ApiBaseModel):
+class SampleTwo(ApiBaseModel):
     z: str
     d: datetime.date
-    a: TestOne
+    a: SampleOne
     u: UUID
 
 
 def test_create():
-    to = TestOne(**{"id": "id", "x": "x", "y": "y"})
+    to = SampleOne(**{"id": "id", "x": "x", "y": "y"})
     assert to.model_dump() == {
         "id": "id",
         "x": "x",
@@ -31,8 +31,8 @@ def test_to_json_direct():
     # This effectively serves as a mock for uuid4() by providing a predictable value
     fixed_uuid = UUID("12345678-1234-5678-1234-567812345678")
 
-    to = TestOne(**{"id": "id", "x": "x", "y": "y"})
-    tt = TestTwo(
+    to = SampleOne(**{"id": "id", "x": "x", "y": "y"})
+    tt = SampleTwo(
         **{
             "id": "id",
             "z": "z",
