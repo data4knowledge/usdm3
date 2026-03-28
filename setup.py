@@ -18,10 +18,10 @@ setuptools.setup(
     install_requires=[
         "pydantic==2.7.3",
         "beautifulsoup4==4.12.3",
-        "pyyaml==6.0.1",
+        "pyyaml>=6.0.1,<7",
         "simple_error_log>=0.6.0",
-        "jsonschema==4.23.0",
-        "python-dotenv==1.0.1",
+        "jsonschema>=4.18.0,<5",
+        "python-dotenv>=0.20.0,<2",
         "requests==2.32.3",
     ],
     packages=setuptools.find_packages(where="src"),
